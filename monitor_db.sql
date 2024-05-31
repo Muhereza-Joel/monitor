@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 31, 2024 at 07:58 AM
+-- Generation Time: May 31, 2024 at 09:11 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -39,8 +39,14 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `app_users`
+--
+
+INSERT INTO `app_users` (`id`, `username`, `email`, `password`, `role`, `approved`, `profile_created`, `created_at`, `updated_at`) VALUES
+(1, 'Administrator', 'noreply@tagbatwaha.com', '$2y$10$/g32TWjPhjXzTYhSBMpOSeFf4e5H8knPCLTi2k/A4jSkWm63i15W6', 'User', 0, 0, '2024-05-31 09:11:08', '2024-05-31 09:11:08');
 
 -- --------------------------------------------------------
 
@@ -62,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `indicators` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -81,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `responses` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `indicator_id` (`indicator_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -110,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nin` (`nin`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
