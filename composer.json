@@ -1,0 +1,26 @@
+{
+    "name": "stella/monitor",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Stella\\Monitor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Muhereza Joel",
+            "email": "muherezajoel40@gmail.com"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^1.39",
+        "tecnickcom/tcpdf": "^6.7",
+        "vlucas/phpdotenv": "^4.3",
+        "jenssegers/blade": "^1.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
+}
