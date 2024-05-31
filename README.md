@@ -15,5 +15,7 @@ M & E Monitor is a robust tool designed for efficient monitoring and evaluation.
 - A web server with PHP support
 - MySQL or a compatible database
 
+## Download The Source Files.
+[Download M & E Monitor (Beta)](https://github.com/Muhereza-Joel/monitor/archive/refs/tags/beta.zip)
 
 ## Don' t forget to add a redirect to your domain like https://example.com/monitor where monitor is the name of the folder where the project is. Please do not change the folder name.
