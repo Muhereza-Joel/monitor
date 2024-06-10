@@ -12,6 +12,11 @@ $envData = [
     'APP_NAME' => 'monitor',
     'APP_NAME_FULL' => '"M & E Monitor"',
     'APP_BASE_URL' => 'http://localhost',
+    'SMTP_SERVER' => 'smtp.gmail.com',
+    'APP_MAIL_CLIENT' => 'muherezajoel40@gmail.com',
+    'APP_MAIL_KEY' => "'kmmt srcd nmuo nudn'",
+    'APP_MAIL_SENDER' => 'moels.inc@gmail.com',
+    'APP_MAIL_TITLE' => "'ODT M &E Monitor'"
 ];
 
 // Generate the contents for the new .env file

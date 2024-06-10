@@ -2,6 +2,7 @@
 
 namespace model;
 
+use controller\MailController;
 use core\DatabaseConnection;
 use core\Request;
 use core\Session;
@@ -24,11 +25,13 @@ class User
         return self::$instance;
     }
 
-    private function __clone() {
+    private function __clone()
+    {
         // Prevent cloning of the instance
     }
 
-    public function __wakeup() {
+    public function __wakeup()
+    {
         // Prevent unserializing of the instance
     }
 
@@ -435,5 +438,80 @@ class User
                 Request::send_response($httpStatus, $response);
             }
         }
+    }
+
+    public function check_identifier($identifier)
+    {
+        $query = "SELECT * FROM app_users WHERE username = ? OR email = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ss', $identifier, $identifier);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+           
+
+            // Set session data and sleep for 3 seconds
+            Session::set('email_to_confirm', $user['email']);
+            Session::set('user_id', $user['id']);
+            sleep(3);
+
+            $user_id = Session::get('user_id');
+            $otp = $this->generateOTP();
+
+            $result = $this->save_confirm_email_row($user_id, $otp);
+
+            if ($result == 200) {
+                $mail = new MailController();
+                $result2 = $mail->send_confirm_email($otp, $user['email']);
+
+                if($result2['code'] == '200'){
+                    $response = [
+                        'exists' => true,
+                        'emailConfirmed' => $user['email_confirmed'], // Assuming 'email_confirmed' means email confirmed
+                        'message' => 'Account with provided identifier exists.'
+                    ];
+                    $httpStatus = 200;
+                }
+            }
+        } else {
+            $response = [
+                'exists' => false,
+                'emailConfirmed' => false,
+                'message' => 'Account with provided identifier does not exist.'
+            ];
+            $httpStatus = 401;
+            sleep(3);
+        }
+
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function generateOTP($length = 6)
+    {
+        return strtoupper(substr(md5(time() . mt_rand()), 0, $length));
+    }
+
+    public function save_confirm_email_row($user_id, $otp)
+    {
+        $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        $stmt = $this->database->prepare("INSERT INTO confirm_email_codes (user_id, otp, expires_at) VALUES (?, ?, ?)");
+        $stmt->bind_param('iss', $user_id, $otp, $expires_at);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = 200;
+
+            return $response;
+        } else {
+            $response = 500;
+            return $response;
+        }
+
+        $stmt->close();
     }
 }

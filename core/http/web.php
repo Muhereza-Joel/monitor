@@ -23,6 +23,9 @@ Route::post("/$app_name/auth/sign-out/", "controller\AuthController@sign_out");
 Route::post("/$app_name/auth/user/profile/", "controller\AuthController@render_show_profile_view");
 Route::post("/$app_name/auth/users/", "controller\AuthController@get_system_users");
 Route::post("/$app_name/auth/users/get-user-details/", "controller\AuthController@get_user_details");
+Route::post("/$app_name/auth/accounts/check-identifier/", "controller\AuthController@check_identifier");
+Route::post("/$app_name/auth/accounts/reset/", "controller\AuthController@render_start_reset");
+Route::post("/$app_name/auth/accounts/reset/step-two/", "controller\AuthController@render_confirm_email");
 
 
 //Routes for PageController

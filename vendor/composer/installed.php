@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'ac9a506056dd9a6fe44604d12d56e98db1fe2157',
         'name' => 'stella/monitor',
         'dev' => true,
     ),
@@ -109,6 +109,15 @@
             'reference' => '96c132c7f2f7bc3230723b66e89f8f150b29d5ae',
             'dev_requirement' => false,
         ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.9.1',
+            'version' => '6.9.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'reference' => '039de174cd9c17a8389754d3b877a2ed22743e18',
+            'dev_requirement' => false,
+        ),
         'phpoption/phpoption' => array(
             'pretty_version' => '1.7.5',
             'version' => '1.7.5.0',
@@ -128,12 +137,12 @@
             'dev_requirement' => false,
         ),
         'stella/monitor' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'ac9a506056dd9a6fe44604d12d56e98db1fe2157',
             'dev_requirement' => false,
         ),
         'symfony/debug' => array(

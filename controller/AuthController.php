@@ -40,20 +40,6 @@ class AuthController
         echo ($html);
     }
 
-    public function render_home()
-    {
-        $programe = $this->model->get_current_programe();
-        $blade_view = new BladeView();
-        $html = $blade_view->render('home', [
-            'pageTitle' => "$this->app_name Welcome",
-            'appName' => $this->app_name,
-            'appNameFull' => $this->app_name_full,
-            'programe' => $programe['response'],
-        ]);
-
-        echo ($html);
-    }
-
     public function render_register_view()
     {
         $blade_view = new BladeView();
@@ -61,6 +47,33 @@ class AuthController
             'pageTitle' => "$this->app_name Auth-Register",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_start_reset()
+    {
+        $blade_view = new BladeView();
+        $html = $blade_view->render('/auth/beginReset', [
+            'pageTitle' => "$this->app_name reset account password",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_confirm_email()
+    {
+        $blade_view = new BladeView();
+        $html = $blade_view->render('/auth/confirmEmail', [
+            'pageTitle' => "$this->app_name confirm email",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
+            'email' => Session::get('email_to_confirm'),
         ]);
 
         echo ($html);
@@ -180,5 +193,12 @@ class AuthController
         
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
         Request::send_response(200, $userDetails);
+    }
+
+    public function check_identifier(){
+
+        $request = Request::capture();
+        $identifier = $request->input('identifier');
+        $this->user_model->check_identifier($identifier);
     }
 }
