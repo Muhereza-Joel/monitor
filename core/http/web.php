@@ -25,7 +25,12 @@ Route::post("/$app_name/auth/users/", "controller\AuthController@get_system_user
 Route::post("/$app_name/auth/users/get-user-details/", "controller\AuthController@get_user_details");
 Route::post("/$app_name/auth/accounts/check-identifier/", "controller\AuthController@check_identifier");
 Route::post("/$app_name/auth/accounts/reset/", "controller\AuthController@render_start_reset");
+Route::post("/$app_name/auth/accounts/reset/step-one/", "controller\AuthController@render_reset_password_step_one");
 Route::post("/$app_name/auth/accounts/reset/step-two/", "controller\AuthController@render_confirm_email");
+Route::post("/$app_name/auth/accounts/reset/step-three/", "controller\AuthController@render_reset_password");
+Route::post("/$app_name/auth/accounts/confirm-otp/", "controller\AuthController@confirm_otp");
+Route::post("/$app_name/auth/accounts/confirm-password-otp/", "controller\AuthController@confirm_password_otp");
+Route::post("/$app_name/auth/accounts/reset-password/", "controller\AuthController@reset_password");
 
 
 //Routes for PageController
@@ -47,4 +52,8 @@ Route::post("/$app_name/dashboard/manage-indicators/create/", "controller\Indica
 Route::post("/$app_name/dashboard/manage-indicators/update/", "controller\IndicatorController@update_indicator");
 Route::post("/$app_name/dashboard/manage-indicators/delete/", "controller\IndicatorController@delete_indicator");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/create/", "controller\IndicatorController@create_response");
+
+//Routes for mail controller
+Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@request_otp");
+
 ?>

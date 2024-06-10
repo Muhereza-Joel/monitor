@@ -10,13 +10,13 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- Left Column -->
-                                    <div class="col-md-6 d-flex flex-column align-items-start justify-content-center p-4">
+                                    <div style="border-right: 2px solid #999;" class="col-md-6 d-flex flex-column align-items-start justify-content-center p-4">
                                         <h5 class="card-title pb-0 fs-4">{{$appNameFull}} Account Recovery</h5>
                                         <hr>
                                         <h3 class="text-danger">We have noticed that you did not confirm your email.</h3>
                                         <hr>
                                         <h2 class="text-success">We've sent a one-time password (OTP) to your email address.</h2>
-                                        <p class="mt-3"> Please enter the OTP below to confirm your email and proceed with account recovery.</p>
+                                        <p class="mt-3"> Please enter the OTP and <strong>click confirm OTP</strong> to confirm OTP and proceed with account recovery.</p>
                                         <p>If you didn't receive the email, check your spam folder or contact our support team for assistance.</p>
                                     </div>
                                     <!-- Right Column -->
@@ -75,7 +75,7 @@
                     url: '/{{$appName}}/auth/accounts/confirm-otp/',
                     data: formData,
                     success: function(response) {
-                        if (response.success) {
+                        if (response.status == 200) {
                             Toastify({
                                 text: "OTP confirmed. You can now reset your password.",
                                 duration: 4000,
@@ -83,9 +83,20 @@
                                 position: 'center',
                                 backgroundColor: 'green',
                             }).showToast();
-                            window.location.replace('/{{$appName}}/auth/accounts/reset/step-three/');
+
+                            setTimeout(function() {
+                                window.location.replace('/{{$appName}}/auth/accounts/reset/step-three/');
+
+                            }, 3000)
                         } else {
-                            $('#invalid-otp').removeClass('d-none').addClass('show').text('Invalid OTP. Please try again.');
+                            Toastify({
+                                text: "Invalid OTP. Please try again..",
+                                duration: 4000,
+                                gravity: 'bottom',
+                                position: 'left',
+                                backgroundColor: 'red',
+                            }).showToast();
+
                         }
                     },
                     error: function(jqXHR) {

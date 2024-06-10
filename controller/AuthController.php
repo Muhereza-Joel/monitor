@@ -65,6 +65,34 @@ class AuthController
         echo ($html);
     }
 
+    public function render_reset_password()
+    {
+        $blade_view = new BladeView();
+        $html = $blade_view->render('/auth/resetPassword', [
+            'pageTitle' => "$this->app_name reset account password",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
+            'email' => Session::get('email_to_confirm'),
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_reset_password_step_one()
+    {
+        $blade_view = new BladeView();
+        $html = $blade_view->render('/auth/stepOneResetPassword', [
+            'pageTitle' => "$this->app_name reset account password",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
+            'email' => Session::get('email_to_confirm'),
+        ]);
+
+        echo ($html);
+    }
+
     public function render_confirm_email()
     {
         $blade_view = new BladeView();
@@ -200,5 +228,20 @@ class AuthController
         $request = Request::capture();
         $identifier = $request->input('identifier');
         $this->user_model->check_identifier($identifier);
+    }
+
+    public function confirm_otp()
+    {
+        $this->user_model->confirm_otp();
+    }
+
+    public function confirm_password_otp()
+    {
+        $this->user_model->confirm_password_otp();
+    }
+
+    public function reset_password()
+    {
+        $this->user_model->reset_password();
     }
 }

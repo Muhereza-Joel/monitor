@@ -10,36 +10,39 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- Left Column -->
-
                                     <div style="border-right: 2px solid #999;" class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
                                         <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto mb-4">
                                             <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
                                         </a>
                                         <h5 class="card-title pb-0 fs-4"><?php echo e($appNameFull); ?> Account Recovery</h5>
-                                        <p class="mt-3">We're sorry that you've lost access to your account. Please enter your username or email address on the right. We will look up your account to proceed to account recovery and send you a one-time password to reset your account.</p>
-                                        <p>If you didn't receive the email, check your spam folder or contact our support team for assistance.</p>
+                                        <p class="mt-3">Please create a new strong password that you will use to log in to your account again.</p>
+                                        <p>If you encounter any issues, feel free to contact our support team for assistance.</p>
                                     </div>
                                     <!-- Right Column -->
                                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
-
                                         <form id="recovery-form" class="row g-3 needs-validation" novalidate>
                                             <div class="col-12">
-                                                <label for="yourIdentifier" class="form-label fw-bold">Please provide username or email you used when creating your account</label>
+                                                <label for="yourIdentifier" class="form-label fw-bold">Confirmed Email Address</label>
                                                 <div class="input-group has-validation">
-                                                    <input type="text" name="identifier" placeholder="Enter username or email here" class="form-control" id="yourIdentifier" required>
+                                                    <input readonly type="text" name="identifier" value="<?php echo e($email); ?>" placeholder="Enter username or email here" class="form-control" id="yourIdentifier" required>
                                                     <div class="invalid-feedback">Please enter your username or email address.</div>
                                                 </div>
                                             </div>
-
                                             <div class="col-12">
-                                                <button id="recovery-button" class="btn btn-secondary btn-sm w-100" type="submit">Lookup Account Details</button>
+                                                <label for="newPassword" class="form-label fw-bold">New Password</label>
+                                                <input type="password" name="newPassword" class="form-control" id="newPassword" required>
                                             </div>
-
+                                            <div class="col-12">
+                                                <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+                                                <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" required>
+                                                <div class="invalid-feedback">Passwords do not match.</div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button id="recovery-button" class="btn btn-secondary btn-sm w-100" type="submit">Reset Password</button>
+                                            </div>
                                             <div class="col-12">
                                                 <a href="/<?php echo e($appName); ?>/auth/login/" class="btn btn-sm btn-danger w-100">Cancel Password Reset</a>
                                             </div>
-
-
                                             <div id="invalid-login" class="alert alert-danger alert-dismissible fade d-none p-1 mt-3" role="alert">
                                                 <span class="text-center"></span>
                                             </div>
@@ -53,6 +56,7 @@
             </div>
         </section>
     </main>
+
     <!-- End #main -->
     <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
@@ -61,34 +65,53 @@
             $('#recovery-form').submit(function(e) {
                 e.preventDefault();
 
+                $('#confirmPassword').removeClass('is-invalid');
+
+                let newPassword = $('#newPassword').val();
+                let confirmPassword = $('#confirmPassword').val();
+
+                if (!newPassword || !confirmPassword) {
+                    if (!newPassword) {
+                        $('#newPassword').addClass('is-invalid');
+                    }
+                    if (!confirmPassword) {
+                        $('#confirmPassword').addClass('is-invalid');
+                    }
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    $('#confirmPassword').addClass('is-invalid');
+                    return;
+                }
+
                 Toastify({
-                    text: 'Looking Up Your Account Please Wait...',
-                    duration: 6000, // Adjust duration as needed
+                    text: 'Processing your request, please wait...',
+                    duration: 6000,
                     gravity: 'bottom',
                     position: 'left',
-                    backgroundColor: '#444', // Use your desired color
+                    backgroundColor: '#444',
                 }).showToast();
 
                 let formData = $(this).serialize();
 
                 $.ajax({
                     method: 'post',
-                    url: '/<?php echo e($appName); ?>/auth/accounts/check-identifier/',
+                    url: '/<?php echo e($appName); ?>/auth/accounts/reset-password/',
                     data: formData,
                     success: function(response) {
-                        if (response.exists && response.emailConfirmed) {
-                            window.location.replace('/<?php echo e($appName); ?>/auth/accounts/reset/step-one/');
-                        } else if (response.exists && !response.emailConfirmed) {
-                            window.location.replace('/<?php echo e($appName); ?>/auth/accounts/reset/step-two/');
-                        } else {
-
+                        if (response.status == 200) {
                             Toastify({
-                                text: 'The provided username or email does not exist.',
+                                text: 'Password reset successfully!',
                                 duration: 6000,
                                 gravity: 'bottom',
                                 position: 'left',
-                                backgroundColor: 'red',
+                                backgroundColor: 'green',
                             }).showToast();
+                            setTimeout(function() {
+                                window.location.replace('/<?php echo e($appName); ?>/auth/login/');
+
+                            }, 3000)
                         }
                     },
                     error: function(jqXHR) {
@@ -99,7 +122,6 @@
                             position: 'left',
                             backgroundColor: 'red',
                         }).showToast();
-
                     }
                 });
             });

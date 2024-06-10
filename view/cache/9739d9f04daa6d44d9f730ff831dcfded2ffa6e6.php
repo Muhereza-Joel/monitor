@@ -43,8 +43,11 @@
                                     </div>
                                     <div class="card-footer p-0">
                                         <div class="col-12 text-center">
-                                            <p class="small mt-3">Don't have an account? <a href="/<?php echo e($appName); ?>/auth/register/">Create an account</a></p>
-                                            <p class="small">Forgot your password? <a href="/<?php echo e($appName); ?>/auth/accounts/reset/">Reset your account</a></p>
+                                            <p>
+                                                <a href="/<?php echo e($appName); ?>/auth/register/">Create an account</a>|
+                                                <a href="/<?php echo e($appName); ?>/auth/accounts/reset/" class="text-danger ms-2">Forgot Password</a>
+                                            </p>
+
                                         </div>
                                     </div>
                                 </form>

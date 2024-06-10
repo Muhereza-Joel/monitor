@@ -452,7 +452,7 @@ class User
 
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
-           
+
 
             // Set session data and sleep for 3 seconds
             Session::set('email_to_confirm', $user['email']);
@@ -468,7 +468,7 @@ class User
                 $mail = new MailController();
                 $result2 = $mail->send_confirm_email($otp, $user['email']);
 
-                if($result2['code'] == '200'){
+                if ($result2['code'] == '200') {
                     $response = [
                         'exists' => true,
                         'emailConfirmed' => $user['email_confirmed'], // Assuming 'email_confirmed' means email confirmed
@@ -510,6 +510,116 @@ class User
         } else {
             $response = 500;
             return $response;
+        }
+
+        $stmt->close();
+    }
+
+    public function confirm_otp()
+    {
+        $request = Request::capture();
+
+        $user_id = Session::get('user_id');
+        $otp = $request->input('otp');
+
+        // Begin a transaction
+        $this->database->begin_transaction();
+
+        $select_query = "SELECT user_id, otp FROM confirm_email_codes WHERE otp = ? AND user_id = ?";
+        $update_query = "UPDATE app_users SET email_confirmed = ? WHERE id = ?";
+        $delete_query = "DELETE FROM confirm_email_codes WHERE user_id = ?";
+
+        $stmt = $this->database->prepare($select_query);
+        $stmt->bind_param("ss", $otp, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Execute the UPDATE query
+            $stmt = $this->database->prepare($update_query);
+            $email_confirmed = 1;
+            $stmt->bind_param("ii", $email_confirmed, $user_id);
+            $stmt->execute();
+
+            $stmt = $this->database->prepare($delete_query);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+
+
+            $this->database->commit();
+
+            $response = ['message' => 'Email Confirmed Successfully', 'status' => 200];
+            $httpStatus = 200;
+        } else {
+            $this->database->rollback();
+
+            $response = ['message' => 'Invalid OTP'];
+            $httpStatus = 401;
+        }
+
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function confirm_password_otp()
+    {
+        $request = Request::capture();
+
+        $user_id = Session::get('user_id');
+        $otp = $request->input('otp');
+
+        // Begin a transaction
+        $this->database->begin_transaction();
+
+        $select_query = "SELECT user_id, otp FROM confirm_email_codes WHERE otp = ? AND user_id = ?";
+        $delete_query = "DELETE FROM confirm_email_codes WHERE user_id = ?";
+
+        $stmt = $this->database->prepare($select_query);
+        $stmt->bind_param("ss", $otp, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+
+            $stmt = $this->database->prepare($delete_query);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+
+
+            $this->database->commit();
+
+            $response = ['message' => 'OTP Confirmed Successfully', 'status' => 200];
+            $httpStatus = 200;
+        } else {
+            $this->database->rollback();
+
+            $response = ['message' => 'Invalid OTP'];
+            $httpStatus = 401;
+        }
+
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function reset_password()
+    {
+        $request = Request::capture();
+        $user_id = Session::get('user_id');
+        $new_password = $request->input('newPassword');
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+        $stmt = $this->database->prepare("UPDATE app_users SET password = ? WHERE id = ?");
+        $stmt->bind_param('si', $hashed_password, $user_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            Session::destroy();
+
+            $response = ['message' => 'Password Updated Successfully', 'status' => 200];
+            $httpStatus = 200;
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['message' => 'An Error Occured, Failed to Change Password!'];
+            $httpStatus = 401;
+            Request::send_response($httpStatus, $response);
         }
 
         $stmt->close();
