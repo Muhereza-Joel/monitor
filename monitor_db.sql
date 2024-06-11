@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   `password` varchar(250) NOT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'User',
   `approved` tinyint(1) NOT NULL DEFAULT '0',
+  `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
   `profile_created` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -118,6 +119,19 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+DROP TABLE IF EXISTS `confirm_email_codes`;
+CREATE TABLE IF NOT EXISTS `confirm_email_codes` (
+  `id` int(250) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `otp` varchar(6) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Constraints for dumped tables
 --
@@ -127,6 +141,10 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
 --
 ALTER TABLE `responses`
   ADD CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`indicator_id`) REFERENCES `indicators` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+ALTER TABLE `confirm_email_codes`
+  ADD CONSTRAINT `confirm_email_codes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `app_users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
