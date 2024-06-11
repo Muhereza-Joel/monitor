@@ -208,7 +208,11 @@ class Model
 
     public function get_all_indicators()
     {
-        $query = "SELECT * FROM indicators";
+        $query = "SELECT i.*, 
+        ROUND(SUM(r.progress) / COUNT(r.indicator_id)) AS cumulative_progress 
+        FROM indicators AS i 
+        LEFT JOIN responses AS r ON i.id = r.indicator_id 
+        GROUP BY i.id";
 
         $stmt = $this->database->prepare($query);
         $stmt->execute();

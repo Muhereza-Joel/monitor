@@ -112,9 +112,10 @@
                 toolbar: [
                     [{ 'font': [] }, { 'size': [] }],
                     ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'align': [] }],
-                    ['link', 'image']
+                    ['link'],
                 ]
             }
         });

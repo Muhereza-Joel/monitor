@@ -14,84 +14,93 @@
 
 <main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Indicators</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
-                <li class="breadcrumb-item active">Indicators</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Indicators</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
+        <li class="breadcrumb-item active">Indicators</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-        <div class="row p-2">
-            <div class="card">
-                <div class="card-title">
-                    All Indicators
-                </div>
-
-                <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-striped datatable table-responsive" id="indicators-table">
-                      <thead>
-                          <tr>
-                              <th>SNo.</th>
-                              <th>Indicator</th>
-                              <th>Definition</th>
-                              <th>Baseline</th>
-                              <th>Target</th>
-                              <th>Data Source</th>
-                              <th>Frequency</th>
-                              <th>Responsible</th>
-                              <th>Reporting</th>
-                              <th>Action</th>
-
-                          </tr>
-                      </thead>
-                      <tbody>
-                          @foreach($indicators as $indicator)
-                          <tr>
-                              <td>{{$loop->iteration}}</td>
-                              <td>{{$indicator['indicator_title']}}</td>
-                              <td>{{$indicator['definition']}}</td>
-                              <td>{{$indicator['baseline']}}</td>
-                              <td>{{$indicator['target']}}</td>
-                              <td>{{$indicator['data_source']}}</td>
-                              <td>{{$indicator['frequency']}}</td>
-                              <td>{{$indicator['responsible']}}</td>
-                              <td>{{$indicator['reporting']}}</td>
-                              <td>
-                                  <div class="dropdown">
-                                      <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          Select Action
-                                      </button>
-                                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                                          @if($role == 'Administrator')
-                                          <a href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">Edit Indicator</a>
-                                          <a href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
-                                          @endif
-
-                                          @if($role == 'User' || $role == 'Administrator')
-
-                                          <a href="/{{$appName}}/dashboard/indicators/responses/add?id={{$indicator['id']}}" class="dropdown-item">Add Response</a>
-                                          @endif
-                                      </div>
-                                  </div>
-                              </td>
-                          </tr>
-                          @endforeach
-                      </tbody>
-                  </table>
-
-                </div>
-                </div>
-            </div>
+  <section class="section dashboard">
+    <div class="row p-2">
+      <div class="card">
+        <div class="card-title">
+          All Indicators
         </div>
 
-    </section>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped datatable table-responsive" id="indicators-table">
+              <thead>
+                <tr>
+                  <th>SNo.</th>
+                  <th>Indicator</th>
+                  <th>Definition</th>
+                  <th>Baseline</th>
+                  <th>Target</th>
+                  <th>Progress</th>
+                  <th>Data Source</th>
+                  <th>Frequency</th>
+                  <th>Responsible</th>
+                  <th>Reporting</th>
+                  <th>Action</th>
 
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($indicators as $indicator)
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$indicator['indicator_title']}}</td>
+                  <td>{{$indicator['definition']}}</td>
+                  <td>{{$indicator['baseline']}}</td>
+                  <td>{{$indicator['target']}}</td>
+                  <td>
+                   
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: {{$indicator['cumulative_progress']}}%;" aria-valuenow="{{$indicator['cumulative_progress']}}" aria-valuemin="0" aria-valuemax="100">
+                        {{$indicator['cumulative_progress']}}%
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{$indicator['data_source']}}</td>
+                  <td>{{$indicator['frequency']}}</td>
+                  <td>{{$indicator['responsible']}}</td>
+                  <td>{{$indicator['reporting']}}</td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                        @if($role == 'Administrator')
+                        <a href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">Edit Indicator</a>
+                        <a href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
+                        @endif
+
+                        @if($role == 'User' || $role == 'Administrator')
+
+                        <a href="/{{$appName}}/dashboard/indicators/responses/add?id={{$indicator['id']}}" class="dropdown-item">Add Response</a>
+                        @endif
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -115,33 +124,33 @@
 @include('partials/footer')
 
 <script>
-    $(document).ready(function(){
-        $('#indicators-table').on('click', '#delete-btn', function(event) {
-            event.preventDefault();
+  $(document).ready(function() {
+    $('#indicators-table').on('click', '#delete-btn', function(event) {
+      event.preventDefault();
 
-            var removeUrl = $(this).attr('href');
+      var removeUrl = $(this).attr('href');
 
-            $('#confirmDeleteModal').modal('show');
-            $('#cancel-btn').click(function() {
-              $('#confirmDeleteModal').modal('hide');
+      $('#confirmDeleteModal').modal('show');
+      $('#cancel-btn').click(function() {
+        $('#confirmDeleteModal').modal('hide');
 
-            })
+      })
 
-            $('#confirmDeleteModal').on('click', '#confirmDeleteBtn', function() {
-              $.post(removeUrl, function(response) {
-                Toastify({
-                  text: response.message || 'Record Deleted Successfully',
-                  duration: 2000,
-                  gravity: 'bottom',
-                  backgroundColor: 'green',
-                }).showToast();
+      $('#confirmDeleteModal').on('click', '#confirmDeleteBtn', function() {
+        $.post(removeUrl, function(response) {
+          Toastify({
+            text: response.message || 'Record Deleted Successfully',
+            duration: 2000,
+            gravity: 'bottom',
+            backgroundColor: 'green',
+          }).showToast();
 
-                setTimeout(function() {
-                  window.location.reload();
+          setTimeout(function() {
+            window.location.reload();
 
-                }, 3000)
-              });
-            });
-          })
+          }, 3000)
+        });
+      });
     })
+  })
 </script>
