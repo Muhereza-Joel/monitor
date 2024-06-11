@@ -26,22 +26,16 @@
 
   <section class="section dashboard">
     <div class="row p-2">
-      <div class="card">
-        <div class="card-title">
-          All Indicators
-        </div>
+      <div class="card pt-4">
 
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-striped datatable table-responsive" id="indicators-table">
               <thead>
                 <tr>
-                  <th>SNo.</th>
                   <th>Indicator</th>
                   <th>Definition</th>
-                  <th>Baseline</th>
-                  <th>Target</th>
-                  <th>Progress</th>
+                  <th>Stats</th>
                   <th>Data Source</th>
                   <th>Frequency</th>
                   <th>Responsible</th>
@@ -53,19 +47,24 @@
               <tbody>
                 @foreach($indicators as $indicator)
                 <tr>
-                  <td>{{$loop->iteration}}</td>
-                  <td>{{$indicator['indicator_title']}}</td>
+                  
+                  <td>{{$indicator['indicator_title']}} <span class="badge bg-primary">{{$indicator['response_count']}} responses so far.</span></td>
                   <td>{{$indicator['definition']}}</td>
-                  <td>{{$indicator['baseline']}}</td>
-                  <td>{{$indicator['target']}}</td>
                   <td>
-                   
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" style="width: {{$indicator['cumulative_progress']}}%;" aria-valuenow="{{$indicator['cumulative_progress']}}" aria-valuemin="0" aria-valuemax="100">
-                        {{$indicator['cumulative_progress']}}%
-                      </div>
+
+                    <div>
+                      <strong>Baseline:</strong> {{$indicator['baseline']}}<br>
+
+                      <strong>Target:</strong> {{$indicator['target']}}<br>
+                      <strong>Cumulative Progress. <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width: {{$indicator['cumulative_progress']}}%;" aria-valuenow="{{$indicator['cumulative_progress']}}" aria-valuemin="0" aria-valuemax="100">
+                            {{$indicator['cumulative_progress']}}%
+                          </div>
+                        </div></strong>
+
                     </div>
                   </td>
+                  
                   <td>{{$indicator['data_source']}}</td>
                   <td>{{$indicator['frequency']}}</td>
                   <td>{{$indicator['responsible']}}</td>

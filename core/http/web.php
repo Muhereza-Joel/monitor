@@ -42,6 +42,7 @@ Route::post("/$app_name/dashboard/manage-indicators/", "controller\PageControlle
 Route::post("/$app_name/dashboard/indicators/", "controller\PageController@render_view_indicators");
 Route::post("/$app_name/dashboard/indicators/", "controller\PageController@render_view_indicators");
 Route::post("/$app_name/dashboard/indicators/edit", "controller\PageController@render_edit_indicator");
+Route::post("/$app_name/dashboard/indicators/responses/edit", "controller\PageController@render_edit_response");
 Route::post("/$app_name/dashboard/indicators/responses/add", "controller\PageController@render_add_response");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
@@ -52,6 +53,8 @@ Route::post("/$app_name/dashboard/manage-indicators/create/", "controller\Indica
 Route::post("/$app_name/dashboard/manage-indicators/update/", "controller\IndicatorController@update_indicator");
 Route::post("/$app_name/dashboard/manage-indicators/delete/", "controller\IndicatorController@delete_indicator");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/create/", "controller\IndicatorController@create_response");
+Route::post("/$app_name/dashboard/manage-indicators/resposes/response/edit/", "controller\IndicatorController@edit_response");
+Route::post("/$app_name/dashboard/manage-indicators/resposes/delete", "controller\IndicatorController@delete_response");
 
 //Routes for mail controller
 Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@request_otp");

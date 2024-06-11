@@ -23,7 +23,9 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="{{$userDetails['image_url']}}" alt="Profile" class="rounded-circle" width="350px">
+            <?php $imageUrl = isset($userDetails['image_url']) ? $userDetails['image_url'] : "/{$appName}/assets/img/avatar.png"; ?>
+            <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle" width="350px" height="350px">
+
 
           </div>
         </div>

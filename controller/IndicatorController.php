@@ -32,4 +32,14 @@ class IndicatorController
     {
         $this->model->create_response();
     }
+
+    public function edit_response()
+    {
+        $this->model->edit_response();
+    }
+
+    public function delete_response($id)
+    {
+        $this->model->delete_response($id);
+    }
 }

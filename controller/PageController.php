@@ -93,6 +93,29 @@ class PageController
         echo ($html);
     }
 
+    public function render_edit_response($id)
+    {
+        $result = $this->model->get_response($id);
+        $row = $result['response'];
+        $indicator_id = $row['indicator_id'];
+        $last_current_state = $this->model->get_last_response_current_state($indicator_id);
+
+        $html = $this->blade_view->render('editResponse', [
+            'pageTitle' => " $this->app_name - edit response",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'response' => $result['response'],
+            'lastCurrentState' => $last_current_state['response'],
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_view_indicators()
     {
         $indicators = $this->model->get_all_indicators();
@@ -115,6 +138,7 @@ class PageController
     public function render_add_response($id)
     {
         $indicator = $this->model->get_indicator($id);
+        $last_current_state = $this->model->get_last_response_current_state($id);
 
         $html = $this->blade_view->render('addResponse', [
             'pageTitle' => " $this->app_name - addResponse",
@@ -126,6 +150,7 @@ class PageController
             'avator' => Session::get('avator'),
             'indicatorId' => $id,
             'indicator' => $indicator['response'],
+            'lastCurrentState' => $last_current_state['response'],
 
         ]);
 

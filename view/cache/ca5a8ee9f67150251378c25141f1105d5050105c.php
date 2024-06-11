@@ -102,6 +102,10 @@
                             <li><strong>Responsible:</strong> Identify who is responsible for measuring the indicator.</li>
                             <li><strong>Reporting:</strong> Mention where the results will be reported.</li>
                         </ul>
+
+                        <div class="alert alert-warning">
+                            When you update the target, all progress values for responses attached to this indicator will be calculated automatically using the new target value.
+                        </div>
                     </div>
                 </div>
             </div>

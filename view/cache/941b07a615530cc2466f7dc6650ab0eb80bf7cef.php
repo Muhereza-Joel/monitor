@@ -26,22 +26,16 @@
 
   <section class="section dashboard">
     <div class="row p-2">
-      <div class="card">
-        <div class="card-title">
-          All Indicators
-        </div>
+      <div class="card pt-4">
 
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-striped datatable table-responsive" id="indicators-table">
               <thead>
                 <tr>
-                  <th>SNo.</th>
                   <th>Indicator</th>
                   <th>Definition</th>
-                  <th>Baseline</th>
-                  <th>Target</th>
-                  <th>Progress</th>
+                  <th>Stats</th>
                   <th>Data Source</th>
                   <th>Frequency</th>
                   <th>Responsible</th>
@@ -53,19 +47,24 @@
               <tbody>
                 <?php $__currentLoopData = $indicators; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indicator): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                  <td><?php echo e($loop->iteration); ?></td>
-                  <td><?php echo e($indicator['indicator_title']); ?></td>
+                  
+                  <td><?php echo e($indicator['indicator_title']); ?> <span class="badge bg-primary"><?php echo e($indicator['response_count']); ?> responses so far.</span></td>
                   <td><?php echo e($indicator['definition']); ?></td>
-                  <td><?php echo e($indicator['baseline']); ?></td>
-                  <td><?php echo e($indicator['target']); ?></td>
                   <td>
-                   
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" style="width: <?php echo e($indicator['cumulative_progress']); ?>%;" aria-valuenow="<?php echo e($indicator['cumulative_progress']); ?>" aria-valuemin="0" aria-valuemax="100">
-                        <?php echo e($indicator['cumulative_progress']); ?>%
-                      </div>
+
+                    <div>
+                      <strong>Baseline:</strong> <?php echo e($indicator['baseline']); ?><br>
+
+                      <strong>Target:</strong> <?php echo e($indicator['target']); ?><br>
+                      <strong>Cumulative Progress. <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width: <?php echo e($indicator['cumulative_progress']); ?>%;" aria-valuenow="<?php echo e($indicator['cumulative_progress']); ?>" aria-valuemin="0" aria-valuemax="100">
+                            <?php echo e($indicator['cumulative_progress']); ?>%
+                          </div>
+                        </div></strong>
+
                     </div>
                   </td>
+                  
                   <td><?php echo e($indicator['data_source']); ?></td>
                   <td><?php echo e($indicator['frequency']); ?></td>
                   <td><?php echo e($indicator['responsible']); ?></td>

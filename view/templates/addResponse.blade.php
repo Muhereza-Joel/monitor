@@ -23,11 +23,21 @@
                     <div class="card-title">Add Response</div>
                     <div class="card-body">
                         <form action="" class="needs-validation" novalidate id="add-response-form">
+                            
+                            
+                            @if(isset($lastCurrentState['last_current_state']) && $lastCurrentState['last_current_state'] == $indicator['target'])
+                            <div class="alert alert-warning">The target for this indicator was achieved..</div>
+                            @else
                             <div class="form-group my-2">
                                 <label for="">Baseline In Percentage</label>
                                 <input type="hidden" name="indicator-id" value="{{$indicator['id']}}">
                                 <input name="baseline" required readonly type="number" value="{{$indicator['baseline']}}" class="form-control">
                             </div>
+                            <div class="form-group my-2 alert alert-info">
+                                <label for="">Previous State Entered</label>
+                                <input type="text" class="form-control" readonly value="{{ isset($lastCurrentState['last_current_state']) ? $lastCurrentState['last_current_state'] : 'No response added yet' }}">
+                            </div>
+                        
                             <div class="form-group my-2">
                                 <label for="">Enter current state</label>
                                 <input required id="current" name="current" type="number" class="form-control">
@@ -60,6 +70,7 @@
                             <div class="text-start">
                                 <button id="create-response-btn" type="submit" class="btn btn-sm btn-primary">Submit</button>
                             </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -110,11 +121,25 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{ 'font': [] }, { 'size': [] }],
+                    [{
+                        'font': []
+                    }, {
+                        'size': []
+                    }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
                     ['link'],
                 ]
             }
@@ -125,7 +150,7 @@
 
             if (this.checkValidity() === true) {
                 var lessons = quill.root.innerHTML.trim();
-                
+
                 if (lessons === "" || lessons === "<p><br></p>") {
                     $('#editor-feedback').show();
                     Toastify({

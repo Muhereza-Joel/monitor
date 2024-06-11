@@ -34,7 +34,8 @@
     <div class="row">
       <div class="col-xl-4">
         <div class="text-center">
-          <img src="<?php echo e($avator); ?>" alt="Profile" class="rounded-circle" class="rounded-circle" alt="Profile" width="300px" height="300px" style="border: 3px solid #999; object-fit: cover;">
+        <img src="<?php echo e($avator); ?>" alt="Profile" class="rounded-circle" width="300px" height="300px" style="border: 3px solid #999; object-fit: cover;" onerror="this.onerror=null;this.src='/<?php echo e($appName); ?>/assets/img/avatar.png';">
+
           <h2><?php echo e($userDetails['name']); ?></h2>
           <span class="text-secondary"><strong>Your Role : </strong> <?php echo e($role); ?></span>
           <div>
