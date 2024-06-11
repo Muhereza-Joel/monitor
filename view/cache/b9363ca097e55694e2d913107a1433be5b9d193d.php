@@ -1,9 +1,7 @@
 <?php echo $__env->make('partials/header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <?php echo $__env->make('partials/topBar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
-
 <?php echo $__env->make('partials/leftPane', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
-
 
 <main id="main" class="main">
 
@@ -32,12 +30,12 @@
                             </div>
                             <div class="form-group my-2">
                                 <label for="">Enter current state</label>
-                                <input  required id="current" name="current" required type="number" max="20" class="form-control">
+                                <input required id="current" name="current" type="number" class="form-control">
                                 <div class="invalid-feedback">This value is required</div>
                             </div>
                             <div class="form-group my-2">
                                 <label for="">Current Progress</label>
-                                <input required id="progress" name="progress" required readonly type="number" class="form-control">
+                                <input required id="progress" name="progress" readonly type="number" class="form-control">
                                 <div class="invalid-feedback">This value is required</div>
                             </div>
 
@@ -53,9 +51,10 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="form-group my-2">
+                            <div class="form-group">
                                 <label for="">Lessons learnt</label>
-                                <textarea name="lessons" rows="20" id="" class="form-control" placeholder="Enter lessons learnt here"></textarea>
+                                <div id="editor-container" style="height: 300px;"></div>
+                                <div class="invalid-feedback d-block text-dark fw-bold" id="editor-feedback" style="display: none;">Please note that lessons are required to add this response</div>
                             </div>
                             <br>
                             <div class="text-start">
@@ -64,7 +63,6 @@
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -76,11 +74,28 @@
 
 <script>
     $(document).ready(function() {
+        var baseline = parseFloat($('input[name="baseline"]').val());
+        var target = parseFloat($('input[name="target"]').val());
+
         $('#current').on('input', function() {
             var current = parseFloat($(this).val());
-            var target = parseFloat($('input[name="target"]').val());
 
-            if (!isNaN(current) && !isNaN(target) && target != 0) {
+            if (isNaN(current) || current < baseline || current > target) {
+                $('#current').addClass('is-invalid');
+                $('#progress').val('');
+                $('#progress-bar').css('width', '0%');
+                $('#progress-bar').attr('aria-valuenow', 0);
+                $('#progress-bar').text('0%');
+
+                Toastify({
+                    text: "Current state must be between " + baseline + " and " + target,
+                    duration: 3000,
+                    gravity: 'bottom', // Position the toast at the top
+                    position: 'left', // Center the toast horizontally
+                    backgroundColor: '#ff8282',
+                }).showToast();
+            } else {
+                $('#current').removeClass('is-invalid');
                 var progress = (current / target) * 100;
                 $('#progress').val(progress.toFixed(1));
 
@@ -88,11 +103,19 @@
                 $('#progress-bar').css('width', progress.toFixed(1) + '%');
                 $('#progress-bar').attr('aria-valuenow', progress.toFixed(1));
                 $('#progress-bar').text(progress.toFixed(1) + '%');
-            } else {
-                $('#progress').val('');
-                $('#progress-bar').css('width', '0%');
-                $('#progress-bar').attr('aria-valuenow', 0);
-                $('#progress-bar').text('0%');
+            }
+        });
+
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'font': [] }, { 'size': [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'image']
+                ]
             }
         });
 
@@ -100,33 +123,45 @@
             event.preventDefault();
 
             if (this.checkValidity() === true) {
+                var lessons = quill.root.innerHTML.trim();
+                
+                if (lessons === "" || lessons === "<p><br></p>") {
+                    $('#editor-feedback').show();
+                    Toastify({
+                        text: "Lessons learnt cannot be empty.",
+                        duration: 3000,
+                        gravity: 'bottom', // Position the toast at the top
+                        position: 'left', // Center the toast horizontally
+                        backgroundColor: '#ff8282',
+                    }).showToast();
+                } else {
+                    $('#editor-feedback').hide();
+                    let formData = $(this).serialize();
 
-                let formData = $(this).serialize();
+                    // Add the Quill editor content to the form data
+                    formData += '&lessons=' + encodeURIComponent(lessons);
 
-                $.ajax({
-                    method: 'POST',
-                    url: "/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/create/",
-                    data: formData,
-                    success: function(response) {
+                    $.ajax({
+                        method: 'POST',
+                        url: "/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/create/",
+                        data: formData,
+                        success: function(response) {
+                            Toastify({
+                                text: response.message || "Record Saved Successfully...",
+                                duration: 3000,
+                                gravity: 'bottom', // Position the toast at the top
+                                position: 'left', // Center the toast horizontally
+                                backgroundColor: 'green',
+                            }).showToast();
 
-                        Toastify({
-                            text: response.message || "Record Saved Successfully...",
-                            duration: 3000,
-                            gravity: 'bottom',
-                            position: 'left',
-                            backgroundColor: 'green',
-                        }).showToast();
-
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 3000)
-
-
-                    },
-                    error: function() {}
-                })
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 3000);
+                        },
+                        error: function() {}
+                    });
+                }
             }
-        })
-
+        });
     });
 </script>
