@@ -77,18 +77,19 @@ CREATE TABLE IF NOT EXISTS `indicators` (
 -- Table structure for table `responses`
 --
 
-DROP TABLE IF EXISTS `responses`;
 CREATE TABLE IF NOT EXISTS `responses` (
   `id` int(250) NOT NULL AUTO_INCREMENT,
   `indicator_id` int(250) NOT NULL,
   `current` int(20) NOT NULL,
   `progress` int(20) NOT NULL,
+  `notes` text NOT NULL,
   `lessons` text NOT NULL,
+  `recommendations` text NOT NULL,
   `user_id` int(250) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `indicator_id` (`indicator_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
