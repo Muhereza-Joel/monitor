@@ -89,12 +89,19 @@
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
                         <?php if($role == 'Administrator'): ?>
                         <a href="/<?php echo e($appName); ?>/dashboard/indicators/edit?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">Edit Indicator</a>
-                        <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/delete/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">View Indicator Responses</a>
                         <?php endif; ?>
 
+                        <?php if($role == 'Viewer'): ?>
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">View Indicator Responses</a>
+                        <?php endif; ?>
+                        
                         <?php if($role == 'User' || $role == 'Administrator'): ?>
-
                         <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/add?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">Add Response</a>
+                        <?php endif; ?>
+                        
+                        <?php if($role == 'Administrator'): ?>
+                        <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/delete/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
                         <?php endif; ?>
                       </div>
                     </div>

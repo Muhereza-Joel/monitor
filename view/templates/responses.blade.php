@@ -54,8 +54,7 @@
                           <p><br>'));
                             @endphp
 
-                            @if(!empty($notesContent) && $notesContent !== '
-                          <p><br></p>')
+                            @if(!empty($notesContent) && $notesContent !== '<p><br></p>')
                           <h5 class="text-success">Notes Taken</h5>
                           <p class="text-success">{!! $response['notes'] !!}</p>
                           <hr>
@@ -96,7 +95,9 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                      @if($role == 'Administrator' || $role == 'User')
                       <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                      @endif
                       @if($role == 'Administrator')
                       <a href="/{{$appName}}/dashboard/manage-indicators/resposes/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
                       @endif

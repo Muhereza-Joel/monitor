@@ -87,12 +87,19 @@
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
                         @if($role == 'Administrator')
                         <a href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">Edit Indicator</a>
-                        <a href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
+                        <a href="/{{$appName}}/dashboard/indicators/responses/all?id={{$indicator['id']}}" class="dropdown-item">View Indicator Responses</a>
                         @endif
 
+                        @if($role == 'Viewer')
+                        <a href="/{{$appName}}/dashboard/indicators/responses/all?id={{$indicator['id']}}" class="dropdown-item">View Indicator Responses</a>
+                        @endif
+                        
                         @if($role == 'User' || $role == 'Administrator')
-
                         <a href="/{{$appName}}/dashboard/indicators/responses/add?id={{$indicator['id']}}" class="dropdown-item">Add Response</a>
+                        @endif
+                        
+                        @if($role == 'Administrator')
+                        <a href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Indicator</a>
                         @endif
                       </div>
                     </div>

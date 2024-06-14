@@ -135,7 +135,7 @@
                 }).showToast();
             } else {
                 $('#current').removeClass('is-invalid');
-                var progress = (current / target) * 100;
+                var progress = ((current - baseline) / (target - baseline)) * 100;;
                 $('#progress').val(progress.toFixed(1));
 
                 // Update progress bar

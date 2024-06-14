@@ -14,8 +14,8 @@
 
                 <img src="/{{$appName}}/assets/img/logo2.png" alt="logo" style="width: 150px;">
                 <h4 class="pt-2">Hello, <span class="text-success">{{$username}}</span> take a breath add complete your profile</h4>
-
-
+                <h5>Adding your profile helps us to know you better, you profile information is used to tag responses.</h5>
+                <p>Please note that your the only person who can change your profile, and none of this data will be shared without your consent.</p>
 
               </div>
               <hr class="w-75">

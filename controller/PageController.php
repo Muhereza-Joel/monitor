@@ -178,6 +178,25 @@ class PageController
         echo ($html);
     }
 
+    public function render_indicator_responses($id)
+    {
+        $responses = $this->model->get_indicator_responses($id);
+
+        $html = $this->blade_view->render('responses', [
+            'pageTitle' => " $this->app_name - all indicator responses",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'responses' => $responses['response']
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_user_responses()
     {
         $responses = $this->model->get_all_user_responses();
@@ -227,6 +246,21 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'userDetails' => $result['response'],
+        ]);
+
+        echo ($html);
+    }
+    public function render_create_user()
+    {
+        
+        $html = $this->blade_view->render('createUser', [
+            'pageTitle' => "$this->app_name - create user",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            
         ]);
 
         echo ($html);

@@ -37,6 +37,7 @@ Route::post("/$app_name/auth/accounts/reset-password/", "controller\AuthControll
 Route::post("/$app_name/page-not-found/", "controller\PageController@render_404");
 Route::post("/$app_name/dashboard/", "controller\PageController@render_dashboard");
 Route::post("/$app_name/dashboard/users/", "controller\PageController@render_users");
+Route::post("/$app_name/dashboard/users/add-new/", "controller\PageController@render_create_user");
 Route::post("/$app_name/dashboard/users/view", "controller\PageController@render_user_details");
 Route::post("/$app_name/dashboard/manage-indicators/", "controller\PageController@render_manage_indicator");
 Route::post("/$app_name/dashboard/indicators/", "controller\PageController@render_view_indicators");
@@ -44,6 +45,7 @@ Route::post("/$app_name/dashboard/indicators/", "controller\PageController@rende
 Route::post("/$app_name/dashboard/indicators/edit", "controller\PageController@render_edit_indicator");
 Route::post("/$app_name/dashboard/indicators/responses/edit", "controller\PageController@render_edit_response");
 Route::post("/$app_name/dashboard/indicators/responses/add", "controller\PageController@render_add_response");
+Route::post("/$app_name/dashboard/indicators/responses/all", "controller\PageController@render_indicator_responses");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
 

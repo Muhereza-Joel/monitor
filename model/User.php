@@ -167,6 +167,7 @@ class User
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
+        $role = $request->input('role', 'User');
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -181,16 +182,26 @@ class User
         }
 
         if (!$user) {
-            $query = "INSERT INTO app_users(username, email, password) VALUES(?, ?, ?)";
+            $query = "INSERT INTO app_users(username, email, password, role) VALUES(?, ?, ?, ?)";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("sss", $username, $email, $hashed_password);
+            $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);
             $stmt->execute();
 
-            $response = ['message' => 'Account created, you can now login'];
-            $httpStatus = 200;
+            if($stmt->affected_rows > 0){
+                $response = ['message' => 'Account created successfully.'];
+                $httpStatus = 200;
+    
+                Request::send_response($httpStatus, $response);
+                
+            } else{
+                $response = ['error' => $stmt->error];
+                $httpStatus = 500;
+    
+                Request::send_response($httpStatus, $response);
 
-            Request::send_response($httpStatus, $response);
+            }
+
         }
     }
 

@@ -25,8 +25,8 @@
       <h6 class="badge bg-primary">You are on the
         @if($role == 'Administrator')
         Administrator
-        @elseif($role == 'Staff')
-        Staff
+        @elseif($role == 'Viewer')
+        Viewer
         @else
         User
         @endif

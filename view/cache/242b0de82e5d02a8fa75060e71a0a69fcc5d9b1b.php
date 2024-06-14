@@ -60,10 +60,6 @@
                   <div class="col-lg-9 col-md-8 text-dark"><?php echo e($userDetails['name']); ?></div>
                 </div>
                 <div class="row my-4">
-                  <div class="col-lg-3 col-md-4 label fw-bold text-dark">NIN Number</div>
-                  <div class="col-lg-9 col-md-8 text-dark"><?php echo e($userDetails['nin']); ?></div>
-                </div>
-                <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Date of Birth</div>
                   <div class="col-lg-9 col-md-8 text-dark"><?php echo e($userDetails['dob']); ?></div>
                 </div>

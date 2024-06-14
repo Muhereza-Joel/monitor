@@ -54,8 +54,7 @@
                           <p><br>'));
                              ?>
 
-                            <?php if(!empty($notesContent) && $notesContent !== '
-                          <p><br></p>'): ?>
+                            <?php if(!empty($notesContent) && $notesContent !== '<p><br></p>'): ?>
                           <h5 class="text-success">Notes Taken</h5>
                           <p class="text-success"><?php echo $response['notes']; ?></p>
                           <hr>
@@ -96,7 +95,9 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                      <?php if($role == 'Administrator' || $role == 'User'): ?>
                       <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                      <?php endif; ?>
                       <?php if($role == 'Administrator'): ?>
                       <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
                       <?php endif; ?>
