@@ -167,9 +167,9 @@ class Model
 
             if ($stmt->affected_rows > 0) {
                 // Calculate progress for responses
-                $progressQuery = "UPDATE responses SET progress = (current / ?) * 100 WHERE indicator_id = ?";
+                $progressQuery = "UPDATE responses SET progress = ((current - ?) / (? - ?)) * 100 WHERE indicator_id = ?";
                 $progressStmt = $this->database->prepare($progressQuery);
-                $progressStmt->bind_param('ii', $target, $indicator_id);
+                $progressStmt->bind_param('iiii', $baseline, $target, $baseline, $indicator_id);
                 $progressStmt->execute();
 
                 // Commit the transaction
@@ -180,7 +180,7 @@ class Model
 
                 Request::send_response($httpStatus, $response);
             } elseif ($stmt->affected_rows == 0) {
-                $response = ['message' => 'You did not change anything..'];
+                $response = ['message' => 'You did not change anything.'];
                 $httpStatus = 200;
 
                 Request::send_response($httpStatus, $response);
@@ -197,6 +197,7 @@ class Model
             Request::send_response($httpStatus, $response);
         }
     }
+
 
 
     public function delete_indicator($id)
