@@ -25,6 +25,6 @@ M & E Monitor is a robust tool designed for efficient monitoring and evaluation.
 **Full Changelog**: https://github.com/Muhereza-Joel/monitor/commits/beta
 
 ## Download The Source Files.
-[Download M & E Monitor (Beta)](https://github.com/Muhereza-Joel/monitor/archive/refs/tags/v1.1.2.zip)
+[Download M & E Monitor v1.1.2](https://github.com/Muhereza-Joel/monitor/archive/refs/tags/v1.1.2.zip)
 
-## Don' t forget to add a redirect to your domain like https://example.com/monitor where monitor is the name of the folder where the project is. Please do not change the folder name.
+
