@@ -16,8 +16,7 @@
                                             <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
                                         </a>
                                         <h5 class="card-title pb-0 fs-4"><?php echo e($appNameFull); ?> Account Recovery</h5>
-                                        <p class="mt-3">We're sorry that you've lost access to your account. Please enter your username or email address on the right. We will look up your account to proceed to account recovery and send you a one-time password to reset your account.</p>
-                                        <p>If you didn't receive the email, check your spam folder or contact our support team for assistance.</p>
+                                        <p class="mt-3">We're sorry that you've lost access to your account. Please enter your username or email address on the right. We will look up your account, if we find it you will proceed to account recovery and we shall send you a one-time password that you will use to reset your account.</p>
                                     </div>
                                     <!-- Right Column -->
                                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
@@ -62,7 +61,7 @@
                 e.preventDefault();
 
                 Toastify({
-                    text: 'Looking Up Your Account Please Wait...',
+                    text: "Looking Up Your Account Please Don't Refresh This Page....",
                     duration: 6000, // Adjust duration as needed
                     gravity: 'bottom',
                     position: 'left',
