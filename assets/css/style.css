@@ -378,7 +378,7 @@ h6 {
 .logo span {
   font-size: 26px;
   font-weight: 700;
-  color: #012970;
+  color: #f7f8f9;
   font-family: "Nunito", sans-serif;
 }
 
@@ -387,7 +387,7 @@ h6 {
   z-index: 997;
   height: 60px;
   /* box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1); */
-  background-color: #dcf0e4;
+  background-color: #05333e;
   padding-left: 20px;
   border-bottom: 1px solid #999;
   /* Toggle Sidebar Button */
@@ -398,7 +398,7 @@ h6 {
   font-size: 32px;
   padding-left: 10px;
   cursor: pointer;
-  color: #012970;
+  color: #fcfdff;
 }
 
 .header .search-bar {
@@ -612,14 +612,14 @@ h6 {
   width: 300px;
   z-index: 996;
   transition: all 0.3s;
-  padding: 20px;
+  padding: 30px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   /* box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1); */
   /* background-color: #242b24; */
   /* background-color: #dcf0e4; */
-  background-color: #075E54;
+  /* background-color: #075E54; */
 }
 
 @media (max-width: 1199px) {
@@ -705,12 +705,13 @@ h6 {
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #ffffff;
-  background: #05333e;
+  color: #222;
+  background: #d9e4de;
+  /* background: #05333e; */
 }
 
 .sidebar-nav .nav-link.collapsed i {
-  color: #f4f5f8;
+  color: #222;
 }
 
 .sidebar-nav .nav-link:hover {

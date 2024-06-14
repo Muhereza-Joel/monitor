@@ -46,9 +46,33 @@
                       </h2>
                       <div id="collapse{{$response['id']}}" class="accordion-collapse collapse" aria-labelledby="heading{{$response['id']}}" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                          @php
+                          $notesContent = trim(strip_tags($response['notes'], '<p><br>'));
+                            $lessonsContent = trim(strip_tags($response['lessons'], '
+                          <p><br>'));
+                            $recommendationsContent = trim(strip_tags($response['recommendations'], '
+                          <p><br>'));
+                            @endphp
+
+                            @if(!empty($notesContent) && $notesContent !== '
+                          <p><br></p>')
+                          <h5 class="text-success">Notes Taken</h5>
+                          <p class="text-success">{!! $response['notes'] !!}</p>
+                          <hr>
+                          @endif
+
+                          @if(!empty($lessonsContent) && $lessonsContent !== '<p><br></p>')
                           <h5 class="text-success">Lessons learnt</h5>
-                          <p class="text-success">{!!$response['lessons']!!}</p>
+                          <p class="text-success">{!! $response['lessons'] !!}</p>
+                          <hr>
+                          @endif
+
+                          @if(!empty($recommendationsContent) && $recommendationsContent !== '<p><br></p>')
+                          <h5 class="text-success">Recommendations</h5>
+                          <p class="text-success">{!! $response['recommendations'] !!}</p>
+                          @endif
                         </div>
+
                       </div>
                     </div>
                   </div>

@@ -99,6 +99,7 @@ class PageController
         $row = $result['response'];
         $indicator_id = $row['indicator_id'];
         $last_current_state = $this->model->get_last_response_current_state($indicator_id);
+        $indicator = $this->model->get_indicator($indicator_id);
 
         $html = $this->blade_view->render('editResponse', [
             'pageTitle' => " $this->app_name - edit response",
@@ -110,6 +111,7 @@ class PageController
             'avator' => Session::get('avator'),
             'response' => $result['response'],
             'lastCurrentState' => $last_current_state['response'],
+            'indicator' => $indicator['response'],
 
         ]);
 

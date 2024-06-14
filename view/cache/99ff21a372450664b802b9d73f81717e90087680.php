@@ -46,9 +46,33 @@
                       </h2>
                       <div id="collapse<?php echo e($response['id']); ?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo e($response['id']); ?>" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                          <?php 
+                          $notesContent = trim(strip_tags($response['notes'], '<p><br>'));
+                            $lessonsContent = trim(strip_tags($response['lessons'], '
+                          <p><br>'));
+                            $recommendationsContent = trim(strip_tags($response['recommendations'], '
+                          <p><br>'));
+                             ?>
+
+                            <?php if(!empty($notesContent) && $notesContent !== '
+                          <p><br></p>'): ?>
+                          <h5 class="text-success">Notes Taken</h5>
+                          <p class="text-success"><?php echo $response['notes']; ?></p>
+                          <hr>
+                          <?php endif; ?>
+
+                          <?php if(!empty($lessonsContent) && $lessonsContent !== '<p><br></p>'): ?>
                           <h5 class="text-success">Lessons learnt</h5>
                           <p class="text-success"><?php echo $response['lessons']; ?></p>
+                          <hr>
+                          <?php endif; ?>
+
+                          <?php if(!empty($recommendationsContent) && $recommendationsContent !== '<p><br></p>'): ?>
+                          <h5 class="text-success">Recommendations</h5>
+                          <p class="text-success"><?php echo $response['recommendations']; ?></p>
+                          <?php endif; ?>
                         </div>
+
                       </div>
                     </div>
                   </div>

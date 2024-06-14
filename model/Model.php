@@ -313,17 +313,19 @@ class Model
     {
         $request = Request::capture();
 
-        $indicator_id = $request->input('indicator-id');
+        $indicator_id = $request->input('indicator_id');
         $current = $request->input('current');
         $progress = $request->input('progress');
+        $notes = $request->input('notes');
         $lessons = $request->input('lessons');
+        $recommendations = $request->input('recommendations');
         $user_id = Session::get('user_id');
 
 
-        $query = "INSERT INTO responses(indicator_id, current, progress, lessons, user_id) VALUES(?, ?, ?, ?, ?)";
+        $query = "INSERT INTO responses(indicator_id, current, progress, notes, lessons, recommendations, user_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('iiisi', $indicator_id, $current, $progress, $lessons, $user_id);
+        $stmt->bind_param('iiisssi', $indicator_id, $current, $progress, $notes, $lessons,$recommendations, $user_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -346,13 +348,15 @@ class Model
         $response_id = $request->input('response-id');
         $current = $request->input('current');
         $progress = $request->input('progress');
+        $notes = $request->input('notes');
         $lessons = $request->input('lessons');
+        $recommendations = $request->input('recommendations');
 
 
-        $query = "UPDATE responses SET current = ?, progress = ?, lessons = ? WHERE id = ?";
+        $query = "UPDATE responses SET current = ?, progress = ?, notes = ?, lessons = ?, recommendations = ? WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('iisi', $current, $progress, $lessons, $response_id);
+        $stmt->bind_param('iisssi', $current, $progress, $notes, $lessons, $recommendations, $response_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

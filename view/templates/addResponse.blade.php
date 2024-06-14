@@ -20,24 +20,28 @@
         <div class="row">
             <div class="col-sm-10">
                 <div class="card p-2">
-                    <div class="card-title">Add Response</div>
+                    
                     <div class="card-body">
                         <form action="" class="needs-validation" novalidate id="add-response-form">
-                            
                             
                             @if(isset($lastCurrentState['last_current_state']) && $lastCurrentState['last_current_state'] == $indicator['target'])
                             <div class="alert alert-warning">The target for this indicator was achieved..</div>
                             @else
+                            <div class="alert alert-secondary">
+                                <h4>You are adding a response to</h4>
+                                <i class="fw-bold">>>>> {{$indicator['indicator_title']}} indicator <<<< </i>
+                            </div>
                             <div class="form-group my-2">
-                                <label for="">Baseline In Percentage</label>
+                                <label for="">Indicator Baseline</label>
                                 <input type="hidden" name="indicator-id" value="{{$indicator['id']}}">
+                                <input type="hidden" name="last_current_state" value="{{ isset($lastCurrentState['last_current_state']) ? $lastCurrentState['last_current_state'] : '' }}">
                                 <input name="baseline" required readonly type="number" value="{{$indicator['baseline']}}" class="form-control">
                             </div>
                             <div class="form-group my-2 alert alert-info">
                                 <label for="">Previous State Entered</label>
                                 <input type="text" class="form-control" readonly value="{{ isset($lastCurrentState['last_current_state']) ? $lastCurrentState['last_current_state'] : 'No response added yet' }}">
                             </div>
-                        
+
                             <div class="form-group my-2">
                                 <label for="">Enter current state</label>
                                 <input required id="current" name="current" type="number" class="form-control">
@@ -50,7 +54,7 @@
                             </div>
 
                             <div class="form-group my-2">
-                                <label for="">Target In Percentage</label>
+                                <label for="">Target For Indicator</label>
                                 <input name="target" required readonly type="number" value="{{$indicator['target']}}" class="form-control">
                             </div>
 
@@ -62,9 +66,25 @@
                             </div>
                             <br>
                             <div class="form-group">
-                                <label for="">Lessons learnt</label>
+                                <label for="">Notes</label><br>
+                                <small class="text-success">Please use the editor to add notes to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
+                                <hr>
+                                <div id="notes-editor-container" style="height: 300px;"></div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="">Lessons learnt</label><br>
+                                <small class="text-success">Please use the editor to add lessons learnt to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
+                                <hr>
                                 <div id="editor-container" style="height: 300px;"></div>
                                 <div class="invalid-feedback d-block text-dark fw-bold" id="editor-feedback" style="display: none;">Please note that lessons are required to add this response</div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="">Recommendations</label><br>
+                                <small class="text-success">Please use the editor to add recommendations to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
+                                <hr>
+                                <div id="recommendations-editor-container" style="height: 300px;"></div>
                             </div>
                             <br>
                             <div class="text-start">
@@ -87,11 +107,19 @@
     $(document).ready(function() {
         var baseline = parseFloat($('input[name="baseline"]').val());
         var target = parseFloat($('input[name="target"]').val());
+        var lastCurrentState = parseFloat($('input[name="last_current_state"]').val()) || baseline;
+
+        // Initial progress calculation
+        var initialProgress = (lastCurrentState / target) * 100;
+        $('#progress').val(initialProgress.toFixed(1));
+        $('#progress-bar').css('width', initialProgress.toFixed(1) + '%');
+        $('#progress-bar').attr('aria-valuenow', initialProgress.toFixed(1));
+        $('#progress-bar').text(initialProgress.toFixed(1) + '%');
 
         $('#current').on('input', function() {
             var current = parseFloat($(this).val());
 
-            if (isNaN(current) || current < baseline || current > target) {
+            if (isNaN(current) || current < lastCurrentState || current > target) {
                 $('#current').addClass('is-invalid');
                 $('#progress').val('');
                 $('#progress-bar').css('width', '0%');
@@ -99,10 +127,10 @@
                 $('#progress-bar').text('0%');
 
                 Toastify({
-                    text: "Current state must be between " + baseline + " and " + target,
+                    text: "Current state must be between " + lastCurrentState + " and " + target,
                     duration: 3000,
-                    gravity: 'bottom', // Position the toast at the top
-                    position: 'left', // Center the toast horizontally
+                    gravity: 'bottom', // Position the toast at the bottom
+                    position: 'left', // Align toast to the left
                     backgroundColor: '#ff8282',
                 }).showToast();
             } else {
@@ -121,25 +149,39 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{
-                        'font': []
-                    }, {
-                        'size': []
-                    }],
+                    [{'font': []}, {'size': []}],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    [{
-                        'color': []
-                    }, {
-                        'background': []
-                    }],
-                    [{
-                        'align': []
-                    }],
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'color': []}, {'background': []}],
+                    [{'align': []}],
+                    ['link'],
+                ]
+            }
+        });
+
+        var notesQuill = new Quill('#notes-editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{'font': []}, {'size': []}],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'color': []}, {'background': []}],
+                    [{'align': []}],
+                    ['link'],
+                ]
+            }
+        });
+
+        var recommendationsQuill = new Quill('#recommendations-editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{'font': []}, {'size': []}],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'color': []}, {'background': []}],
+                    [{'align': []}],
                     ['link'],
                 ]
             }
@@ -150,43 +192,74 @@
 
             if (this.checkValidity() === true) {
                 var lessons = quill.root.innerHTML.trim();
+                var notes = notesQuill.root.innerHTML.trim();
+                var recommendations = recommendationsQuill.root.innerHTML.trim();
 
                 if (lessons === "" || lessons === "<p><br></p>") {
                     $('#editor-feedback').show();
                     Toastify({
                         text: "Lessons learnt cannot be empty.",
                         duration: 3000,
-                        gravity: 'bottom', // Position the toast at the top
-                        position: 'left', // Center the toast horizontally
+                        gravity: 'bottom', // Position the toast at the bottom
+                        position: 'left', // Align toast to the left
                         backgroundColor: '#ff8282',
                     }).showToast();
                 } else {
                     $('#editor-feedback').hide();
-                    let formData = $(this).serialize();
 
-                    // Add the Quill editor content to the form data
-                    formData += '&lessons=' + encodeURIComponent(lessons);
+                    var current = parseFloat($('#current').val());
+                    var progress = (current / target) * 100;
+                    
+                    // Validate current state before submission
+                    if (isNaN(current) || current < lastCurrentState || current > target) {
+                        Toastify({
+                            text: "Current state must be between " + lastCurrentState + " and " + target,
+                            duration: 3000,
+                            gravity: 'bottom', // Position the toast at the bottom
+                            position: 'left', // Align toast to the left
+                            backgroundColor: '#ff8282',
+                        }).showToast();
+                        return;
+                    }
 
                     $.ajax({
+                        url: '/{{$appName}}/dashboard/manage-indicators/resposes/create/',
                         method: 'POST',
-                        url: "/{{$appName}}/dashboard/manage-indicators/resposes/create/",
-                        data: formData,
+                        data: {
+                            indicator_id: $('input[name="indicator-id"]').val(),
+                            baseline: baseline,
+                            current: current,
+                            target: target,
+                            progress: progress.toFixed(1),
+                            lessons: lessons,
+                            notes: notes,
+                            recommendations: recommendations,
+                        },
                         success: function(response) {
                             Toastify({
-                                text: response.message || "Record Saved Successfully...",
+                                text: "Response added successfully!",
                                 duration: 3000,
-                                gravity: 'bottom', // Position the toast at the top
-                                position: 'left', // Center the toast horizontally
-                                backgroundColor: 'green',
+                                gravity: 'bottom', // Position the toast at the bottom
+                                position: 'left', // Align toast to the left
+                                backgroundColor: '#28a745',
                             }).showToast();
-
                             setTimeout(function() {
                                 window.location.reload();
-                            }, 3000);
+                            }, 1500);
                         },
-                        error: function() {}
+                        error: function(response) {
+                            Toastify({
+                                text: "An error occurred. Please try again.",
+                                duration: 3000,
+                                gravity: 'bottom', // Position the toast at the bottom
+                                position: 'left', // Align toast to the left
+                                backgroundColor: '#ff8282',
+                            }).showToast();
+                        }
                     });
                 }
+            } else {
+                this.classList.add('was-validated');
             }
         });
     });
