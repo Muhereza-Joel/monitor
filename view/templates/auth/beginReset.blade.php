@@ -17,7 +17,6 @@
                                         </a>
                                         <h5 class="card-title pb-0 fs-4">{{$appNameFull}} Account Recovery</h5>
                                         <p class="mt-3">We're sorry that you've lost access to your account. Please enter your username or email address on the right. We will look up your account to proceed to account recovery and send you a one-time password to reset your account.</p>
-                                        <p>If you didn't receive the email, check your spam folder or contact our support team for assistance.</p>
                                     </div>
                                     <!-- Right Column -->
                                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
