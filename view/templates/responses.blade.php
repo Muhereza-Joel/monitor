@@ -35,7 +35,7 @@
               @foreach($responses as $response)
               <tr>
 
-                <td>{{$response['name']}}</td>
+                <td>{{$response['name']}} <br> <span class="badge bg-success">{{$response['response_tag_label']}}</span></td>
                 <td scope="row">
                   <div class="accordion w-100" id="accordionExample">
                     <div class="accordion-item">

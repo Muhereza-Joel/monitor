@@ -47,8 +47,20 @@
               <tbody>
                 <?php $__currentLoopData = $indicators; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indicator): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                  
-                  <td><?php echo e($indicator['indicator_title']); ?> <span class="badge bg-primary"><?php echo e($indicator['response_count']); ?> responses so far.</span></td>
+
+                  <td><?php echo e($indicator['indicator_title']); ?>
+
+
+                    <?php if($indicator['response_count'] > 0): ?>
+                    <span class="badge bg-primary">
+                      <?php echo e($indicator['response_count']); ?> <?php echo e($indicator['response_count'] > 1 ? 'responses so far.' : 'response so far.'); ?>
+
+                    </span>
+                    <?php else: ?>
+                    <span class="badge bg-warning">No responses yet.</span>
+                    <?php endif; ?>
+
+                  </td>
                   <td><?php echo e($indicator['definition']); ?></td>
                   <td>
 
@@ -64,7 +76,7 @@
 
                     </div>
                   </td>
-                  
+
                   <td><?php echo e($indicator['data_source']); ?></td>
                   <td><?php echo e($indicator['frequency']); ?></td>
                   <td><?php echo e($indicator['responsible']); ?></td>

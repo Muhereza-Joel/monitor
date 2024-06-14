@@ -47,8 +47,18 @@
               <tbody>
                 @foreach($indicators as $indicator)
                 <tr>
-                  
-                  <td>{{$indicator['indicator_title']}} <span class="badge bg-primary">{{$indicator['response_count']}} responses so far.</span></td>
+
+                  <td>{{$indicator['indicator_title']}}
+
+                    @if($indicator['response_count'] > 0)
+                    <span class="badge bg-primary">
+                      {{$indicator['response_count']}} {{$indicator['response_count'] > 1 ? 'responses so far.' : 'response so far.'}}
+                    </span>
+                    @else
+                    <span class="badge bg-warning">No responses yet.</span>
+                    @endif
+
+                  </td>
                   <td>{{$indicator['definition']}}</td>
                   <td>
 
@@ -64,7 +74,7 @@
 
                     </div>
                   </td>
-                  
+
                   <td>{{$indicator['data_source']}}</td>
                   <td>{{$indicator['frequency']}}</td>
                   <td>{{$indicator['responsible']}}</td>
