@@ -18,7 +18,7 @@
 
     <section class="section dashboard">
 
-        <div class="row">
+        <div class="row g-1">
             <div class="col-sm-8">
                 <div class="card p-2">
                     <div class="card-title">Create New Indicator</div>

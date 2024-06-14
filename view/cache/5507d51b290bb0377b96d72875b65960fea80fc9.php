@@ -18,7 +18,7 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-        <div class="row">
+        <div class="row g-1">
             <div class="col-sm-5">
                 <div class="card p-2">
                     <div class="card-title">Create New User</div>
