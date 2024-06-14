@@ -15,7 +15,7 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  background: #f4f6f5;
+  background: #f6f9ff;
   color: #01000d;
   overflow-x: hidden;
 }
@@ -617,7 +617,7 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   /* box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1); */
-  /* background-color: #242b24; */
+  background-color: #f6f9ff;
   /* background-color: #dcf0e4; */
   /* background-color: #075E54; */
 }

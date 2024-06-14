@@ -26,7 +26,7 @@
               <tr>
 
                 <th scope="col">Respondent</th>
-                <th scope="col">Indicator and Lessons Learnt</th>
+                <th scope="col">Indicator, Notes, Lessons Learnt and Recommendations</th>
                 <th scope="col">Stats</th>
                 <th scope="col">Action</th>
               </tr>
@@ -35,7 +35,7 @@
               <?php $__currentLoopData = $responses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $response): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
               <tr>
 
-                <td><?php echo e($response['name']); ?> <br> <span class="badge bg-success"><?php echo e($response['response_tag_label']); ?></span></td>
+                <td><span class="badge bg-success"><?php echo e($response['response_tag_label']); ?> from <br></span> <?php echo e($response['name']); ?></td>
                 <td scope="row">
                   <div class="accordion w-100" id="accordionExample">
                     <div class="accordion-item">

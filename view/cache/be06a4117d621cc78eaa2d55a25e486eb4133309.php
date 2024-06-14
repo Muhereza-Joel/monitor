@@ -25,7 +25,11 @@
       </h6>
     </div>
 
-    <div class="row">
+    <?php if($role == 'Viewer'): ?>
+    <div class="alert alert-info p-2"><?php echo e($username); ?>, you role only allows you to only view data. If you need to modify or delete any information please contact the Administrator to update your permissions.</div>
+    <?php endif; ?>
+
+    <div class="row g-1">
       <div class="col-sm-4">
         <div class="card info-card sales-card">
           <div class="card-body">
@@ -36,7 +40,7 @@
                 <i class="bi bi-graph-up"></i>
               </div>
               <div class="ps-3">
-                <h6>145</h6>
+                <h6><?php echo e($indicatorsCount); ?></h6>
                 
 
               </div>
@@ -57,7 +61,7 @@
                 <i class="bi bi-check-circle"></i>
               </div>
               <div class="ps-3">
-                <h6>145</h6>
+                <h6><?php echo e($responsesCount); ?></h6>
                 
 
               </div>
@@ -77,7 +81,7 @@
                 <i class="bi bi-check-circle"></i>
               </div>
               <div class="ps-3">
-                <h6>145</h6>
+                <h6><?php echo e($userResponsesCount); ?></h6>
                 
 
               </div>
@@ -98,7 +102,7 @@
                 <i class="bi bi-person-circle"></i>
               </div>
               <div class="ps-3">
-                <h6>145</h6>
+                <h6><?php echo e($usersCount); ?></h6>
                 
 
               </div>

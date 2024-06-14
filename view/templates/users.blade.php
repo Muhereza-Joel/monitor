@@ -18,6 +18,7 @@
 
   <section class="section dashboard">
     <div class="row p-2">
+      <div class="alert alert-info">Only people who have completed their profiles after creating accounts are the ones shown here.</div>
       <div class="card pt-4">
         <div class="card-body">
           <!-- Table with stripped rows -->
@@ -56,6 +57,10 @@
                       <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
                       <a class="dropdown-item text-danger" href="#">Block User</a> <!-- Replace "1" with the actual book ID -->
                       <a class="dropdown-item text-danger" href="#">Delete User</a> <!-- Replace "1" with the actual book ID -->
+                      @endif
+                      
+                      @if($role == 'Viewer')
+                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
                       @endif
                     </div>
                   </div>

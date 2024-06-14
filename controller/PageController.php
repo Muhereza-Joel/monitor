@@ -41,6 +41,11 @@ class PageController
 
     public function render_dashboard()
     {
+        $indicators_count = $this->model->get_indicators_count();
+        $responses_count = $this->model->get_responses_count();
+        $user_responses_count = $this->model->get_user_responses_count();
+        $users_count = $this->model->get_users_count();
+
         $html = $this->blade_view->render('dashboard', [
             'pageTitle' => " $this->app_name - dashboard",
             'appName' => $this->app_name,
@@ -49,7 +54,10 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            
+            'indicatorsCount' => $indicators_count,
+            'responsesCount' => $responses_count,
+            'userResponsesCount' => $user_responses_count,
+            'usersCount' => $users_count,
 
         ]);
 

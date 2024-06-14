@@ -453,4 +453,70 @@ class Model
             Request::send_response($httpStatus, $response);
         }
     }
+
+    public function get_indicators_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM indicators";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_responses_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM responses";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_user_responses_count()
+    {
+        $count = 0;
+        $current_user = Session::get('user_id');
+        $query = "SELECT COUNT(*) FROM responses WHERE responses.user_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $current_user);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_users_count()
+    {
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
 }

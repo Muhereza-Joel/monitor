@@ -1,5 +1,7 @@
-
-
+<div class="copyright text-center my-4">
+  © Copyright <strong><span>M & E Monitor <?php echo date('Y'); ?></span></strong>. All Rights Reserved
+</div>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center active"><i class="bi bi-arrow-up-short"></i></a>
 <!-- Vendor JS Files -->
 <script src="/{{$appName}}/assets/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="/{{$appName}}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
