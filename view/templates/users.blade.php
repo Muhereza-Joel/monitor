@@ -55,10 +55,11 @@
                       @if($role == 'Administrator')
 
                       <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">Update User Role</a>
                       <a class="dropdown-item text-danger" href="#">Block User</a> <!-- Replace "1" with the actual book ID -->
                       <a class="dropdown-item text-danger" href="#">Delete User</a> <!-- Replace "1" with the actual book ID -->
                       @endif
-                      
+
                       @if($role == 'Viewer')
                       <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
                       @endif
@@ -80,6 +81,83 @@
     </div>
   </section>
 
+  <!-- Update Role Modal -->
+  <div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateRoleModalLabel">Update User Role</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="updateRoleForm" action="/{{$appName}}/dashboard/users/update-role" method="POST">
+
+          <div class="modal-body">
+            <input type="hidden" name="user_id" id="modalUserId">
+            <div class="mb-3">
+              <label for="userRole" class="form-label">Role</label>
+              <select class="form-select" id="userRole" name="role" required>
+                <option value="Administrator">Administrator</option>
+                <option value="User">User</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary btn-sm">Update Role</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
 </main><!-- End #main -->
 
 @include('partials/footer')
+
+<script>
+  $(document).ready(function() {
+    var updateRoleModal = $('#updateRoleModal');
+
+    updateRoleModal.on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var userId = button.data('user-id');
+      var userRole = button.data('user-role');
+
+      var modalUserId = $('#modalUserId');
+      var modalUserRole = $('#userRole');
+
+      modalUserId.val(userId);
+      modalUserRole.val(userRole);
+    });
+
+    $('#updateRoleForm').on('submit', function(event) {
+      event.preventDefault();
+      var formData = $(this).serialize();
+
+      $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: formData,
+
+        success: function(response) {
+
+          Toastify({
+            text: response.message,
+            duration: 3000,
+            gravity: 'bottom',
+            position: 'left',
+            backgroundColor: 'green',
+          }).showToast();
+
+          setTimeout(function(){window.location.reload()}, 3000)
+
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
+</script>

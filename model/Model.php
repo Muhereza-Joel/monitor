@@ -198,8 +198,6 @@ class Model
         }
     }
 
-
-
     public function delete_indicator($id)
     {
         $query = "DELETE FROM indicators WHERE id = ?";
@@ -381,6 +379,37 @@ class Model
         }
     }
 
+    public function update_user_role()
+    {
+        $request = Request::capture();
+
+        $user_id = $request->input('user_id');
+        $role = $request->input('role');
+
+        $query = "UPDATE app_users SET role = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('si', $role, $user_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Role Updated Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => "You din't change anything"];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
     public function get_all_responses()
     {
         $query = "CALL GetResponses()";
@@ -520,4 +549,5 @@ class Model
 
         return $count;
     }
+
 }

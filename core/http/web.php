@@ -57,6 +57,7 @@ Route::post("/$app_name/dashboard/manage-indicators/delete/", "controller\Indica
 Route::post("/$app_name/dashboard/manage-indicators/resposes/create/", "controller\IndicatorController@create_response");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/response/edit/", "controller\IndicatorController@edit_response");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/delete", "controller\IndicatorController@delete_response");
+Route::post("/$app_name/dashboard/users/update-role", "controller\IndicatorController@update_user_role");
 
 //Routes for mail controller
 Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@request_otp");

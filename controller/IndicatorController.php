@@ -42,4 +42,8 @@ class IndicatorController
     {
         $this->model->delete_response($id);
     }
+
+    public function update_user_role(){
+        $this->model->update_user_role();
+    }
 }
