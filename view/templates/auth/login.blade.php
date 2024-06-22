@@ -8,8 +8,9 @@
                     <div class="col-lg-4 p-5 col-md-4 d-flex flex-column align-items-center justify-content-center">
                         <div class="d-flex flex-column justify-content-center py-4">
                             <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto">
-                                <img src="/{{$appName}}/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
+                                <img src="/{{$appName}}/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
                             </a>
+                            <br>
                         </div>
                         <!-- End Logo -->
                         <div class="card">

@@ -75,12 +75,14 @@ class User
                 if ($user['profile_created'] == true) {
                     $user_data = $this->get_user_data($user['id']);
                     Session::set('user_id', $user['id']);
+                    Session::set('organization_id', $user['organization_id']);
                     Session::set('username', $user['username']);
                     Session::set('email', $user['email']);
                     Session::set('avator', $user_data['image_url']);
                     Session::set('role', $user['role']);
                 } else {
                     Session::set('user_id', $user['id']);
+                    Session::set('organization_id', $user['organization_id']);
                     Session::set('username', $user['username']);
                     Session::set('email', $user['email']);
                     Session::set('role', $user['role']);
@@ -287,9 +289,10 @@ class User
         $job = $request->input('job');
 
         $user_id = Session::get('user_id');
+        $organization_id = Session::get('organization_id');
 
-        $insert_query = "INSERT INTO user_profile(name, nin, dob, gender, about, company, job, country, district, village, phone, image_url, user_id)
-                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insert_query = "INSERT INTO user_profile(name, nin, dob, gender, about, company, job, country, district, village, phone, image_url, user_id, organization_id)
+                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Begin transaction
         $this->database->begin_transaction();
@@ -307,7 +310,7 @@ class User
         }
 
         // Bind parameters
-        $bind_result = $stmt->bind_param("ssssssssssssi", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone, $image_url, $user_id);
+        $bind_result = $stmt->bind_param("ssssssssssssii", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone, $image_url, $user_id, $organization_id);
         if ($bind_result === false) {
             // Handle bind_param error
             $error_message = "Bind param failed: " . $stmt->error;
@@ -361,8 +364,6 @@ class User
 
         $stmt->close();
     }
-
-
 
     public function update_profile()
     {

@@ -12,7 +12,7 @@
             <div class="col-lg-4">
               <div class="d-flex flex-column justify-content-center py-4">
                 <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
-                  <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" style="width: 150px; object-fit:contain;" alt="logo">
+                  <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
 
                   
                 </a>

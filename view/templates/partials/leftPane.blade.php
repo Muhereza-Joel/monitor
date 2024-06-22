@@ -52,6 +52,13 @@
     </li>
 
     <li class="nav-item pb-2">
+      <a class="nav-link collapsed" href="/{{$appName}}/dashboard/organizations/create/">
+        <i class="bi bi-card-list"></i>
+        <span>Organizations</span>
+      </a>
+    </li>
+
+    <li class="nav-item pb-2">
       <a class="nav-link collapsed" href="/{{$appName}}/dashboard/users/">
         <i class="bi bi-card-list"></i>
         <span>Monitor Users</span>
@@ -146,7 +153,7 @@
         <span>All Responses</span>
       </a>
     </li>
-
+    
     <li class="nav-item pb-2">
       <a class="nav-link collapsed" href="/{{$appName}}/dashboard/users/">
         <i class="bi bi-card-list"></i>

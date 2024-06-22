@@ -48,6 +48,7 @@ Route::post("/$app_name/dashboard/indicators/responses/add", "controller\PageCon
 Route::post("/$app_name/dashboard/indicators/responses/all", "controller\PageController@render_indicator_responses");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
+Route::post("/$app_name/dashboard/organizations/create/", "controller\PageController@render_create_organization");
 
 
 //Routes for indicator controller

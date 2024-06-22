@@ -258,11 +258,27 @@ class PageController
 
         echo ($html);
     }
+
     public function render_create_user()
     {
         
         $html = $this->blade_view->render('createUser', [
             'pageTitle' => "$this->app_name - create user",
+            'appName' => $this->app_name,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_create_organization()
+    {
+        $html = $this->blade_view->render('createOrganisations', [
+            'pageTitle' => "$this->app_name - create organisation",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'username' => Session::get('username'),
