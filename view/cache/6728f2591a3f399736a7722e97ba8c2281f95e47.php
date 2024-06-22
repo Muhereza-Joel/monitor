@@ -12,7 +12,7 @@
               <div class="col-xl-10 col-md-10 d-flex flex-column align-items-center justify-content-center">
 
 
-                <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" alt="logo" style="width: 150px;">
+                <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" alt="logo" style="width: 400px;"><br><br>
                 <h4 class="pt-2">Hello, <span class="text-success"><?php echo e($username); ?></span> take a breath add complete your profile</h4>
                 <h5>Adding your profile helps us to know you better, you profile information is used to tag responses.</h5>
                 <p>Please note that your the only person who can change your profile, and none of this data will be shared without your consent.</p>
@@ -267,7 +267,7 @@
               $("#save-profile-button").text('Profile created, redirecting...');
 
               setTimeout(function() {
-                window.location.replace("/<?php echo e($appName); ?>/dashboard/")
+                window.location.replace("/<?php echo e($appName); ?>/dashboard/organizations/choose/")
               }, 3000)
             },
             error: function(jqXHR, textStatus, errorThrown) {

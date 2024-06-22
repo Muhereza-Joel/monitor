@@ -76,7 +76,7 @@
                     success: function(response) {
                         if (response.profileCreated == true) {
                             $("#login-button").text("Please wait...").attr('disabled', 'true').text("Authentication Successful, redirecting...");
-                            window.location.replace("/{{$appName}}/dashboard/");
+                            window.location.replace("/{{$appName}}/dashboard/organizations/choose/");
                         } else if (response.profileCreated == false) {
                             window.location.replace("/{{$appName}}/auth/create-profile/");
                         }

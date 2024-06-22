@@ -4,6 +4,7 @@ namespace controller;
 
 use core\Session;
 use model\Model;
+use model\User;
 use view\BladeView;
 
 class PageController
@@ -13,6 +14,7 @@ class PageController
     private $app_base_url;
     private $blade_view;
     private $model;
+    private $userModel;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class PageController
         $this->app_base_url = getenv("APP_BASE_URL");
         $this->blade_view = new BladeView();
         $this->model =  Model::getInstance();
+        $this->userModel = User::getInstance();
     }
 
     public function render_404()
@@ -45,6 +48,8 @@ class PageController
         $responses_count = $this->model->get_responses_count();
         $user_responses_count = $this->model->get_user_responses_count();
         $users_count = $this->model->get_users_count();
+        $organisations = $this->model->get_organisations();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('dashboard', [
             'pageTitle' => " $this->app_name - dashboard",
@@ -54,6 +59,8 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'organisations' => $organisations['response'],
+            'myOrganisation' => $myOrganisation['response'],
             'indicatorsCount' => $indicators_count,
             'responsesCount' => $responses_count,
             'userResponsesCount' => $user_responses_count,
@@ -327,7 +334,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
-            'callbackUrl' => $_SERVER['HTTP_REFERER']
+            'callbackUrl' => $this->app_base_url . '/'. $this->app_name . '/auth/sign-out/'
             
         ]);
 

@@ -74,8 +74,12 @@ class User
                 Session::start();
                 if ($user['profile_created'] == true) {
                     $user_data = $this->get_user_data($user['id']);
+                    $result = $this->get_user_organisation($user['id']);
+                    $organization_data = $result['response'];
+
                     Session::set('user_id', $user['id']);
                     Session::set('my_organization_id', $user['organization_id']);
+                    Session::set('my_organization_name', $organization_data['name']);
                     Session::set('username', $user['username']);
                     Session::set('email', $user['email']);
                     Session::set('avator', $user_data['image_url']);
@@ -160,6 +164,24 @@ class User
         $stmt->close();
 
         return $user_profile;
+    }
+
+    public function get_user_organisation($id)
+    {
+        $query = "SELECT organizations.* FROM organizations
+        JOIN app_users ON app_users.organization_id = organizations.id
+        WHERE app_users.id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $row];
     }
 
     public function add_user()
@@ -286,7 +308,7 @@ class User
         $job = $request->input('job');
 
         $user_id = Session::get('user_id');
-        $organization_id = Session::get('organization_id');
+        $organization_id = Session::get('my_organization_id');
 
         $insert_query = "INSERT INTO user_profile(name, nin, dob, gender, about, company, job, country, district, village, phone, image_url, user_id, organization_id)
                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
