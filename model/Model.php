@@ -484,6 +484,47 @@ class Model
         }
     }
 
+    public function create_organisation()
+    { 
+        $request = Request::capture();
+
+        $organization_logo = $request->input('image_url');
+        $organization_name = $request->input('organization-name');
+        
+        $query = "INSERT INTO organizations(name, logo) VALUES(?, ?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ss', $organization_name, $organization_logo);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Row Created Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
+    public function get_organisations()
+    {
+        $query = "SELECT * FROM organizations WHERE name <> 'Administrator'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
     public function get_indicators_count()
     {
         $count = 0;

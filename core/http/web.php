@@ -31,7 +31,7 @@ Route::post("/$app_name/auth/accounts/reset/step-three/", "controller\AuthContro
 Route::post("/$app_name/auth/accounts/confirm-otp/", "controller\AuthController@confirm_otp");
 Route::post("/$app_name/auth/accounts/confirm-password-otp/", "controller\AuthController@confirm_password_otp");
 Route::post("/$app_name/auth/accounts/reset-password/", "controller\AuthController@reset_password");
-
+Route::post("/$app_name/auth/set-organisation/", "controller\AuthController@set_choosen_organisation");
 
 //Routes for PageController
 Route::post("/$app_name/page-not-found/", "controller\PageController@render_404");
@@ -49,6 +49,9 @@ Route::post("/$app_name/dashboard/indicators/responses/all", "controller\PageCon
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
 Route::post("/$app_name/dashboard/organizations/create/", "controller\PageController@render_create_organization");
+Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@render_choose_organisation");
+Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
+
 
 
 //Routes for indicator controller
@@ -63,4 +66,6 @@ Route::post("/$app_name/dashboard/users/update-role", "controller\IndicatorContr
 //Routes for mail controller
 Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@request_otp");
 
+//Routes for organisations controller
+Route::post("/$app_name/organisations/create/", "controller\OrganisationController@create_organisation");
 ?>

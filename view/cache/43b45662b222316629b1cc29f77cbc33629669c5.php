@@ -1,4 +1,4 @@
-@include('partials/header')
+<?php echo $__env->make('partials/header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <body>
 
@@ -11,8 +11,8 @@
 
                         <div class="col-lg-7">
                             <div class="d-flex flex-column justify-content-center py-4">
-                                <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto">
-                                    <img src="/{{$appName}}/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
+                                <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
+                                    <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
                                 </a>
                             </div><!-- End Logo -->
 
@@ -30,7 +30,7 @@
                                             <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
                                                 <span class="text-center"></span>
                                             </div>
-                                            @include('chooser')
+                                            <?php echo $__env->make('chooser', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
         </div>
     </main><!-- End #main -->
 
-    @include('partials/footer')
+    <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <script>
     $(document).ready(function() {
@@ -56,10 +56,10 @@
 
             $.ajax({
                 method: 'post',
-                url: '/{{$appName}}/auth/set-organisation/',
+                url: '/<?php echo e($appName); ?>/auth/set-organisation/',
                 data: { organisation_id: selectedOrgId },
                 success: function(response) {
-                    $('#proceed-button').attr('href', '/{{$appName}}/auth/register/').removeClass('d-none');
+                    $('#proceed-button').attr('href', '/<?php echo e($appName); ?>/auth/register/').removeClass('d-none');
                     
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

@@ -45,7 +45,7 @@
                                     <div class="card-footer p-0">
                                         <div class="col-12 text-center">
                                             <p>
-                                                <a href="/{{$appName}}/auth/register/">Create an account</a>|
+                                                <a href="/{{$appName}}/auth/organizations/choose/">Create an account</a>|
                                                 <a href="/{{$appName}}/auth/accounts/reset/" class="text-danger ms-2">Forgot Password</a>
                                             </p>
 

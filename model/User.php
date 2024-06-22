@@ -75,14 +75,14 @@ class User
                 if ($user['profile_created'] == true) {
                     $user_data = $this->get_user_data($user['id']);
                     Session::set('user_id', $user['id']);
-                    Session::set('organization_id', $user['organization_id']);
+                    Session::set('my_organization_id', $user['organization_id']);
                     Session::set('username', $user['username']);
                     Session::set('email', $user['email']);
                     Session::set('avator', $user_data['image_url']);
                     Session::set('role', $user['role']);
                 } else {
                     Session::set('user_id', $user['id']);
-                    Session::set('organization_id', $user['organization_id']);
+                    Session::set('my_organization_id', $user['organization_id']);
                     Session::set('username', $user['username']);
                     Session::set('email', $user['email']);
                     Session::set('role', $user['role']);
@@ -169,8 +169,8 @@ class User
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
-        $role = $request->input('role', 'User');
-
+        $role = $request->input('role', 'Viewer');
+        $organization_id = Session::get('selected_organisation_id');
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $new_user = new User();
@@ -184,26 +184,23 @@ class User
         }
 
         if (!$user) {
-            $query = "INSERT INTO app_users(username, email, password, role) VALUES(?, ?, ?, ?)";
+            $query = "INSERT INTO app_users(username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?)";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);
+            $stmt->bind_param("ssssi", $username, $email, $hashed_password, $role, $organization_id);
             $stmt->execute();
 
-            if($stmt->affected_rows > 0){
+            if ($stmt->affected_rows > 0) {
                 $response = ['message' => 'Account created successfully.'];
                 $httpStatus = 200;
-    
+
                 Request::send_response($httpStatus, $response);
-                
-            } else{
+            } else {
                 $response = ['error' => $stmt->error];
                 $httpStatus = 500;
-    
+
                 Request::send_response($httpStatus, $response);
-
             }
-
         }
     }
 

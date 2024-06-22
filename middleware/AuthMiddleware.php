@@ -26,7 +26,9 @@ class AuthMiddleware
             "/$this->app_name/auth/accounts/reset/step-one/",
             "/$this->app_name/auth/accounts/reset/step-two/",
             "/$this->app_name/auth/accounts/reset/step-three/",
-            "/$this->app_name/auth/accounts/request-otp/"
+            "/$this->app_name/auth/accounts/request-otp/",
+            "/$this->app_name/auth/organizations/choose/",
+            "/$this->app_name/auth/set-organisation/",
         ];
 
         $currentRoute = $_SERVER['REQUEST_URI'];

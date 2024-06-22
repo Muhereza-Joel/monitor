@@ -12,7 +12,7 @@ use view\BladeView;
 
 class AuthController
 {
-   
+
     private $app_name;
     private $app_name_full;
     private $app_base_url;
@@ -27,7 +27,7 @@ class AuthController
         $this->user_model = User::getInstance();
         $this->model = Model::getInstance();
     }
-    
+
     public function index()
     {
         $blade_view = new BladeView();
@@ -35,6 +35,7 @@ class AuthController
             'pageTitle' => "$this->app_name Auth-Login",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
         ]);
 
         echo ($html);
@@ -123,7 +124,7 @@ class AuthController
 
     public function render_show_profile_view()
     {
-      
+
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
 
         $blade_view = new BladeView();
@@ -143,7 +144,7 @@ class AuthController
 
     public function sign_in_user()
     {
-       
+
         $this->user_model->login();
     }
 
@@ -153,9 +154,32 @@ class AuthController
         header("location:/$this->app_name/auth/challenge/login/");
     }
 
+    public function set_choosen_organisation()
+    {
+        $request = Request::capture();
+        $organisation_id = $request->input('organisation_id');
+        Session::set('selected_organisation_id', $organisation_id);
+
+        // Sleep for 1 second
+        sleep(1);
+
+        if ($organisation_id > 0) {
+            $response = ['message' => 'Organisation Set Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => 'Failed to set organisation'];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
+
     public function create_account()
     {
-      
+
         $this->user_model->add_user();
     }
 
@@ -177,53 +201,54 @@ class AuthController
 
     public function check_nin()
     {
-        
+
         $this->user_model->check_nin();
     }
     public function check_email()
     {
-        
+
         $this->user_model->check_email();
     }
 
     public function save_profile()
     {
-        
+
         $this->user_model->save_profile();
     }
 
     public function update_profile()
     {
-        
+
         $this->user_model->update_profile();
     }
 
     public function update_photo()
     {
-       
+
         $this->user_model->update_photo();
     }
 
     public function check_password($password)
     {
-        
+
         $this->user_model->check_password($password);
     }
 
     public function change_password()
     {
-        
+
         $this->user_model->change_password();
     }
 
     public function get_user_details()
     {
-        
+
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
         Request::send_response(200, $userDetails);
     }
 
-    public function check_identifier(){
+    public function check_identifier()
+    {
 
         $request = Request::capture();
         $identifier = $request->input('identifier');

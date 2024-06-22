@@ -277,13 +277,57 @@ class PageController
 
     public function render_create_organization()
     {
+        $organisations = $this->model->get_organisations();
+
         $html = $this->blade_view->render('createOrganisations', [
             'pageTitle' => "$this->app_name - create organisation",
             'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'organisations' => $organisations['response'],
+            
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_choose_organisation()
+    {
+        $organisations = $this->model->get_organisations();
+
+        $html = $this->blade_view->render('chooseOrganisation', [
+            'pageTitle' => "$this->app_name - Choose organisation",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'organisations' => $organisations['response'],
+            'callbackUrl' => $_SERVER['HTTP_REFERER']
+            
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_dashboard_choose_organisation()
+    {
+        $organisations = $this->model->get_organisations();
+
+        $html = $this->blade_view->render('chooseOrganisationTwo', [
+            'pageTitle' => "$this->app_name - Choose organisation",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'organisations' => $organisations['response'],
+            'callbackUrl' => $_SERVER['HTTP_REFERER']
             
         ]);
 
