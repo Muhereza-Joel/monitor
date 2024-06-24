@@ -184,6 +184,9 @@ class AuthController
         $organisation_id = $request->input('organisation_id');
         Session::set('selected_organisation_id', $organisation_id);
 
+        $logo = $this->model->get_selected_organisation_logo($organisation_id);
+        Session::set('selected_organisation_logo', $logo);
+
         // Sleep for 1 second
         sleep(1);
 

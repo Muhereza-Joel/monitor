@@ -65,6 +65,8 @@ class PageController
             'responsesCount' => $responses_count,
             'userResponsesCount' => $user_responses_count,
             'usersCount' => $users_count,
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -84,6 +86,8 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -104,6 +108,8 @@ class PageController
             'avator' => Session::get('avator'),
             'indicator' => $result['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -130,6 +136,8 @@ class PageController
             'lastCurrentState' => $last_current_state['response'],
             'indicator' => $indicator['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -152,6 +160,8 @@ class PageController
             'avator' => Session::get('avator'),
             'indicators' => $indicators['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -176,6 +186,8 @@ class PageController
             'indicator' => $indicator['response'],
             'lastCurrentState' => $last_current_state['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -197,6 +209,8 @@ class PageController
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -218,6 +232,8 @@ class PageController
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -239,6 +255,8 @@ class PageController
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -260,6 +278,8 @@ class PageController
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
 
         ]);
 
@@ -281,6 +301,8 @@ class PageController
             'avator' => Session::get('avator'),
             'users' => $result['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -300,6 +322,8 @@ class PageController
             'avator' => Session::get('avator'),
             'userDetails' => $result['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -317,6 +341,8 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -338,6 +364,8 @@ class PageController
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -360,6 +388,8 @@ class PageController
             'organisations' => $organisations['response'],
             'callbackUrl' => $_SERVER['HTTP_REFERER'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -382,6 +412,8 @@ class PageController
             'organisations' => $organisations['response'],
             'callbackUrl' => $this->app_base_url . '/'. $this->app_name . '/auth/sign-out/',
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -403,6 +435,8 @@ class PageController
             'avator' => Session::get('avator'),
             'indicators' => $indicators['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -424,6 +458,8 @@ class PageController
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 
@@ -445,6 +481,8 @@ class PageController
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
             
         ]);
 

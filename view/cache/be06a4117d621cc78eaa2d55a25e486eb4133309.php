@@ -62,6 +62,7 @@
           </div>
         </div>
 
+        <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
         <div class="col-sm-4">
           <div class="card info-card sales-card">
             <div class="card-body">
@@ -78,6 +79,7 @@
             </div>
           </div>
         </div>
+        <?php endif; ?>
 
         <div class="col-sm-4">
           <div class="card info-card sales-card">

@@ -718,7 +718,7 @@ class Model
         $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1 AND app_users.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $organization_id = Session::get('selected_organisation_id');
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -727,5 +727,22 @@ class Model
         $stmt->close();
 
         return $count;
+    }
+
+    public function get_selected_organisation_logo($id)
+    {
+        $logo = "";
+        $query = "SELECT logo FROM organizations WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $stmt->bind_result($logo);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $logo;
     }
 }
