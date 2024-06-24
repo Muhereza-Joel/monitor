@@ -94,16 +94,10 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator' || $role == 'User'): ?>
                         <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                        <a href="#" class="dropdown-item"><i class="bi bi-book"></i>Export File</a>
                         <?php endif; ?>
                       <?php endif; ?>
-                      <?php if($role == 'Administrator'): ?>
-                        <?php if($response['status'] == 'draft'): ?>
-                          <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                          <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
-                          <?php endif; ?>
-                        <?php endif; ?>
-                      <?php endif; ?>
+                     
                     </div>
                   </div>
                 </td>

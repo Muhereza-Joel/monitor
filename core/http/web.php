@@ -11,6 +11,7 @@ Route::post("/$app_name/auth/login/", "controller\AuthController@index");
 Route::post("/$app_name/auth/create-profile/", "controller\AuthController@render_create_profile_view");
 Route::post("/$app_name/auth/login/sign-in/", "controller\AuthController@sign_in_user");
 Route::post("/$app_name/auth/create-account/", "controller\AuthController@create_account");
+Route::post("/$app_name/auth/organisation/create-account/", "controller\AuthController@create_organisation_account");
 Route::post("/$app_name/image-upload/", "controller\AuthController@upload_photo");
 Route::post("/$app_name/auth/check-nin/", "controller\AuthController@check_nin");
 Route::post("/$app_name/auth/check-email/", "controller\AuthController@check_email");
@@ -47,9 +48,11 @@ Route::post("/$app_name/dashboard/indicators/edit", "controller\PageController@r
 Route::post("/$app_name/dashboard/indicators/responses/edit", "controller\PageController@render_edit_response");
 Route::post("/$app_name/dashboard/indicators/responses/add", "controller\PageController@render_add_response");
 Route::post("/$app_name/dashboard/indicators/responses/all", "controller\PageController@render_indicator_responses");
+Route::post("/$app_name/dashboard/indicators/archived/responses/all", "controller\PageController@render_archived_indicator_responses");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
 Route::post("/$app_name/dashboard/organizations/create/", "controller\PageController@render_create_organization");
+Route::post("/$app_name/dashboard/organizations/users/create/", "controller\PageController@render_create_organization_user");
 Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@render_choose_organisation");
 Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
 

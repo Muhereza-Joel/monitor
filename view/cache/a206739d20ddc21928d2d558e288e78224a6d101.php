@@ -86,14 +86,14 @@
                           <?php endif; ?>
                         <?php endif; ?>
                         <?php if($role == 'Viewer'): ?>
-                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/archived/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         <?php endif; ?>
                         <?php if($role == 'User' || $role == 'Administrator'): ?>
                           <?php if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
                           <a  href="#" class="dropdown-item">
-                             Export Report
+                          <i class="bi bi-book"></i> Export File
                           </a>
                            
                           <?php endif; ?>  

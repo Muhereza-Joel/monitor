@@ -207,6 +207,11 @@ class AuthController
         $this->user_model->add_user();
     }
 
+    public function create_organisation_account()
+    {
+        $this->user_model->add_organisation_user();
+    }
+
     public function upload_photo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {

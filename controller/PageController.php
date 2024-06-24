@@ -208,6 +208,27 @@ class PageController
         $responses = $this->model->get_indicator_responses($id);
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
+        $html = $this->blade_view->render('archivedResponses', [
+            'pageTitle' => " $this->app_name - all indicator archived responses",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
+
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_archived_indicator_responses($id)
+    {
+        $responses = $this->model->get_indicator_responses($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
         $html = $this->blade_view->render('responses', [
             'pageTitle' => " $this->app_name - all indicator responses",
             'appName' => $this->app_name,
@@ -402,6 +423,27 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
+            
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_create_organization_user()
+    {
+        $organisations = $this->model->get_organisations();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
+        $html = $this->blade_view->render('createOrganisationUser', [
+            'pageTitle' => "$this->app_name - create organisation user",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'organisations' => $organisations['response'],
             'myOrganisation' => $myOrganisation['response'],
             
         ]);

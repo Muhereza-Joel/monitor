@@ -15,7 +15,7 @@
     <li class="nav-item pb-2">
       <a class="nav-link" href="/{{$appName}}/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
-        <span>Switch Organization</span>
+        <span>Switch Organisation</span>
       </a>
     </li>
 
@@ -49,6 +49,24 @@
       </a>
     </li>
 
+    <hr>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/{{$appName}}/dashboard/indicators/archived/">
+        <i class="bi bi-card-list"></i>
+        <span>All Archived Indicators</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/{{$appName}}/dashboard/all-archived-responses/">
+        <i class="bi bi-card-list"></i>
+        <span>All Archived Responses</span>
+      </a>
+    </li>
+
+    <hr>
+
 
     <li class="nav-item pb-2">
       <a class="nav-link collapsed" href="/{{$appName}}/dashboard/users/add-new/">
@@ -59,7 +77,7 @@
 
     @if($myOrganisation['name'] == 'Administrator')
       <li class="nav-item pb-2">
-        <a class="nav-link collapsed" href="/{{$appName}}/dashboard/organizations/create/">
+        <a class="nav-link collapsed" href="/{{$appName}}/dashboard/organizations/users/create/">
           <i class="bi bi-card-list"></i>
           <span>Create Organization User</span>
         </a>
@@ -107,7 +125,7 @@
     <li class="nav-item pb-2">
       <a class="nav-link" href="/{{$appName}}/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
-        <span>Switch Organization</span>
+        <span>Switch Organisation</span>
       </a>
     </li>
 
@@ -135,6 +153,22 @@
       </a>
     </li>
 
+    <hr>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/{{$appName}}/dashboard/indicators/archived/">
+        <i class="bi bi-card-list"></i>
+        <span>All Archived Indicators</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/{{$appName}}/dashboard/all-archived-responses/">
+        <i class="bi bi-card-list"></i>
+        <span>All Archived Responses</span>
+      </a>
+    </li>
+    <hr>
+
     <li class="nav-item pb-2">
       <a class="nav-link collapsed" href="/{{$appName}}/auth/user/profile/">
         <i class="bi bi-card-list"></i>
@@ -161,7 +195,7 @@
     <li class="nav-item pb-2">
       <a class="nav-link" href="/{{$appName}}/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
-        <span>Switch Organization</span>
+        <span>Switch Organisation</span>
       </a>
     </li>
 

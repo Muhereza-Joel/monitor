@@ -572,6 +572,22 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function get_indicator_archived_responses($indicator_id)
+    {
+        $query = "CALL GetIndicatorArchivedResponses(?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $indicator_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
     public function delete_response($id)
     {
         $query = "DELETE FROM responses WHERE id = ?";

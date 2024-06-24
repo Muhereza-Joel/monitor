@@ -94,16 +94,10 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator' || $role == 'User')
                         @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                        <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                        <a href="#" class="dropdown-item"><i class="bi bi-book"></i>Export File</a>
                         @endif
                       @endif
-                      @if($role == 'Administrator')
-                        @if($response['status'] == 'draft')
-                          @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                          <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
-                          @endif
-                        @endif
-                      @endif
+                     
                     </div>
                   </div>
                 </td>
