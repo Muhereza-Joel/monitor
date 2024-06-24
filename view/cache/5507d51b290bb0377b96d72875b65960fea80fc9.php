@@ -22,6 +22,7 @@
             <div class="col-sm-5">
                 <div class="card p-2">
                     <div class="card-title">Create New User</div>
+                    <div class="alert alert-warning p-2">The new user you create will be attached to <span class="badge bg-primary"><?php echo e($myOrganisation['name']); ?></span></div>
                     <div class="card-body">
                         <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
                             <span class="text-center"></span>

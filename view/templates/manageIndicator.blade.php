@@ -22,6 +22,7 @@
             <div class="col-sm-8">
                 <div class="card p-2">
                     <div class="card-title">Create New Indicator</div>
+                    <div class="alert alert-warning p-2">This indicator you are about to create will belong to <span class="badge bg-primary">{{$myOrganisation['name']}}</span></div>
                     <div class="card-body">
                         <form action="" class="needs-validation" novalidate id="create-indicator-form">
                             <div class="form-group my-2">

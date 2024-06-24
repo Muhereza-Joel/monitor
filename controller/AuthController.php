@@ -31,11 +31,14 @@ class AuthController
     public function index()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/login', [
             'pageTitle' => "$this->app_name Auth-Login",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -44,10 +47,13 @@ class AuthController
     public function render_register_view()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/register', [
             'pageTitle' => "$this->app_name Auth-Register",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -56,11 +62,14 @@ class AuthController
     public function render_start_reset()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/beginReset', [
             'pageTitle' => "$this->app_name reset account password",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -69,12 +78,15 @@ class AuthController
     public function render_reset_password()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/resetPassword', [
             'pageTitle' => "$this->app_name reset account password",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -83,12 +95,15 @@ class AuthController
     public function render_reset_password_step_one()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/stepOneResetPassword', [
             'pageTitle' => "$this->app_name reset account password",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -97,12 +112,15 @@ class AuthController
     public function render_confirm_email()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/confirmEmail', [
             'pageTitle' => "$this->app_name confirm email",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -111,12 +129,15 @@ class AuthController
     public function render_create_profile_view()
     {
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/createProfile', [
             'pageTitle' => "$this->app_name Auth-Register",
             'appName' => $this->app_name,
             'username' => Session::get('username'),
             'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -128,6 +149,8 @@ class AuthController
         $userDetails = $this->user_model->get_all_user_data(Session::get('user_id'));
 
         $blade_view = new BladeView();
+
+        $myOrganisation = $this->user_model->get_user_organisation(Session::get('user_id'));
         $html = $blade_view->render('/auth/viewProfile', [
             'pageTitle' => "$this->app_name - Dashboard",
             'appName' => $this->app_name,
@@ -136,7 +159,8 @@ class AuthController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'userDetails' => $userDetails
+            'userDetails' => $userDetails,
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);

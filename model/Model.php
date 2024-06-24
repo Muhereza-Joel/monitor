@@ -44,10 +44,14 @@ class Model
     public function get_all_users()
     {
         $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
-                  FROM app_users au JOIN user_profile up
-                  ON au.id = up.user_id";
+        FROM app_users au JOIN user_profile up
+        ON au.id = up.user_id 
+        WHERE up.organization_id = ?";
+
+        $organization_id = Session::get('selected_organisation_id');
 
         $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -242,10 +246,14 @@ class Model
                     (SELECT COUNT(id) FROM responses WHERE indicator_id = i.id) AS response_count
                 FROM 
                     indicators AS i
+                WHERE organization_id = ?
                 ORDER BY i.status;
             ";
 
+        $organization_id = Session::get('selected_organisation_id');
+
         $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -460,9 +468,12 @@ class Model
 
     public function get_all_responses()
     {
-        $query = "CALL GetResponses()";
+        $organization_id = Session::get('selected_organisation_id');
+
+        $query = "CALL GetResponses(?)";
 
         $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -576,9 +587,12 @@ class Model
     public function get_indicators_count()
     {
         $count = 0;
-        $query = "SELECT COUNT(*) FROM indicators";
+        $organization_id = Session::get('selected_organisation_id');
+
+        $query = "SELECT COUNT(*) FROM indicators WHERE indicators.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -592,9 +606,12 @@ class Model
     public function get_responses_count()
     {
         $count = 0;
-        $query = "SELECT COUNT(*) FROM responses";
+        $organization_id = Session::get('selected_organisation_id');
+
+        $query = "SELECT COUNT(*) FROM responses WHERE responses.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -626,9 +643,11 @@ class Model
     public function get_users_count()
     {
         $count = 0;
-        $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1";
+        $organization_id = Session::get('selected_organisation_id');
+        $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1 AND app_users.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
+        $organization_id = Session::get('selected_organisation_id');
         $stmt->execute();
         $stmt->bind_result($count);
 

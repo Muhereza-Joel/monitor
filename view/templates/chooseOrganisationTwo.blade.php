@@ -24,14 +24,14 @@
 
                                             <div class="pt-4 pb-2">
                                                 <h5 class="card-title text-center pb-0 fs-4">Please choose your organisation and click Proceed</h5>
-                                                
+
                                             </div>
 
                                             <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
                                                 <span class="text-center"></span>
                                             </div>
                                             <div class="alert alert-warning">
-                                            <strong>You can only view data for organisations you belong to. To modify data, create indicators, or add responses, please select your own organisation.</strong>
+                                                <strong>You can only view data for organisations you belong to. To modify data, create indicators, or add responses, please select your own organisation.</strong>
                                             </div>
                                             @include('chooser')
 
@@ -50,33 +50,46 @@
     @include('partials/footer')
 
     <script>
-    $(document).ready(function() {
-        $('.organisation-card').on('click', function() {
-            $('.organisation-card').removeClass('selected');
-            $(this).addClass('selected');
+        $(document).ready(function() {
+            $('.organisation-card').on('click', function() {
+                $('.organisation-card').removeClass('selected');
+                $(this).addClass('selected');
 
-            let selectedOrgId = $(this).data('org-id');
+                let selectedOrgId = $(this).data('org-id');
+                Toastify({
+                    text: 'Swithing organisation please wait...',
+                    duration: 4000,
+                    gravity: 'bottom',
+                    position: 'left',
+                    backgroundColor: '#',
+                }).showToast();
 
-            $.ajax({
-                method: 'post',
-                url: '/{{$appName}}/auth/set-organisation/',
-                data: { organisation_id: selectedOrgId },
-                success: function(response) {
-                    $('#proceed-button').attr('href', '/{{$appName}}/dashboard/').removeClass('d-none');
-                    
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    Toastify({
-                        text: jqXHR.responseJSON.message,
-                        duration: 4000,
-                        gravity: 'top',
-                        position: 'center',
-                        backgroundColor: 'red',
-                    }).showToast();
-                }
+                $.ajax({
+                    method: 'post',
+                    url: '/{{$appName}}/auth/set-organisation/',
+                    data: {
+                        organisation_id: selectedOrgId
+                    },
+                    success: function(response) {
+                        $('#proceed-button').attr('href', '/{{$appName}}/dashboard/').removeClass('d-none');
+                        Toastify({
+                            text: 'Please click proceed button to continue...',
+                            duration: 4000,
+                            gravity: 'bottom',
+                            position: 'left',
+                            backgroundColor: '#28a745',
+                        }).showToast();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        Toastify({
+                            text: jqXHR.responseJSON.message,
+                            duration: 4000,
+                            gravity: 'top',
+                            position: 'center',
+                            backgroundColor: 'red',
+                        }).showToast();
+                    }
+                });
             });
         });
-    });
-</script>
-
-
+    </script>

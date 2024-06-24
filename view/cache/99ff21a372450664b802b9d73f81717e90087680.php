@@ -69,7 +69,7 @@
 
 <main id="main" class="main">
 
-  <div class="pagetitle">
+  <div class="pagetitle mt-3">
     <h1>All Responses</h1>
     <nav>
       <ol class="breadcrumb">
@@ -170,12 +170,16 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator' || $role == 'User'): ?>
-                      <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                        <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                        <?php endif; ?>
                       <?php endif; ?>
                       <?php if($role == 'Administrator'): ?>
-                      <?php if($response['status'] == 'draft'): ?>
-                      <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
-                      <?php endif; ?>
+                        <?php if($response['status'] == 'draft'): ?>
+                          <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                          <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
+                          <?php endif; ?>
+                        <?php endif; ?>
                       <?php endif; ?>
                     </div>
                   </div>

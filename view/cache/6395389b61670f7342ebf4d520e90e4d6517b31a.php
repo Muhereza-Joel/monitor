@@ -12,6 +12,12 @@
         <span>Dashboard</span>
       </a>
     </li>
+    <li class="nav-item pb-2">
+      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Switch Organization</span>
+      </a>
+    </li>
 
     <li class="nav-heading mb-3">Modules</li>
 
@@ -51,12 +57,20 @@
       </a>
     </li>
 
-    <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/organizations/create/">
-        <i class="bi bi-card-list"></i>
-        <span>Organizations</span>
-      </a>
-    </li>
+    <?php if($myOrganisation['name'] == 'Administrator'): ?>
+      <li class="nav-item pb-2">
+        <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/organizations/create/">
+          <i class="bi bi-card-list"></i>
+          <span>Create Organization User</span>
+        </a>
+      </li>
+      <li class="nav-item pb-2">
+        <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/organizations/create/">
+          <i class="bi bi-card-list"></i>
+          <span>Organizations</span>
+        </a>
+      </li>
+    <?php endif; ?>
 
     <li class="nav-item pb-2">
       <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/users/">
@@ -78,6 +92,7 @@
         <span>Log Out</span>
       </a>
     </li>
+    
 
     <?php endif; ?>
 
@@ -87,6 +102,12 @@
       <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item pb-2">
+      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Switch Organization</span>
       </a>
     </li>
 
@@ -135,6 +156,12 @@
       <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item pb-2">
+      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Switch Organization</span>
       </a>
     </li>
 

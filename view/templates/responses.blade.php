@@ -69,7 +69,7 @@
 
 <main id="main" class="main">
 
-  <div class="pagetitle">
+  <div class="pagetitle mt-3">
     <h1>All Responses</h1>
     <nav>
       <ol class="breadcrumb">
@@ -170,12 +170,16 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator' || $role == 'User')
-                      <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                        @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                        <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                        @endif
                       @endif
                       @if($role == 'Administrator')
-                      @if($response['status'] == 'draft')
-                      <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
-                      @endif
+                        @if($response['status'] == 'draft')
+                          @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                          <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
+                          @endif
+                        @endif
                       @endif
                     </div>
                   </div>

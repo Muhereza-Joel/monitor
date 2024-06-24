@@ -73,6 +73,8 @@ class PageController
 
     public function render_manage_indicator()
     {
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
         $html = $this->blade_view->render('manageIndicator', [
             'pageTitle' => " $this->app_name - manage indicators",
             'appName' => $this->app_name,
@@ -81,8 +83,7 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            
-
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -91,6 +92,7 @@ class PageController
     public function render_edit_indicator($id)
     {
         $result = $this->model->get_indicator($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('editIndicator', [
             'pageTitle' => " $this->app_name - edit indicator",
@@ -100,9 +102,8 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'indicator' => $result['response']
-            
-
+            'indicator' => $result['response'],
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -115,6 +116,7 @@ class PageController
         $indicator_id = $row['indicator_id'];
         $last_current_state = $this->model->get_last_response_current_state($indicator_id);
         $indicator = $this->model->get_indicator($indicator_id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('editResponse', [
             'pageTitle' => " $this->app_name - edit response",
@@ -127,6 +129,7 @@ class PageController
             'response' => $result['response'],
             'lastCurrentState' => $last_current_state['response'],
             'indicator' => $indicator['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -136,6 +139,8 @@ class PageController
     public function render_view_indicators()
     {
         $indicators = $this->model->get_all_indicators();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('viewIndicators', [
             'pageTitle' => " $this->app_name - view indicators",
@@ -146,6 +151,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'indicators' => $indicators['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -156,6 +162,7 @@ class PageController
     {
         $indicator = $this->model->get_indicator($id);
         $last_current_state = $this->model->get_last_response_current_state($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('addResponse', [
             'pageTitle' => " $this->app_name - addResponse",
@@ -168,6 +175,7 @@ class PageController
             'indicatorId' => $id,
             'indicator' => $indicator['response'],
             'lastCurrentState' => $last_current_state['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -177,6 +185,7 @@ class PageController
     public function render_responses()
     {
         $responses = $this->model->get_all_responses();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('responses', [
             'pageTitle' => " $this->app_name - all responses",
@@ -186,7 +195,8 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'responses' => $responses['response']
+            'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -196,6 +206,7 @@ class PageController
     public function render_indicator_responses($id)
     {
         $responses = $this->model->get_indicator_responses($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('responses', [
             'pageTitle' => " $this->app_name - all indicator responses",
@@ -205,7 +216,8 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'responses' => $responses['response']
+            'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -215,6 +227,7 @@ class PageController
     public function render_user_responses()
     {
         $responses = $this->model->get_all_user_responses();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('responses', [
             'pageTitle' => " $this->app_name - my responses",
@@ -224,7 +237,8 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'responses' => $responses['response']
+            'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
 
         ]);
 
@@ -234,6 +248,7 @@ class PageController
     public function render_users()
     {
         $result = $this->model->get_all_users();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('users', [
             'pageTitle' => "$this->app_name - users",
@@ -244,6 +259,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'users' => $result['response'],
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -252,6 +268,7 @@ class PageController
     public function render_user_details($id)
     {
         $result = $this->model->get_user_details($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('viewUser', [
             'pageTitle' => "$this->app_name - user details",
@@ -261,6 +278,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'userDetails' => $result['response'],
+            'myOrganisation' => $myOrganisation['response'],
         ]);
 
         echo ($html);
@@ -268,7 +286,8 @@ class PageController
 
     public function render_create_user()
     {
-        
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
         $html = $this->blade_view->render('createUser', [
             'pageTitle' => "$this->app_name - create user",
             'appName' => $this->app_name,
@@ -276,6 +295,7 @@ class PageController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'myOrganisation' => $myOrganisation['response'],
             
         ]);
 
@@ -285,6 +305,7 @@ class PageController
     public function render_create_organization()
     {
         $organisations = $this->model->get_organisations();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('createOrganisations', [
             'pageTitle' => "$this->app_name - create organisation",
@@ -295,6 +316,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
+            'myOrganisation' => $myOrganisation['response'],
             
         ]);
 
@@ -304,6 +326,7 @@ class PageController
     public function render_choose_organisation()
     {
         $organisations = $this->model->get_organisations();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('chooseOrganisation', [
             'pageTitle' => "$this->app_name - Choose organisation",
@@ -314,7 +337,8 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
-            'callbackUrl' => $_SERVER['HTTP_REFERER']
+            'callbackUrl' => $_SERVER['HTTP_REFERER'],
+            'myOrganisation' => $myOrganisation['response'],
             
         ]);
 
@@ -324,6 +348,7 @@ class PageController
     public function render_dashboard_choose_organisation()
     {
         $organisations = $this->model->get_organisations();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('chooseOrganisationTwo', [
             'pageTitle' => "$this->app_name - Choose organisation",
@@ -334,7 +359,8 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
-            'callbackUrl' => $this->app_base_url . '/'. $this->app_name . '/auth/sign-out/'
+            'callbackUrl' => $this->app_base_url . '/'. $this->app_name . '/auth/sign-out/',
+            'myOrganisation' => $myOrganisation['response'],
             
         ]);
 

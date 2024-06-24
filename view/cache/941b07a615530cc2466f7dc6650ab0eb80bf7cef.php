@@ -69,7 +69,7 @@
 
 <main id="main" class="main">
 
-  <div class="pagetitle">
+  <div class="pagetitle mt-3">
     <h1>Indicators</h1>
     <nav>
       <ol class="breadcrumb">
@@ -148,15 +148,17 @@
                         Select Action
                       </button>
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                        <?php if($role == 'Administrator'): ?>
-                        <?php if($indicator['status'] == 'draft' || $indicator['status'] == 'review'): ?>
-                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/<?php echo e($appName); ?>/dashboard/indicators/edit?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
-                          <i class="bi bi-pencil-square"></i> Edit Indicator
-                        </a>
-                        <?php endif; ?>
                         <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
+                        <?php if($role == 'Administrator'): ?>
+                          <?php if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                            <?php if($indicator['status'] == 'draft' || $indicator['status'] == 'review'): ?>
+                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/<?php echo e($appName); ?>/dashboard/indicators/edit?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                              <i class="bi bi-pencil-square"></i> Edit Indicator
+                            </a>
+                            <?php endif; ?>
+                          <?php endif; ?>
                         <?php endif; ?>
                         <?php if($role == 'Viewer'): ?>
                         <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
@@ -164,33 +166,38 @@
                         </a>
                         <?php endif; ?>
                         <?php if($role == 'User' || $role == 'Administrator'): ?>
-                        <?php if($indicator['status'] == 'draft'): ?>
-                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="/<?php echo e($appName); ?>/dashboard/indicators/responses/add?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
-                          <i class="bi bi-plus-circle"></i> Add Response
-                        </a>
+                          <?php if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                            <?php if($indicator['status'] == 'draft'): ?>
+                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="/<?php echo e($appName); ?>/dashboard/indicators/responses/add?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                              <i class="bi bi-plus-circle"></i> Add Response
+                            </a>
+                            <?php endif; ?>
+                            <?php if($indicator['status'] == 'draft'): ?>
+                            <a id="review-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=review" class="dropdown-item">
+                              <i class="bi bi-pencil"></i> Review Indicator
+                            </a>
+                            <?php endif; ?>
+                            <?php if($indicator['status'] == 'review'): ?>
+                            <a id="publish-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=public" class="dropdown-item">
+                              <i class="bi bi-globe"></i> Make Indicator Public
+                            </a>
+                            <?php endif; ?>
+                            <?php if($indicator['status'] == 'review' || $indicator['status'] == 'public'): ?>
+                            <a id="archive-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=archived" class="dropdown-item">
+                              <i class="bi bi-archive"></i> Archive Indicator
+                            </a>
+                            <?php endif; ?>
+                          <?php endif; ?>  
                         <?php endif; ?>
-                        <?php if($indicator['status'] == 'draft'): ?>
-                        <a id="review-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=review" class="dropdown-item">
-                          <i class="bi bi-pencil"></i> Review Indicator
-                        </a>
-                        <?php endif; ?>
-                        <?php if($indicator['status'] == 'review'): ?>
-                        <a id="publish-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=public" class="dropdown-item">
-                          <i class="bi bi-globe"></i> Make Indicator Public
-                        </a>
-                        <?php endif; ?>
-                        <?php if($indicator['status'] == 'review' || $indicator['status'] == 'public'): ?>
-                        <a id="archive-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=archived" class="dropdown-item">
-                          <i class="bi bi-archive"></i> Archive Indicator
-                        </a>
-                        <?php endif; ?>
-                        <?php endif; ?>
+
                         <?php if($role == 'Administrator'): ?>
-                        <?php if($indicator['status'] == 'draft'): ?>
-                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Deleting an indicator is only available when the indicator is in draft state." href="/<?php echo e($appName); ?>/dashboard/manage-indicators/delete/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item text-danger" id="delete-btn">
-                          <i class="bi bi-trash"></i> Delete Indicator
-                        </a>
-                        <?php endif; ?>
+                          <?php if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                            <?php if($indicator['status'] == 'draft'): ?>
+                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Deleting an indicator is only available when the indicator is in draft state." href="/<?php echo e($appName); ?>/dashboard/manage-indicators/delete/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item text-danger" id="delete-btn">
+                              <i class="bi bi-trash"></i> Delete Indicator
+                            </a>
+                            <?php endif; ?>
+                          <?php endif; ?>
                         <?php endif; ?>
                       </div>
                     </div>
