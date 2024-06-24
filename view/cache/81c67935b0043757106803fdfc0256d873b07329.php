@@ -84,10 +84,7 @@
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Full Name</div>
                   <div class="col-lg-9 col-md-8 text-secondary"><?php echo e($userDetails['name']); ?></div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label fw-bold text-secondary">NIN Number</div>
-                  <div class="col-lg-9 col-md-8 text-secondary"><?php echo e($userDetails['nin']); ?></div>
-                </div>
+               
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Date of Birth</div>
                   <div class="col-lg-9 col-md-8 text-secondary"><?php echo e($userDetails['dob']); ?></div>

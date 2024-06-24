@@ -41,7 +41,6 @@ class Model
         $this->database = $database_connection->get_connection();
     }
 
-
     public function get_all_users()
     {
         $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
@@ -109,7 +108,6 @@ class Model
         $stmt->close();
     }
 
-
     public function create_indicator()
     {
         $request = Request::capture();
@@ -122,11 +120,12 @@ class Model
         $frequency = $request->input('frequency');
         $responsible = $request->input('responsible');
         $reporting = $request->input('reporting');
+        $organization_id = Session::get('my_organization_id');
 
-        $query = "INSERT INTO indicators(indicator_title, definition, baseline, target, data_source, frequency, responsible, reporting) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO indicators(indicator_title, definition, baseline, target, data_source, frequency, responsible, reporting, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('ssssssss', $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting);
+        $stmt->bind_param('ssssssssi', $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting, $organization_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -242,7 +241,8 @@ class Model
                     ) AS cumulative_progress,
                     (SELECT COUNT(id) FROM responses WHERE indicator_id = i.id) AS response_count
                 FROM 
-                    indicators AS i;
+                    indicators AS i
+                ORDER BY i.status;
             ";
 
         $stmt = $this->database->prepare($query);
@@ -255,7 +255,6 @@ class Model
 
         return ['httpStatus' => 200, 'response' => $rows];
     }
-
 
     public function get_indicator($id)
     {
@@ -271,6 +270,55 @@ class Model
         $stmt->close();
 
         return ['httpStatus' => 200, 'response' => $row];
+    }
+
+    public function update_indicator_status($id, $status)
+    {
+        $this->database->begin_transaction();
+
+        try {
+            // Update indicator status
+            $query = "UPDATE indicators SET status = ? WHERE id = ?";
+            $stmt = $this->database->prepare($query);
+            $stmt->bind_param('si', $status, $id);
+            $stmt->execute();
+
+            // Check if the indicator update was successful
+            if ($stmt->affected_rows > 0) {
+                // Update related responses' status
+                $query = "UPDATE responses SET status = ? WHERE indicator_id = ?";
+                $stmt = $this->database->prepare($query);
+                $stmt->bind_param('si', $status, $id);
+                $stmt->execute();
+
+                if ($stmt->affected_rows > 0) {
+                    $this->database->commit();
+                    $response = ['message' => 'Indicator and related responses updated successfully'];
+                    $httpStatus = 200;
+                } else {
+                    // No responses to update, but indicator status update was successful
+                    $this->database->commit();
+                    $response = ['message' => 'Indicator status updated, but no related responses found'];
+                    $httpStatus = 200;
+                }
+
+                Request::send_response($httpStatus, $response);
+            } elseif ($stmt->affected_rows == 0) {
+                $this->database->rollback();
+                $response = ['message' => "You didn't change anything"];
+                $httpStatus = 200;
+
+                Request::send_response($httpStatus, $response);
+            } else {
+                throw new Exception($stmt->error);
+            }
+        } catch (Exception $e) {
+            $this->database->rollback();
+            $response = ['error' => $e->getMessage()];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
     }
 
     public function get_last_response_current_state($id)
@@ -292,6 +340,7 @@ class Model
 
         return ['httpStatus' => 200, 'response' => $row];
     }
+
     public function get_response($id)
     {
         $query = "SELECT responses.*, indicators.baseline, indicators.target FROM responses
@@ -310,7 +359,6 @@ class Model
         return ['httpStatus' => 200, 'response' => $row];
     }
 
-
     public function create_response()
     {
         $request = Request::capture();
@@ -322,12 +370,12 @@ class Model
         $lessons = $request->input('lessons');
         $recommendations = $request->input('recommendations');
         $user_id = Session::get('user_id');
+        $organization_id = Session::get('my_organization_id');
 
-
-        $query = "INSERT INTO responses(indicator_id, current, progress, notes, lessons, recommendations, user_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO responses(indicator_id, current, progress, notes, lessons, recommendations, user_id, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('iiisssi', $indicator_id, $current, $progress, $notes, $lessons, $recommendations, $user_id);
+        $stmt->bind_param('iiisssii', $indicator_id, $current, $progress, $notes, $lessons, $recommendations, $user_id, $organization_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -485,12 +533,12 @@ class Model
     }
 
     public function create_organisation()
-    { 
+    {
         $request = Request::capture();
 
         $organization_logo = $request->input('image_url');
         $organization_name = $request->input('organization-name');
-        
+
         $query = "INSERT INTO organizations(name, logo) VALUES(?, ?)";
 
         $stmt = $this->database->prepare($query);
@@ -590,5 +638,4 @@ class Model
 
         return $count;
     }
-
 }

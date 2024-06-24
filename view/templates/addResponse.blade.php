@@ -20,10 +20,10 @@
         <div class="row">
             <div class="col-sm-10">
                 <div class="card p-2">
-                    
+
                     <div class="card-body">
                         <form action="" class="needs-validation" novalidate id="add-response-form">
-                            
+
                             @if(isset($lastCurrentState['last_current_state']) && $lastCurrentState['last_current_state'] == $indicator['target'])
                             <div class="alert alert-warning">The target for this indicator was achieved..</div>
                             @else
@@ -44,6 +44,7 @@
 
                             <div class="form-group my-2">
                                 <label for="">Enter current state</label>
+                                <small class="text-danger"> (Must be a whole number)</small>
                                 <input required id="current" name="current" type="number" class="form-control">
                                 <div class="invalid-feedback">This value is required</div>
                             </div>
@@ -110,7 +111,8 @@
         var lastCurrentState = parseFloat($('input[name="last_current_state"]').val()) || baseline;
 
         // Initial progress calculation
-        var initialProgress = (lastCurrentState / target) * 100;
+        var initialProgress = (lastCurrentState - baseline) / (target - baseline) * 100;
+        initialProgress = isNaN(initialProgress) ? 0 : initialProgress;
         $('#progress').val(initialProgress.toFixed(1));
         $('#progress-bar').css('width', initialProgress.toFixed(1) + '%');
         $('#progress-bar').attr('aria-valuenow', initialProgress.toFixed(1));
@@ -135,7 +137,7 @@
                 }).showToast();
             } else {
                 $('#current').removeClass('is-invalid');
-                var progress = ((current - baseline) / (target - baseline)) * 100;;
+                var progress = ((current - baseline) / (target - baseline)) * 100;
                 $('#progress').val(progress.toFixed(1));
 
                 // Update progress bar
@@ -149,11 +151,25 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{'font': []}, {'size': []}],
+                    [{
+                        'font': []
+                    }, {
+                        'size': []
+                    }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'color': []}, {'background': []}],
-                    [{'align': []}],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
                     ['link'],
                 ]
             }
@@ -163,11 +179,25 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{'font': []}, {'size': []}],
+                    [{
+                        'font': []
+                    }, {
+                        'size': []
+                    }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'color': []}, {'background': []}],
-                    [{'align': []}],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
                     ['link'],
                 ]
             }
@@ -177,11 +207,25 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{'font': []}, {'size': []}],
+                    [{
+                        'font': []
+                    }, {
+                        'size': []
+                    }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'color': []}, {'background': []}],
-                    [{'align': []}],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
                     ['link'],
                 ]
             }
@@ -208,8 +252,8 @@
                     $('#editor-feedback').hide();
 
                     var current = parseFloat($('#current').val());
-                    var progress = (current / target) * 100;
-                    
+                    var progress = (current - baseline) / (target - baseline) * 100;
+
                     // Validate current state before submission
                     if (isNaN(current) || current < lastCurrentState || current > target) {
                         Toastify({

@@ -34,6 +34,7 @@
                             </div>
                             <div class="form-group my-2">
                                 <label for="">Current state</label>
+                                <small class="text-danger"> (Must be a whole number)</small>
                                 <input required id="current" value="{{$response['current']}}" name="current" type="number" class="form-control">
                                 <div class="invalid-feedback">This value is required</div>
                             </div>

@@ -473,13 +473,14 @@ class User
 
     public function check_identifier($identifier)
     {
-        $query = "SELECT * FROM app_users WHERE username = ? OR email = ?";
+        $query = "SELECT * FROM app_users WHERE email = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('ss', $identifier, $identifier);
+        $stmt->bind_param('s', $identifier);
         $stmt->execute();
 
         $result = $stmt->get_result();
+       
 
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
@@ -506,6 +507,7 @@ class User
                         'message' => 'Account with provided identifier exists.'
                     ];
                     $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
                 }
             }
         } else {
@@ -516,9 +518,10 @@ class User
             ];
             $httpStatus = 401;
             sleep(3);
+            Request::send_response($httpStatus, $response);
         }
 
-        Request::send_response($httpStatus, $response);
+        
     }
 
     public function generateOTP($length = 6)

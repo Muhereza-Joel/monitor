@@ -1,8 +1,71 @@
 @include('partials/header')
 
-@include('partials/topBar');
+@include('partials/topBar')
 
-@include('partials/leftPane');
+@include('partials/leftPane')
+
+<style>
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .status-draft {
+    border-top: 8px solid #fc03a1;
+    border-left: 3px solid #fc03a1;
+  }
+
+  .status-review {
+    border-top: 8px solid #0a1157;
+    border-left: 3px solid #0a1157;
+  }
+
+  .status-public {
+    border-top: 8px solid green;
+    border-left: 3px solid green;
+  }
+
+  .status-archived {
+    border-top: 8px solid #1cc9be;
+    border-left: 3px solid #1cc9be;
+  }
+
+  .status-key {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .status-key span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .status-key .key-draft {
+    width: 20px;
+    height: 10px;
+    background-color: #fc03a1;
+  }
+
+  .status-key .key-review {
+    width: 20px;
+    height: 10px;
+    background-color: #0a1157;
+  }
+
+  .status-key .key-public {
+    width: 20px;
+    height: 10px;
+    background-color: green;
+  }
+
+  .status-key .key-archived {
+    width: 20px;
+    height: 10px;
+    background-color: #1cc9be;
+  }
+</style>
 
 <main id="main" class="main">
 
@@ -17,14 +80,26 @@
   </div><!-- End Page Title -->
 
   <section class="section dashboard">
-
     <div class="row p-2">
       <div class="card pt-4">
         <div class="card-body">
-          <table class="table table-striped datatable" id="responses-table">
+          <div class="status-key">
+            <span>
+              <div class="key-draft"></div> Draft
+            </span>
+            <span>
+              <div class="key-review"></div> Review
+            </span>
+            <span>
+              <div class="key-public"></div> Public
+            </span>
+            <span>
+              <div class="key-archived"></div> Archived
+            </span>
+          </div>
+          <table class="table table-striped" id="responses-table">
             <thead>
               <tr>
-
                 <th scope="col">Respondent</th>
                 <th scope="col">Indicator, Notes, Lessons Learnt and Recommendations</th>
                 <th scope="col">Stats</th>
@@ -33,8 +108,7 @@
             </thead>
             <tbody>
               @foreach($responses as $response)
-              <tr>
-
+              <tr class="status-{{ strtolower($response['status']) }}">
                 <td><span class="badge bg-success">{{$response['response_tag_label']}} from <br></span> {{$response['name']}}</td>
                 <td scope="row">
                   <div class="accordion w-100" id="accordionExample">
@@ -54,7 +128,8 @@
                           <p><br>'));
                             @endphp
 
-                            @if(!empty($notesContent) && $notesContent !== '<p><br></p>')
+                            @if(!empty($notesContent) && $notesContent !== '
+                          <p><br></p>')
                           <h5 class="text-success">Notes Taken</h5>
                           <p class="text-success">{!! $response['notes'] !!}</p>
                           <hr>
@@ -71,7 +146,6 @@
                           <p class="text-success">{!! $response['recommendations'] !!}</p>
                           @endif
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -99,9 +173,10 @@
                       <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
                       @endif
                       @if($role == 'Administrator')
-                      <a href="/{{$appName}}/dashboard/manage-indicators/resposes/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
+                      @if($response['status'] == 'draft')
+                      <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
                       @endif
-
+                      @endif
                     </div>
                   </div>
                 </td>
@@ -112,9 +187,7 @@
         </div>
       </div>
     </div>
-
   </section>
-
 </main><!-- End #main -->
 
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
@@ -122,7 +195,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="confirmDeleteModalLabel">Confirm Your Action</h5>
-
       </div>
       <div class="modal-body">
         <h6 class="text-dark">Are you sure you want to execute this action?</h6>
@@ -142,15 +214,11 @@
   $(document).ready(function() {
     $('#responses-table').on('click', '#delete-btn', function(event) {
       event.preventDefault();
-
       var removeUrl = $(this).attr('href');
-
       $('#confirmDeleteModal').modal('show');
       $('#cancel-btn').click(function() {
         $('#confirmDeleteModal').modal('hide');
-
-      })
-
+      });
       $('#confirmDeleteModal').on('click', '#confirmDeleteBtn', function() {
         $.post(removeUrl, function(response) {
           Toastify({
@@ -159,13 +227,11 @@
             gravity: 'bottom',
             backgroundColor: 'green',
           }).showToast();
-
           setTimeout(function() {
             window.location.reload();
-
-          }, 3000)
+          }, 3000);
         });
       });
-    })
-  })
+    });
+  });
 </script>
