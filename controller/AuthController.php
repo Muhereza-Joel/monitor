@@ -39,6 +39,8 @@ class AuthController
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -54,6 +56,8 @@ class AuthController
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -70,6 +74,8 @@ class AuthController
             'appNameFull' => $this->app_name_full,
             'baseUrl' => $this->app_base_url,
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -87,6 +93,8 @@ class AuthController
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -104,6 +112,8 @@ class AuthController
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -121,6 +131,8 @@ class AuthController
             'baseUrl' => $this->app_base_url,
             'email' => Session::get('email_to_confirm'),
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -138,6 +150,8 @@ class AuthController
             'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
@@ -161,6 +175,8 @@ class AuthController
             'avator' => Session::get('avator'),
             'userDetails' => $userDetails,
             'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
         ]);
 
         echo ($html);
