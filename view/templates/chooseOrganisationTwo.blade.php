@@ -57,7 +57,7 @@
 
                 let selectedOrgId = $(this).data('org-id');
                 Toastify({
-                    text: 'Swithing organisation please wait...',
+                    text: 'Switching organisation please wait...',
                     duration: 4000,
                     gravity: 'bottom',
                     position: 'left',

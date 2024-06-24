@@ -222,7 +222,7 @@ class PageController
         $responses = $this->model->get_indicator_responses($id);
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
-        $html = $this->blade_view->render('archivedResponses', [
+        $html = $this->blade_view->render('responses', [
             'pageTitle' => " $this->app_name - all indicator archived responses",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
@@ -245,7 +245,7 @@ class PageController
         $responses = $this->model->get_indicator_responses($id);
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
-        $html = $this->blade_view->render('responses', [
+        $html = $this->blade_view->render('archivedResponses', [
             'pageTitle' => " $this->app_name - all indicator responses",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
