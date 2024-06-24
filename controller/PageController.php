@@ -367,4 +367,46 @@ class PageController
         echo ($html);
     }
 
+    public function render_archived_indicators()
+    {
+        $indicators = $this->model->get_all_archived_indicators();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
+        $html = $this->blade_view->render('archivedIndicators', [
+            'pageTitle' => "$this->app_name - archived indicators",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'indicators' => $indicators['response'],
+            'myOrganisation' => $myOrganisation['response'],
+            
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_archived_responses()
+    {
+        $responses = $this->model->get_all_archived_responses();
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
+        $html = $this->blade_view->render('archivedResponses', [
+            'pageTitle' => "$this->app_name - archived responses",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'responses' => $responses['response'],
+            'myOrganisation' => $myOrganisation['response'],
+            
+        ]);
+
+        echo ($html);
+    }
+
 } 

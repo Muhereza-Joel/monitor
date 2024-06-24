@@ -24,7 +24,7 @@
 
                                             <div class="pt-4 pb-2">
                                                 <h5 class="card-title text-center pb-0 fs-4">Please choose your organisation and click Proceed</h5>
-                                                <br><br>
+                                                <div class="alert alert-info">We see that you need an account, but please note that self registered users only have permissions that allow them to view data.</div>
                                             </div>
 
                                             <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">

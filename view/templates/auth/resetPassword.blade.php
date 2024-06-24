@@ -12,7 +12,7 @@
                                     <!-- Left Column -->
                                     <div style="border-right: 2px solid #999;" class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
                                         <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto mb-4">
-                                            <img src="/{{$appName}}/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
+                                            <img src="/{{$appName}}/assets/img/torodev.png" style="width: 300px; object-fit:contain;" alt="logo">
                                         </a>
                                         <h5 class="card-title pb-0 fs-4">{{$appNameFull}} Account Recovery</h5>
                                         <p class="mt-3">Please create a new strong password that you will use to log in to your account again.</p>

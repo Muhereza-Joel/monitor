@@ -168,16 +168,16 @@
     <li class="nav-heading mb-3">Modules</li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/">
+      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
         <i class="bi bi-card-list"></i>
-        <span>All Indicators</span>
+        <span>All Archived Indicators</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/">
+      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
         <i class="bi bi-card-list"></i>
-        <span>All Responses</span>
+        <span>All Archived Responses</span>
       </a>
     </li>
     

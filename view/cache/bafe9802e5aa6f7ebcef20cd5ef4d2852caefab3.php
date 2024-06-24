@@ -31,7 +31,7 @@
                                                 <span class="text-center"></span>
                                             </div>
                                             <div class="alert alert-warning">
-                                                <strong>You can only view data for organisations you belong to. To modify data, create indicators, or add responses, please select your own organisation.</strong>
+                                                <strong>You can only view data for organisations you belong to. To modify data, create indicators, or add responses, please select your own organisation you selected when creating your account.</strong>
                                             </div>
                                             <?php echo $__env->make('chooser', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 

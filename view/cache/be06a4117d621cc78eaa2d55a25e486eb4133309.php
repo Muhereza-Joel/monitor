@@ -22,8 +22,8 @@
     </div>
 
       <?php if($role == 'Viewer'): ?>
-        <div class="alert alert-info p-2">
-          <?php echo e($username); ?>, your role only allows you to view data. If you need to modify or delete any information, please contact the Administrator to update your permissions.
+        <div class="alert alert-danger p-2">
+          <?php echo e($username); ?>, your permissions only allows you to view data. If you need to modify or delete any information, please contact the Administrator to update your permissions.
         </div>
       <?php endif; ?>
 
@@ -31,7 +31,7 @@
         <div class="col-sm-4">
           <div class="card info-card sales-card">
             <div class="card-body">
-              <h5 class="card-title">All <span>| Indicators</span></h5>
+              <h5 class="card-title">All <span>| Active Indicators</span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-graph-up"></i>
@@ -48,7 +48,7 @@
         <div class="col-sm-4">
           <div class="card info-card sales-card">
             <div class="card-body">
-              <h5 class="card-title">All <span>| Responses</span></h5>
+              <h5 class="card-title">All <span>| Active Responses</span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-check-circle"></i>

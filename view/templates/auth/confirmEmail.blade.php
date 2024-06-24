@@ -22,7 +22,7 @@
                                     <!-- Right Column -->
                                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
                                         <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto mb-4">
-                                            <img src="/{{$appName}}/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
+                                            <img src="/{{$appName}}/assets/img/torodev.png" style="width: 300px; object-fit:contain;" alt="logo">
                                         </a>
                                         <form id="otp-confirmation-form" class="row g-3 needs-validation" novalidate>
                                             <div class="col-12">

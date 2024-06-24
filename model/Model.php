@@ -264,6 +264,43 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function get_all_archived_indicators()
+    {
+        $query = "
+                SELECT 
+                    i.*, 
+                    IFNULL(
+                        (
+                            SELECT 
+                                ROUND(
+                                    MAX((r.current - i.baseline) / (i.target - i.baseline) * 100), 0
+                                ) 
+                            FROM responses AS r 
+                            WHERE r.indicator_id = i.id
+                        ), 
+                        0
+                    ) AS cumulative_progress,
+                    (SELECT COUNT(id) FROM responses WHERE indicator_id = i.id) AS response_count
+                FROM 
+                    indicators_archive AS i
+                WHERE organization_id = ?
+                ORDER BY i.status;
+            ";
+
+        $organization_id = Session::get('selected_organisation_id');
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
     public function get_indicator($id)
     {
         $query = "SELECT * FROM indicators WHERE id = ?";
@@ -471,6 +508,24 @@ class Model
         $organization_id = Session::get('selected_organisation_id');
 
         $query = "CALL GetResponses(?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function get_all_archived_responses()
+    {
+        $organization_id = Session::get('selected_organisation_id');
+
+        $query = "CALL GetAllArchivedResponses(?)";
 
         $stmt = $this->database->prepare($query);
         $stmt->bind_param('i', $organization_id);
