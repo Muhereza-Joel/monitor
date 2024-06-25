@@ -8,7 +8,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle mt-3">
-    <h1>Indicators</h1>
+    <h1>All Archived Indicators</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
@@ -22,7 +22,7 @@
       <div class="card pt-4">
 
         <div class="card-body">
-          
+
           <div class="table-responsive">
             <table class="table table-striped table-responsive datatable" id="indicators-table">
               <thead>
@@ -71,30 +71,24 @@
                         Select Action
                       </button>
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                        <a href="/{{$appName}}/dashboard/indicators/responses/all?id={{$indicator['id']}}" class="dropdown-item">
+                        @if($role == 'User' || $role == 'Administrator')
+                        <a href="/{{$appName}}/dashboard/indicators/archived/responses/all?id={{$indicator['id']}}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
-                        @if($role == 'Administrator')
-                          @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                            @if($indicator['status'] == 'draft' || $indicator['status'] == 'review')
-                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">
-                              <i class="bi bi-pencil-square"></i> Edit Indicator
-                            </a>
-                            @endif
-                          @endif
                         @endif
+
                         @if($role == 'Viewer')
                         <a href="/{{$appName}}/dashboard/indicators/archived/responses/all?id={{$indicator['id']}}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @endif
                         @if($role == 'User' || $role == 'Administrator')
-                          @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                          <a  href="#" class="dropdown-item">
+                        @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                        <a href="#" class="dropdown-item">
                           <i class="bi bi-book"></i> Export File
-                          </a>
-                           
-                          @endif  
+                        </a>
+
+                        @endif
                         @endif
                       </div>
                     </div>

@@ -22,7 +22,7 @@
             <div class="col-sm-5">
                 <div class="card p-2">
                     <div class="card-title">Create New Organisation User</div>
-                    
+
                     <div class="card-body">
                         <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
                             <span class="text-center"></span>
@@ -62,14 +62,16 @@
                                 </select>
                                 <div class="invalid-feedback">This value is required</div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="role">Organization</label>
                                 <select name="organisation" id="role" class="form-control" required>
                                     <option value="">Select organisation</option>
-                                    
+
                                     <?php $__currentLoopData = $organisations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($row['id']); ?>"><?php echo e($row['name']); ?></option>
+                                    <?php if($row['active'] == 'true'): ?>
+                                    <option value="<?php echo e($row['id']); ?>"><?php echo e($row['name']); ?></option>
+                                    <?php endif; ?>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                 </select>
@@ -91,9 +93,9 @@
                     <div class="card-body">
                         <h5 class="card-title">Administrator</h5>
                         <p class="card-text">Administrators can add and manage indicators, manage responses, manage user accounts and roles, and have full access to all data and system settings.</p>
-                        
+
                         <h5 class="card-title">Users</h5>
-                        <p class="card-text">Users can create indicators and responses as well, view all data (indicators, responses), modify there responses but cannot  delete any data.</p>
+                        <p class="card-text">Users can create indicators and responses as well, view all data (indicators, responses), modify there responses but cannot delete any data.</p>
 
                         <h5 class="card-title">Viewers</h5>
                         <p class="card-text">Viewers can view all data (indicators, responses, user profiles) but cannot add, modify, or delete any data.</p>

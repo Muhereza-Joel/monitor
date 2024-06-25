@@ -7,7 +7,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle mt-3">
-    <h1>All Responses</h1>
+    <h1>All Archived Responses</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>

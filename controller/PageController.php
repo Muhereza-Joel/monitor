@@ -147,6 +147,7 @@ class PageController
     public function render_view_indicators()
     {
         $indicators = $this->model->get_all_indicators();
+        $publicAndArchivedIndicatorsCount = $this->model->get_public_and_archived_indicators_count();
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
@@ -161,7 +162,8 @@ class PageController
             'indicators' => $indicators['response'],
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
-            'chosenOrganisationId' => Session::get('selected_organisation_id')
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'publicAndArchivedIndicatorsCount' => $publicAndArchivedIndicatorsCount,
 
         ]);
 
@@ -246,7 +248,7 @@ class PageController
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('archivedResponses', [
-            'pageTitle' => " $this->app_name - all indicator responses",
+            'pageTitle' => " $this->app_name - all indicator archived responses",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,
@@ -449,7 +451,7 @@ class PageController
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('archivedIndicators', [
-            'pageTitle' => "$this->app_name - archived indicators",
+            'pageTitle' => "$this->app_name - all archived indicators",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,
@@ -472,7 +474,7 @@ class PageController
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('archivedResponses', [
-            'pageTitle' => "$this->app_name - archived responses",
+            'pageTitle' => "$this->app_name - all archived responses",
             'appName' => $this->app_name,
             'baseUrl' => $this->app_base_url,
             'appNameFull' => $this->app_name_full,

@@ -52,4 +52,9 @@ class IndicatorController
     {
         $this->model->update_indicator_status($id, $status);
     }
+
+    public function archive_indicators()
+    {
+        $this->model->archive_indicators();
+    }
 }

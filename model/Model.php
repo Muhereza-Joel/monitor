@@ -521,6 +521,23 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function archive_indicators()
+    {
+
+        $organization_id = Session::get('my_organization_id');
+
+        $query = "CALL ArchiveOrganisationData(?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
+        $stmt->execute();
+
+        $response = ['message' => 'All public and archived indicators moved to archives successfully.y'];
+        $httpStatus = 200;
+
+        Request::send_response($httpStatus, $response);
+    }
+
     public function get_all_archived_responses()
     {
         $organization_id = Session::get('selected_organisation_id');
@@ -732,6 +749,24 @@ class Model
         $count = 0;
         $organization_id = Session::get('selected_organisation_id');
         $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1 AND app_users.organization_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $organization_id);
+        $stmt->execute();
+        $stmt->bind_result($count);
+
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+    
+    public function get_public_and_archived_indicators_count()
+    {
+        $count = 0;
+        $organization_id = Session::get('my_organization_id');
+        $query = "SELECT COUNT(*) FROM indicators WHERE status = 'public' OR status = 'archived' AND indicators.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
         $stmt->bind_param('i', $organization_id);

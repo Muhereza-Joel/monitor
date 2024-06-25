@@ -225,6 +225,7 @@ class User
             }
         }
     }
+    
     public function add_viewer()
     {
         $request = Request::capture();

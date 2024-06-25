@@ -65,6 +65,14 @@
     height: 10px;
     background-color: #1cc9be;
   }
+
+  .archive-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+  }
+  
 </style>
 
 <main id="main" class="main">
@@ -97,6 +105,11 @@
             <span>
               <div class="key-archived"></div> Archived
             </span>
+            <div class="text-end">
+              @if($publicAndArchivedIndicatorsCount > 0)
+              <span id="move-to-archive-btn" class="btn btn-light btn-sm"> Move <span class="badge bg-primary" id="public-archived-count">{{$publicAndArchivedIndicatorsCount}}</span> {{$publicAndArchivedIndicatorsCount > 1 ? 'Indicators' : 'Indicator'}}  To Archives.</span>
+              @endif
+            </div>
           </div>
           <div class="table-responsive">
             <table class="table table-striped table-responsive" id="indicators-table">
@@ -150,52 +163,53 @@
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @if($role == 'Administrator')
-                          @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                            @if($indicator['status'] == 'draft' || $indicator['status'] == 'review')
-                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">
-                              <i class="bi bi-pencil-square"></i> Edit Indicator
-                            </a>
-                            @endif
-                          @endif
+                        @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                        @if($indicator['status'] == 'draft' || $indicator['status'] == 'review')
+                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/edit?id={{$indicator['id']}}" class="dropdown-item">
+                          <i class="bi bi-pencil-square"></i> Edit Indicator
+                        </a>
+                        @endif
+                        @endif
                         @endif
                         @if($role == 'Viewer')
                         <a href="/{{$appName}}/dashboard/indicators/responses/all?id={{$indicator['id']}}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @endif
+                        
                         @if($role == 'User' || $role == 'Administrator')
-                          @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                            @if($indicator['status'] == 'draft')
-                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/responses/add?id={{$indicator['id']}}" class="dropdown-item">
-                              <i class="bi bi-plus-circle"></i> Add Response
-                            </a>
-                            @endif
-                            @if($indicator['status'] == 'draft')
-                            <a id="review-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=review" class="dropdown-item">
-                              <i class="bi bi-pencil"></i> Review Indicator
-                            </a>
-                            @endif
-                            @if($indicator['status'] == 'review')
-                            <a id="publish-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=public" class="dropdown-item">
-                              <i class="bi bi-globe"></i> Make Indicator Public
-                            </a>
-                            @endif
-                            @if($indicator['status'] == 'review' || $indicator['status'] == 'public')
-                            <a id="archive-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=archived" class="dropdown-item">
-                              <i class="bi bi-archive"></i> Archive Indicator
-                            </a>
-                            @endif
-                          @endif  
+                        @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                        @if($indicator['status'] == 'draft')
+                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/responses/add?id={{$indicator['id']}}" class="dropdown-item">
+                          <i class="bi bi-plus-circle"></i> Add Response
+                        </a>
+                        @endif
+                        @if($indicator['status'] == 'draft')
+                        <a id="review-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=review" class="dropdown-item">
+                          <i class="bi bi-pencil"></i> Review Indicator
+                        </a>
+                        @endif
+                        @if($indicator['status'] == 'review')
+                        <a id="publish-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=public" class="dropdown-item">
+                          <i class="bi bi-globe"></i> Make Indicator Public
+                        </a>
+                        @endif
+                        @if($indicator['status'] == 'review' || $indicator['status'] == 'public')
+                        <a id="archive-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=archived" class="dropdown-item">
+                          <i class="bi bi-archive"></i> Archive Indicator
+                        </a>
+                        @endif
+                        @endif
                         @endif
 
                         @if($role == 'Administrator')
-                          @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                            @if($indicator['status'] == 'draft')
-                            <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Deleting an indicator is only available when the indicator is in draft state." href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">
-                              <i class="bi bi-trash"></i> Delete Indicator
-                            </a>
-                            @endif
-                          @endif
+                        @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                        @if($indicator['status'] == 'draft')
+                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Deleting an indicator is only available when the indicator is in draft state." href="/{{$appName}}/dashboard/manage-indicators/delete/?id={{$indicator['id']}}" class="dropdown-item text-danger" id="delete-btn">
+                          <i class="bi bi-trash"></i> Delete Indicator
+                        </a>
+                        @endif
+                        @endif
                         @endif
                       </div>
                     </div>
@@ -288,6 +302,25 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="moveToArchiveModal" tabindex="-1" role="dialog" aria-labelledby="moveToArchiveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="moveToArchiveModalLabel">Confirm Your Action</h5>
+        </div>
+        <div class="modal-body">
+          <h6 class="text-dark">You are about to move all public and archived indicators and their responses to archives. Are you sure you want to proceed?</h6>
+          <div class="alert alert-warning p-2 mt-2">Please note that this action is irreversible. Proceed with caution.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="cancel-move-to-archive-btn" data-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmMoveToArchiveBtn" class="btn btn-success btn-sm">Yes, Move to Archives</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 </main><!-- End #main -->
@@ -428,5 +461,52 @@
         $('#archiveIndicatorModal').modal('hide');
       })
     })
+
+    // Handle the click event for the "Move All to Archives" button
+    $('#move-to-archive-btn').on('click', function() {
+      $('#moveToArchiveModal').modal('show');
+    });
+
+    // Handle the click event for the confirm button in the modal
+    $('#confirmMoveToArchiveBtn').on('click', function() {
+      var endpointUrl = '/{{$appName}}/dashboard/indicators/move-to-archives/'; // Replace with your actual endpoint URL
+
+      // Make the AJAX request
+      $.ajax({
+        method: 'POST',
+        url: endpointUrl,
+        success: function(response) {
+          Toastify({
+            text: response.message || "All public and archived indicators moved to archives successfully.",
+            duration: 5000,
+            gravity: 'bottom',
+            position: 'left',
+            backgroundColor: 'green',
+          }).showToast();
+
+          // Reload the page after a delay
+          setTimeout(function() {
+            window.location.reload();
+          }, 3000);
+        },
+        error: function() {
+          Toastify({
+            text: "An error occurred while moving indicators to archives.",
+            duration: 4000,
+            gravity: 'bottom',
+            position: 'left',
+            backgroundColor: 'red',
+          }).showToast();
+        }
+      });
+
+      // Hide the modal
+      $('#moveToArchiveModal').modal('hide');
+    });
+
+    // Handle the cancel button click in the modal
+    $('#cancel-move-to-archive-btn').on('click', function() {
+      $('#moveToArchiveModal').modal('hide');
+    });
   });
 </script>
