@@ -17,6 +17,7 @@
 <form id="choose-organisation-form" class="row g-3 needs-validation" novalidate>
     <div class="row g-1" style="display: flex; flex-wrap: wrap;">
         @foreach($organisations as $row)
+        @if($row['active'] == 'true')
         <div class="col-sm-4 d-flex">
             <div class="card p-2 flex-fill organisation-card" data-org-id="{{$row['id']}}">
                 <div class="card-title">{{$row['name']}}</div>
@@ -26,6 +27,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endforeach
     </div>
     <br>

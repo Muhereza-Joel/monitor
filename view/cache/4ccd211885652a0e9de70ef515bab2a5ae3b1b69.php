@@ -58,7 +58,15 @@
                             <?php $__currentLoopData = $organisations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="col-sm-4 d-flex">
                                 <div class="card p-2 flex-fill">
-                                    <div class="card-title"><?php echo e($row['name']); ?></div>
+                                    <div class="card-title">
+                                        <?php echo e($row['name']); ?>
+
+                                        <?php if($row['active'] == 'true'): ?>
+                                          <span class="badge bg-success text-light">Active</span>
+                                          <?php else: ?>
+                                          <span class="badge bg-danger text-light">Inactive</span>
+                                        <?php endif; ?>
+                                    </div>
                                     <div class="card-body text-center">
                                         <img style="width: 150px; object-fit: contain; border: 3px solid #999" src="<?php echo e($row['logo']); ?>" alt="logo" class="rounded-circle">
                                     </div>

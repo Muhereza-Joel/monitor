@@ -17,6 +17,7 @@
 <form id="choose-organisation-form" class="row g-3 needs-validation" novalidate>
     <div class="row g-1" style="display: flex; flex-wrap: wrap;">
         <?php $__currentLoopData = $organisations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if($row['active'] == 'true'): ?>
         <div class="col-sm-4 d-flex">
             <div class="card p-2 flex-fill organisation-card" data-org-id="<?php echo e($row['id']); ?>">
                 <div class="card-title"><?php echo e($row['name']); ?></div>
@@ -26,6 +27,7 @@
                 </div>
             </div>
         </div>
+        <?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
     <br>

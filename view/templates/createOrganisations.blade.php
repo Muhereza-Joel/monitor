@@ -58,7 +58,14 @@
                             @foreach($organisations as $row)
                             <div class="col-sm-4 d-flex">
                                 <div class="card p-2 flex-fill">
-                                    <div class="card-title">{{$row['name']}}</div>
+                                    <div class="card-title">
+                                        {{$row['name']}}
+                                        @if($row['active'] == 'true')
+                                          <span class="badge bg-success text-light">Active</span>
+                                          @else
+                                          <span class="badge bg-danger text-light">Inactive</span>
+                                        @endif
+                                    </div>
                                     <div class="card-body text-center">
                                         <img style="width: 150px; object-fit: contain; border: 3px solid #999" src="{{$row['logo']}}" alt="logo" class="rounded-circle">
                                     </div>
