@@ -19,6 +19,7 @@ class AuthMiddleware
             "/$this->app_name/auth/login/", 
             "/$this->app_name/auth/login/sign-in/", 
             "/$this->app_name/auth/create-account/", 
+            "/$this->app_name/auth/viewer/create-account/", 
             "/$this->app_name/auth/accounts/reset/", 
             "/$this->app_name/auth/accounts/check-identifier/",
             "/$this->app_name/auth/accounts/confirm-otp/",

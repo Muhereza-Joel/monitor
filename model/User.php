@@ -192,7 +192,48 @@ class User
         $username = $request->input('username');
         $password = $request->input('password');
         $role = $request->input('role', 'Viewer');
-        $organization_id = Session::get('my_organization_id') || Session::get('selected_organisation_id');
+        $organization_id = Session::get('my_organization_id');
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $new_user = new User();
+        $user = $new_user->get_user($username, $email);
+
+        if ($user) {
+            $response = ['message' => 'Username or email already taken..'];
+            $httpStatus = 401;
+
+            Request::send_response($httpStatus, $response);
+        }
+
+        if (!$user) {
+            $query = "INSERT INTO app_users(username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?)";
+
+            $stmt = $this->database->prepare($query);
+            $stmt->bind_param("ssssi", $username, $email, $hashed_password, $role, $organization_id);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                $response = ['message' => 'Account created successfully.'];
+                $httpStatus = 200;
+
+                Request::send_response($httpStatus, $response);
+            } else {
+                $response = ['error' => $stmt->error];
+                $httpStatus = 500;
+
+                Request::send_response($httpStatus, $response);
+            }
+        }
+    }
+    public function add_viewer()
+    {
+        $request = Request::capture();
+
+        $email = $request->input('email');
+        $username = $request->input('username');
+        $password = $request->input('password');
+        $role = $request->input('role', 'Viewer');
+        $organization_id = Session::get('selected_organisation_id');
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $new_user = new User();

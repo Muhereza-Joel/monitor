@@ -12,6 +12,7 @@ Route::post("/$app_name/auth/create-profile/", "controller\AuthController@render
 Route::post("/$app_name/auth/login/sign-in/", "controller\AuthController@sign_in_user");
 Route::post("/$app_name/auth/create-account/", "controller\AuthController@create_account");
 Route::post("/$app_name/auth/organisation/create-account/", "controller\AuthController@create_organisation_account");
+Route::post("/$app_name/auth/viewer/create-account/", "controller\AuthController@create_viewer_account");
 Route::post("/$app_name/image-upload/", "controller\AuthController@upload_photo");
 Route::post("/$app_name/auth/check-nin/", "controller\AuthController@check_nin");
 Route::post("/$app_name/auth/check-email/", "controller\AuthController@check_email");

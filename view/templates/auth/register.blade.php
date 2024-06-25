@@ -93,7 +93,7 @@
 
           $.ajax({
             method: 'post',
-            url: '/{{$appName}}/auth/create-account/',
+            url: '/{{$appName}}/auth/viewer/create-account/',
             data: formData,
             success: function(response) {
               $("#submit-button").attr('disabled', 'true')
