@@ -18,5 +18,10 @@ class OrganisationController
         $this->model->create_organisation();
     }
 
+    public function update_organisation()
+    {
+        $this->model->update_organisation();
+    }
+
     
 }

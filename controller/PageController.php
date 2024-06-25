@@ -372,6 +372,29 @@ class PageController
         echo ($html);
     }
 
+    public function render_update_organization($id)
+    {
+        $organisation = $this->model->get_organisation_details($id);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
+        $html = $this->blade_view->render('updateOrganisation', [
+            'pageTitle' => "$this->app_name - create organisation",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'organisation' => $organisation['response'],
+            'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
+            
+        ]);
+
+        echo ($html);
+    }
+
     public function render_choose_organisation()
     {
         $organisations = $this->model->get_organisations();

@@ -53,6 +53,7 @@ Route::post("/$app_name/dashboard/indicators/archived/responses/all", "controlle
 Route::post("/$app_name/dashboard/manage-indicators/resposes/", "controller\PageController@render_responses");
 Route::post("/$app_name/dashboard/manage-indicators/u/resposes/", "controller\PageController@render_user_responses");
 Route::post("/$app_name/dashboard/organizations/create/", "controller\PageController@render_create_organization");
+Route::post("/$app_name/dashboard/organizations/update", "controller\PageController@render_update_organization");
 Route::post("/$app_name/dashboard/organizations/users/create/", "controller\PageController@render_create_organization_user");
 Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@render_choose_organisation");
 Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
@@ -74,4 +75,5 @@ Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@
 
 //Routes for organisations controller
 Route::post("/$app_name/organisations/create/", "controller\OrganisationController@create_organisation");
+Route::post("/$app_name/organisations/update/", "controller\OrganisationController@update_organisation");
 ?>

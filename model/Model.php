@@ -655,6 +655,22 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function get_organisation_details($id)
+    {
+        $query = "SELECT * FROM organizations WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
     public function get_indicators_count()
     {
         $count = 0;
@@ -744,5 +760,38 @@ class Model
         $stmt->close();
 
         return $logo;
+    }
+
+    public function update_organisation()
+    {
+        $request = Request::capture();
+
+        $organization_logo = $request->input('image_url');
+        $organization_id = $request->input('organisation-id');
+        $organization_name = $request->input('organization-name');
+        $status = $request->input('active');
+
+        $query = "UPDATE organizations SET name = ?, active = ?, logo = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('sssi', $organization_name, $status, $organization_logo, $organization_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Organisation Details Updated Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'You did not change anything'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
     }
 }
