@@ -10,19 +10,19 @@
           <div class="row justify-content-center">
 
             <div class="col-lg-5">
-              <div class="d-flex flex-column justify-content-center py-4">
-                <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
-                  <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
-                </a>
-              </div><!-- End Logo -->
-
+              
               <div class="card mb-3">
+                <div class="d-flex flex-column justify-content-center py-4">
+                  <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
+                    <img src="/<?php echo e($appName); ?>/assets/img/logo_yellow.png" style="width: 300px; object-fit:contain;" alt="logo">
+                  </a>
+                </div><!-- End Logo -->
 
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
 
-                      <div class="pt-4 pb-2">
+                      <div class="pt-0 pb-2">
                         <h5 class="card-title text-center pb-0 fs-4"><?php echo e($appNameFull); ?></h5>
                         <p class="text-center small">Enter your personal details to create account</p>
                       </div>
@@ -31,11 +31,7 @@
                         <span class="text-center"></span>
                       </div>
                       <form id="registration-form" class="row g-3 needs-validation" novalidate>
-                        <div class="col-12">
-                          <div class="alert alert-info mt-3" role="alert">
-                            <small>Users registering using this form will be considered as viewers, they will not have permissions to modify data. To be able to add data, you should contact the Administrator to create an account for you.</small>
-                          </div>
-                        </div>
+                        
                         <div class="col-12">
                           <label for="yourEmail" class="form-label">Your Email</label>
                           <input type="email" name="email" class="form-control" id="yourEmail" required placeholder="Enter your email address here">
@@ -57,9 +53,14 @@
                         </div>
 
                         <div class="col-12">
-                          <button id="submit-button" class="btn btn-secondary w-100" type="submit">Create Account</button>
+                          <div class="alert alert-info mt-3" role="alert">
+                            <small>Users registering using this form will be considered as viewers, they will not have permissions to modify data. To be able to add data, you should contact the Administrator to create an account for you.</small>
+                          </div>
                         </div>
                         <div class="col-12">
+                          <button id="submit-button" class="btn btn-secondary w-100" type="submit">Create Account</button>
+                        </div>
+                        <div class="col-12 text-center">
                           <p class="small mb-0">If you have an account already? <a href="/<?php echo e($appName); ?>/auth/login/">Click here</a> to login</p>
                         </div>
 

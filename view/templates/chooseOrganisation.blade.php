@@ -10,19 +10,23 @@
                     <div class="row justify-content-center">
 
                         <div class="col-lg-7">
-                            <div class="d-flex flex-column justify-content-center py-4">
-                                <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto">
-                                    <img src="/{{$appName}}/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
-                                </a>
-                            </div><!-- End Logo -->
-
+                            
                             <div class="card mb-3">
+                                <div class="d-flex flex-column justify-content-center py-4">
+                                    <a href="/{{$appName}}" class="logo d-flex align-items-center w-auto">
+                                        <img src="/{{$appName}}/assets/img/logo_yellow.png" style="width: 400px; object-fit:contain;" alt="logo">
+                                    </a>
+                                    <div class="text-center">
+                                        <h2>{{$appNameFull}}</h2>
+
+                                    </div>
+                                </div><!-- End Logo -->
 
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
 
-                                            <div class="pt-4 pb-2">
+                                            <div class="pt-0 pb-2">
                                                 <h5 class="card-title text-center pb-0 fs-4">Please choose your organisation and click Proceed</h5>
                                                 <div class="alert alert-info">We see that you need an account, but please note that self registered users only have permissions that allow them to view data.</div>
                                             </div>

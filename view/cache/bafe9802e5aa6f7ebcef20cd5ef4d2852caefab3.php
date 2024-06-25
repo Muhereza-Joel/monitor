@@ -10,19 +10,19 @@
                     <div class="row justify-content-center">
 
                         <div class="col-lg-7">
-                            <div class="d-flex flex-column justify-content-center py-4">
-                                <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
-                                    <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
-                                </a>
-                            </div><!-- End Logo -->
-
+                            
                             <div class="card mb-3">
+                                <div class="d-flex flex-column justify-content-center py-4">
+                                    <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
+                                        <img src="/<?php echo e($appName); ?>/assets/img/logo_yellow.png" style="width: 400px; object-fit:contain;" alt="logo">
+                                    </a>
+                                </div><!-- End Logo -->
 
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
 
-                                            <div class="pt-4 pb-2">
+                                            <div class="pt-0 pb-2">
                                                 <h5 class="card-title text-center pb-0 fs-4">Please choose your organisation and click Proceed</h5>
 
                                             </div>
@@ -57,7 +57,7 @@
 
                 let selectedOrgId = $(this).data('org-id');
                 Toastify({
-                    text: 'Swithing organisation please wait...',
+                    text: 'Switching organisation please wait...',
                     duration: 4000,
                     gravity: 'bottom',
                     position: 'left',

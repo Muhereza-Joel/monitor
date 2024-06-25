@@ -5,14 +5,16 @@
   <main>
     <div class="container px-4">
       <!-- Profile Edit Form -->
-      <form class="needs-validation" novalidate id="create-profile-form" enctype="multipart/form-data">
+      <form class="needs-validation card mt-5" novalidate id="create-profile-form" enctype="multipart/form-data">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-xl-10 col-md-10 d-flex flex-column align-items-center justify-content-center">
 
 
-                <img src="/{{$appName}}/assets/img/torodev.png" alt="logo" style="width: 400px;"><br><br>
+                <img src="/{{$appName}}/assets/img/logo_yellow.png" alt="logo" style="width: 400px;">
+                <h1>{{$appNameFull}}</h1>
+                <br><br>
                 <h4 class="pt-2">Hello, <span class="text-success">{{$username}}</span> take a breath add complete your profile</h4>
                 <h5>Adding your profile helps us to know you better, you profile information is used to tag responses.</h5>
                 <p>Please note that your the only person who can change your profile, and none of this data will be shared without your consent.</p>

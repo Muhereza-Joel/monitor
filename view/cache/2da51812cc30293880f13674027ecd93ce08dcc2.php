@@ -11,6 +11,9 @@
                                 <div class="row">
                                     <!-- Left Column -->
                                     <div style="border-right: 2px solid #999;" class="col-md-6 d-flex flex-column align-items-start justify-content-center p-4">
+                                        <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto mb-1">
+                                            <img src="/<?php echo e($appName); ?>/assets/img/logo_yellow.png" style="width: 300px; object-fit:contain;" alt="logo">
+                                        </a>
                                         <h5 class="card-title pb-0 fs-4"><?php echo e($appNameFull); ?> Account Recovery</h5>
                                         <hr>
                                         <h3 class="text-danger">We have noticed that you did not confirm your email.</h3>
@@ -21,9 +24,6 @@
                                     </div>
                                     <!-- Right Column -->
                                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
-                                        <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto mb-4">
-                                            <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" style="width: 100px; object-fit:contain;" alt="logo">
-                                        </a>
                                         <form id="otp-confirmation-form" class="row g-3 needs-validation" novalidate>
                                             <div class="col-12">
                                                 <label for="yourEmail" class="form-label fw-bold">This is your Email address you used to create your account</label>

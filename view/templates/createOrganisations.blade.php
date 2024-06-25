@@ -62,6 +62,7 @@
                                     <div class="card-body text-center">
                                         <img style="width: 150px; object-fit: contain; border: 3px solid #999" src="{{$row['logo']}}" alt="logo" class="rounded-circle">
                                     </div>
+                                    <a href="/{{$appName}}/dashboard/organizations/update?id={{$row['id']}}" class="btn btn-success btn-sm">Edit Organisation Details</a>
                                 </div>
                             </div>
                             @endforeach

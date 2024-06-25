@@ -6,16 +6,16 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 p-5 col-md-4 d-flex flex-column align-items-center justify-content-center">
-                        <div class="d-flex flex-column justify-content-center py-4">
-                            <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
-                                <img src="/<?php echo e($appName); ?>/assets/img/torodev.png" style="width: 400px; object-fit:contain;" alt="logo">
-                            </a>
-                            <br>
-                        </div>
-                        <!-- End Logo -->
                         <div class="card">
+                            <div class="d-flex flex-column justify-content-center">
+                                <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
+                                    <img src="/<?php echo e($appName); ?>/assets/img/logo_yellow.png" style="width: 300px; object-fit:contain;" alt="logo">
+                                </a>
+                              
+                            </div>
+                            <!-- End Logo -->
                             <div class="card-body">
-                                <div class="pt-4 text-center">
+                                <div class="pt-0 text-center">
                                     <h5 class="card-title pb-0 fs-4"><?php echo e($appNameFull); ?></h5>
                                     <p class="small">Enter your username & password to login</p>
                                 </div>

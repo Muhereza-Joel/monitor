@@ -192,7 +192,7 @@ class User
         $username = $request->input('username');
         $password = $request->input('password');
         $role = $request->input('role', 'Viewer');
-        $organization_id = Session::get('my_organization_id');
+        $organization_id = Session::get('my_organization_id') || Session::get('selected_organisation_id');
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $new_user = new User();
