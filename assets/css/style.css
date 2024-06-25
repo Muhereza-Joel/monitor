@@ -717,6 +717,7 @@ h6 {
 .sidebar-nav .nav-link:hover {
   color: #4154f1;
   background: #f6f9ff;
+  border: 1px solid #4154f1;
 }
 
 .sidebar-nav .nav-link:hover i {
