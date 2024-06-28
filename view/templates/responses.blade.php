@@ -170,8 +170,10 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator' || $role == 'User')
-                        @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                        <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                        @if($response['status'] == 'draft' || $response['status'] == 'review')
+                          @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                          <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
+                          @endif
                         @endif
                       @endif
                       @if($role == 'Administrator')
