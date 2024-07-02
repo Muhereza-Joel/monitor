@@ -27,7 +27,7 @@
                                     <label for="yourUsername" class="form-label">Username or Email</label>
                                     <div class="input-group has-validation">
                                         <input type="text" name="username" class="form-control" id="yourUsername" required placeholder="Enter your username or email">
-                                        <div class="invalid-feedback">Please enter your username or email.</div>
+                                        
                                     </div>
                                 </div>
 
@@ -38,7 +38,7 @@
                                             <input type="password" name="password" class="form-control" id="yourPassword" required placeholder="Enter your password">
                                             <button class="btn btn-secondary" type="button" id="togglePasswordVisibility" onclick="togglePasswordVisibility()"><i class="bi bi-eye"></i></button>
                                         </div>
-                                        <div class="invalid-feedback">Please enter your password!</div>
+                                        
                                     </div>
                                 </div>
 
