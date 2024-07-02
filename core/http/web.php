@@ -57,6 +57,7 @@ Route::post("/$app_name/dashboard/organizations/update", "controller\PageControl
 Route::post("/$app_name/dashboard/organizations/users/create/", "controller\PageController@render_create_organization_user");
 Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@render_choose_organisation");
 Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
+Route::post("/$app_name/database/connection/error/", "controller\ErrorPageController@render_database_connection_error");
 
 
 

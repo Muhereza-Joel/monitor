@@ -515,4 +515,25 @@ class PageController
         echo ($html);
     }
 
+    public function render_database_connection_error()
+    {
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+
+        $html = $this->blade_view->render('databaseConnectionError', [
+            'pageTitle' => "$this->app_name - database connection error",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id')
+            
+        ]);
+
+        echo ($html);
+    }
+
 } 

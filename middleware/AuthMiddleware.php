@@ -16,6 +16,8 @@ class AuthMiddleware
     {
         $allowedRoutes = [
             "/$this->app_name/auth/register/", 
+            "/$this->app_name/database/connection/error/", 
+            "/$this->app_name/database/error_page/", 
             "/$this->app_name/auth/login/", 
             "/$this->app_name/auth/login/sign-in/", 
             "/$this->app_name/auth/create-account/", 
