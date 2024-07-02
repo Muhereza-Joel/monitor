@@ -320,6 +320,7 @@ class PageController
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
             'username' => Session::get('username'),
+            'baseUrl' => $this->app_base_url,
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'userDetails' => $result['response'],
