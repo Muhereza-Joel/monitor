@@ -19,7 +19,8 @@
         "jenssegers/blade": "^1.1",
         "phpmailer/phpmailer": "^6.9",
         "phpoffice/phpspreadsheet": "^1.8",
-        "phpoffice/phpword": "^0.18.3"
+        "phpoffice/phpword": "^0.18.3",
+        "ramsey/uuid": "^3.9"
     },
     "config": {
         "allow-plugins": {

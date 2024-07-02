@@ -170,8 +170,10 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator' || $role == 'User'): ?>
-                        <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                        <?php if($response['status'] == 'draft' || $response['status'] == 'review'): ?>
+                          <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                          <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                          <?php endif; ?>
                         <?php endif; ?>
                       <?php endif; ?>
                       <?php if($role == 'Administrator'): ?>

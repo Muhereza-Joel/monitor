@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ceb7895c8b35ab7491ab3ab96110a338b5bd76ed',
+        'reference' => '9344fd64fbf4248fef1536e042b3a3c2449fc0d3',
         'name' => 'stella/monitor',
         'dev' => true,
     ),
@@ -199,13 +199,28 @@
             'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
             'dev_requirement' => false,
         ),
+        'ramsey/uuid' => array(
+            'pretty_version' => '3.9.7',
+            'version' => '3.9.7.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ramsey/uuid',
+            'aliases' => array(),
+            'reference' => 'dc75aa439eb4c1b77f5379fd958b3dc0e6014178',
+            'dev_requirement' => false,
+        ),
+        'rhumsaa/uuid' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '3.9.7',
+            ),
+        ),
         'stella/monitor' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ceb7895c8b35ab7491ab3ab96110a338b5bd76ed',
+            'reference' => '9344fd64fbf4248fef1536e042b3a3c2449fc0d3',
             'dev_requirement' => false,
         ),
         'symfony/debug' => array(

@@ -8,7 +8,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Create New Monitor User.</h1>
+        <h1>Create New Monitor Organisation User.</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/<?php echo e($appName); ?>/dashboard/">Home</a></li>

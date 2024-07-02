@@ -11,10 +11,10 @@ $envData = [
     'DB_PASSWORD' => '',
     'APP_NAME' => 'monitor',
     'APP_NAME_FULL' => '"M & E Monitor"',
-    'APP_BASE_URL' => 'http://localhost',
+    'APP_BASE_URL' => 'http://localhost/monitor',
     'SMTP_SERVER' => 'smtp.gmail.com',
-    'APP_MAIL_CLIENT' => 'muherezajoel40@gmail.com',
-    'APP_MAIL_KEY' => "'kmmt srcd nmuo nudn'",
+    'APP_MAIL_CLIENT' => 'moels.inc@gmail.com',
+    'APP_MAIL_KEY' => "'khkk itae lxbz uxnj'",
     'APP_MAIL_SENDER' => 'moels.inc@gmail.com',
     'APP_MAIL_TITLE' => "'ODT M &E Monitor'"
 ];

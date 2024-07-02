@@ -55,6 +55,7 @@ class AuthController
             'pageTitle' => "$this->app_name Auth-Register",
             'appName' => $this->app_name,
             'appNameFull' => $this->app_name_full,
+            'baseUrl' => $this->app_base_url,
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
