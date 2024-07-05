@@ -33,7 +33,7 @@
                             </div>
                             <div class="form-group my-2">
                                 <label for="">Indicator Baseline</label>
-                                <input type="hidden" name="indicator-id" value="<?php echo e($indicator['id']); ?>">
+                                <input id="indicator-id" type="hidden" name="indicator-id" value="<?php echo e($indicator['id']); ?>">
                                 <input type="hidden" name="last_current_state" value="<?php echo e(isset($lastCurrentState['last_current_state']) ? $lastCurrentState['last_current_state'] : ''); ?>">
                                 <input name="baseline" required readonly type="number" value="<?php echo e($indicator['baseline']); ?>" class="form-control">
                             </div>
@@ -70,14 +70,14 @@
                                 <label for="">Notes</label><br>
                                 <small class="text-success">Please use the editor to add notes to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
                                 <hr>
-                                <div id="notes-editor-container" style="height: 300px;"></div>
+                                <div class="quill-editor" id="notes-editor-container" style="height: 300px;"></div>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label for="">Lessons learnt</label><br>
                                 <small class="text-success">Please use the editor to add lessons learnt to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
                                 <hr>
-                                <div id="editor-container" style="height: 300px;"></div>
+                                <div class="quill-editor" id="editor-container" style="height: 300px;"></div>
                                 <div class="invalid-feedback d-block text-dark fw-bold" id="editor-feedback" style="display: none;">Please note that lessons are required to add this response</div>
                             </div>
                             <br>
@@ -85,11 +85,11 @@
                                 <label for="">Recommendations</label><br>
                                 <small class="text-success">Please use the editor to add recommendations to this response. You can bold, create lists and even add external links to other resources in case you need them.</small>
                                 <hr>
-                                <div id="recommendations-editor-container" style="height: 300px;"></div>
+                                <div class="quill-editor" id="recommendations-editor-container" style="height: 300px;"></div>
                             </div>
                             <br>
                             <div class="text-start">
-                                <button id="create-response-btn" type="submit" class="btn btn-sm btn-primary">Submit</button>
+                                <button id="create-response-btn" type="submit" class="btn btn-sm btn-primary">Submit Response</button>
                             </div>
                             <?php endif; ?>
                         </form>
@@ -306,5 +306,87 @@
                 this.classList.add('was-validated');
             }
         });
+
+        loadFormData($('input[name="indicator-id"]').val());
+
+        // Save form data on input change
+        $('form input, form select, form textarea').on('change', function() {
+            saveFormData();
+        });
+
+        var editors = [quill, notesQuill, recommendationsQuill];
+        editors.forEach(function(editor) {
+            editor.on('text-change', function(delta, oldDelta, source) {
+                saveFormData();
+            });
+        });
+
+
+        $('form').on('submit', function() {
+            localStorage.removeItem('monitorresponsedata');
+        });
+
+        function saveFormData() {
+
+            var formData = {};
+            $('form').find('input[name], select[name], textarea[name]').each(function() {
+                formData[$(this).attr('name')] = $(this).val();
+            });
+
+            var lessons = quill.root.innerHTML.trim();
+            var notes = notesQuill.root.innerHTML.trim();
+            var recommendations = recommendationsQuill.root.innerHTML.trim()
+
+            formData['lessons'] = lessons;
+            formData['notes'] = notes;
+            formData['recommendations'] = recommendations;
+
+            localStorage.setItem('monitorresponsedata', JSON.stringify(formData));
+        }
+
+
+        function loadFormData(indicatorId) {
+            var savedData = localStorage.getItem('monitorresponsedata');
+            if (savedData) {
+                savedData = JSON.parse(savedData);
+
+                if (savedData['indicator-id'] && savedData['indicator-id'] === indicatorId) {
+
+                    Toastify({
+                        text: "You have unsaved response data for this indicator, it has been restored for you.",
+                        duration: 90000,
+                        gravity: 'top',
+                        position: 'center',
+                        close: true,
+                    }).showToast();
+
+
+                    for (var key in savedData) {
+                        if (key !== 'lessons' && key !== 'notes' && key !== 'recommendations' && key !== 'indicator-id') {
+                            var $field = $('form').find('[name="' + key + '"]');
+                            if ($field.length > 0) {
+                                $field.val(savedData[key]);
+                            }
+                        }
+                    }
+
+                    var quillEditors = {
+                        'lessons': quill,
+                        'notes': notesQuill,
+                        'recommendations': recommendationsQuill
+                    };
+
+                    for (var key in quillEditors) {
+                        if (savedData.hasOwnProperty(key)) {
+                            var quillEditor = quillEditors[key];
+                            if (quillEditor) {
+                                quillEditor.root.innerHTML = savedData[key];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     });
 </script>
