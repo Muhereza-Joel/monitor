@@ -342,6 +342,7 @@ class PageController
             'appNameFull' => $this->app_name_full,
             'username' => Session::get('username'),
             'role' => Session::get('role'),
+            'baseUrl' => $this->app_base_url,
             'avator' => Session::get('avator'),
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
