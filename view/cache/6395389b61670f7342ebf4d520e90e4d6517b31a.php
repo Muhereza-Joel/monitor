@@ -1,20 +1,33 @@
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
-  <ul class="sidebar-nav" id="sidebar-nav">
+  <style>
+    .nav-link.active {
+      color: #fff;
+      border-left: 10px solid #14445e;
+      background-color: #181f1d;
+    }
+  </style>
 
+  <?php 
+
+  use core\Request;
+  $currentPath = Request::path();
+   ?>
+
+  <ul class="sidebar-nav" id="sidebar-nav">
 
     <?php if($role == 'Administrator'): ?>
 
     <li class="nav-item">
-      <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/" ? 'active' : ''; ?> " href="/<?php echo e($appName); ?>/dashboard/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Dashboard</span>
       </a>
     </li>
     <li class="nav-item pb-2">
-      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/organizations/choose/" ? 'active' : ''; ?> " href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Switch Organisation</span>
       </a>
@@ -24,7 +37,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/" ? 'active' : 'collapsed'; ?> " href="/<?php echo e($appName); ?>/dashboard/manage-indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Create Indicators</span>
@@ -33,7 +46,7 @@
     <?php endif; ?>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Indicators</span>
@@ -41,7 +54,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/resposes/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/resposes/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Responses</span>
@@ -50,7 +63,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/u/resposes/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/u/resposes/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/u/resposes/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>My Responses</span>
@@ -61,7 +74,7 @@
     <hr>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Indicators</span>
@@ -69,7 +82,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Responses</span>
@@ -81,7 +94,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/users/add-new/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/users/add-new/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/users/add-new/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Create User</span>
@@ -91,13 +104,13 @@
 
     <?php if($myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/organizations/users/create/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/organizations/users/create/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/organizations/users/create/">
         <i class="bi bi-card-list"></i>
         <span>Create Organization User</span>
       </a>
     </li>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/organizations/create/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/organizations/create/" ? 'active' : 'collapsed'; ?> "  href="/<?php echo e($appName); ?>/dashboard/organizations/create/">
         <i class="bi bi-card-list"></i>
         <span>Organizations</span>
       </a>
@@ -106,7 +119,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/users/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/users/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/users/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Monitor Users</span>
@@ -116,7 +129,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/user/profile/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
         <i class="bi bi-card-list"></i>
         <span>My Profile</span>
       </a>
@@ -124,7 +137,7 @@
     <?php endif; ?>
 
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/sign-out/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Log Out</span>
       </a>
@@ -136,14 +149,14 @@
     <?php if($role == 'User'): ?>
 
     <li class="nav-item">
-      <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/" ? 'active' : ''; ?>" href="/<?php echo e($appName); ?>/dashboard/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Dashboard</span>
       </a>
     </li>
     <li class="nav-item pb-2">
-      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/organizations/choose/" ? 'active' : ''; ?>" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Switch Organisation</span>
       </a>
@@ -153,7 +166,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Create Indicators</span>
@@ -163,7 +176,7 @@
 
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Indicators</span>
@@ -172,7 +185,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/u/resposes/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/u/resposes/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/manage-indicators/u/resposes/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>My Responses</span>
@@ -182,7 +195,7 @@
 
     <hr>
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Indicators</span>
@@ -190,7 +203,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Responses</span>
@@ -200,7 +213,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/user/profile/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
         <i class="bi bi-card-list"></i>
         <span>My Profile</span>
       </a>
@@ -208,7 +221,7 @@
     <?php endif; ?>
 
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/sign-out/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Log Out</span>
       </a>
@@ -218,14 +231,14 @@
 
     <?php if($role == 'Viewer'): ?>
     <li class="nav-item">
-      <a class="nav-link " href="/<?php echo e($appName); ?>/dashboard/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/" ? 'active' : ''; ?>" href="/<?php echo e($appName); ?>/dashboard/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Dashboard</span>
       </a>
     </li>
     <li class="nav-item pb-2">
-      <a class="nav-link" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/organizations/choose/" ? 'active' : ''; ?>" href="/<?php echo e($appName); ?>/dashboard/organizations/choose/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Switch Organisation</span>
       </a>
@@ -234,7 +247,7 @@
     <li class="nav-heading mb-3">Modules</li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Indicators</span>
@@ -242,7 +255,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>All Archived Responses</span>
@@ -251,7 +264,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/users/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/users/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/users/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
         <span>Monitor Users</span>
@@ -261,7 +274,7 @@
 
     <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/user/profile/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
         <i class="bi bi-card-list"></i>
         <span>My Profile</span>
       </a>
@@ -269,7 +282,7 @@
     <?php endif; ?>
 
     <li class="nav-item pb-2">
-      <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/auth/sign-out/">
+      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
         <i class="bi bi-box-arrow-right"></i>
         <span>Log Out</span>
       </a>

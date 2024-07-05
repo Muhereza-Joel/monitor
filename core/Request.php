@@ -22,6 +22,18 @@ class Request
         return isset($_REQUEST[$key]) ? $_REQUEST[$key] : $default;
     }
 
+    /**
+     * Get the current request URI path.
+     *
+     * @return string The current request URI path.
+     */
+    public static function path()
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $path = parse_url($uri, PHP_URL_PATH);
+        return $path;
+    }
+
 
 
     /**
@@ -37,7 +49,7 @@ class Request
         http_response_code($http_status);
         echo json_encode($response);
     }
-    
+
     /**
      * Send a PDF response with the specified HTTP status code.
      *
@@ -51,5 +63,4 @@ class Request
         header('Content-Type: application/pdf');
         echo base64_encode($response);
     }
-    
 }
