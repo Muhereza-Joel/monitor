@@ -391,8 +391,8 @@
         contentType: false,
         success: function(response) {
 
-          $('#image_url').val("{{$baseUrl}}/{{$appName}}/uploads/images/" + response);
-          $('#profile-photo').attr('src', "{{$baseUrl}}/{{$appName}}/uploads/images/" + response);
+          $('#image_url').val("{{$baseUrl}}/uploads/images/" + response);
+          $('#profile-photo').attr('src', "{{$baseUrl}}/uploads/images/" + response);
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -563,7 +563,7 @@
               $('#alert-password-change-success span').text(response.message);
 
               setTimeout(function() {
-                window.location.replace("http://localhost/{{$appName}}/auth/login/");
+                window.location.replace("{{$baseUrl}}/auth/login/");
               }, 3000)
             },
             error: function(jqXHR, textStatus, errorThrown) {

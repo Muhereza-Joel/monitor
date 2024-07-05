@@ -281,7 +281,7 @@
                         },
                         success: function(response) {
                             Toastify({
-                                text: "Response added successfully!",
+                             text: "Response added successfully!",
                                 duration: 3000,
                                 gravity: 'bottom', // Position the toast at the bottom
                                 position: 'left', // Align toast to the left

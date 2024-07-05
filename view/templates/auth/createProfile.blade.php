@@ -240,8 +240,8 @@
           contentType: false,
           success: function(response) {
 
-            $('#image_url').val("{{$baseUrl}}/{{$appName}}/uploads/images/" + response);
-            $('#profile-photo').attr('src', "{{$baseUrl}}/{{$appName}}/uploads/images/" + response);
+            $('#image_url').val("{{$baseUrl}}/uploads/images/" + response);
+            $('#profile-photo').attr('src', "{{$baseUrl}}/uploads/images/" + response);
 
           },
           error: function(jqXHR, textStatus, errorThrown) {

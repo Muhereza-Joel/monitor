@@ -436,7 +436,7 @@ class PageController
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'organisations' => $organisations['response'],
-            'callbackUrl' => $this->app_base_url . '/'. $this->app_name . '/auth/sign-out/',
+            'callbackUrl' => $this->app_base_url . '/auth/sign-out/',
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
