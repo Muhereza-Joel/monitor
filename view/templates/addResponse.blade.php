@@ -90,6 +90,7 @@
                             <br>
                             <div class="text-start">
                                 <button id="create-response-btn" type="submit" class="btn btn-sm btn-primary">Submit Response</button>
+                                <button id="discardData" class="btn btn-danger btn-sm">Discard Auto Saved Data</button>
                             </div>
                             @endif
                         </form>
@@ -146,6 +147,7 @@
                 $('#progress-bar').text(progress.toFixed(1) + '%');
             }
         });
+
 
         var quill = new Quill('#editor-container', {
             theme: 'snow',
@@ -231,6 +233,8 @@
             }
         });
 
+        var indicatorId = $('input[name="indicator-id"]').val();
+
         $('#add-response-form').submit(function(event) {
             event.preventDefault();
 
@@ -287,6 +291,9 @@
                                 position: 'left', // Align toast to the left
                                 backgroundColor: '#28a745',
                             }).showToast();
+
+                            localStorage.removeItem('monitorresponsedata' + indicatorId);
+
                             setTimeout(function() {
                                 window.location.reload();
                             }, 1500);
@@ -307,7 +314,7 @@
             }
         });
 
-        loadFormData($('input[name="indicator-id"]').val());
+        loadFormData(indicatorId);
 
         // Save form data on input change
         $('form input, form select, form textarea').on('change', function() {
@@ -321,10 +328,6 @@
             });
         });
 
-
-        $('form').on('submit', function() {
-            localStorage.removeItem('monitorresponsedata');
-        });
 
         function saveFormData() {
 
@@ -341,12 +344,18 @@
             formData['notes'] = notes;
             formData['recommendations'] = recommendations;
 
-            localStorage.setItem('monitorresponsedata', JSON.stringify(formData));
+            localStorage.setItem('monitorresponsedata' + indicatorId, JSON.stringify(formData));
         }
 
-
         function loadFormData(indicatorId) {
-            var savedData = localStorage.getItem('monitorresponsedata');
+            var savedData = localStorage.getItem('monitorresponsedata' + indicatorId);
+
+            if (savedData) {
+                $('#discardData').show();
+            } else {
+                $('#discardData').hide();
+            }
+
             if (savedData) {
                 savedData = JSON.parse(savedData);
 
@@ -370,6 +379,11 @@
                         }
                     }
 
+                    $('#progress-bar').css('width', savedData['progress'].toString() + '%');
+                    $('#progress-bar').attr('aria-valuenow', savedData['progress']);
+                    $('#progress-bar').text(savedData['progress'] + '%');
+
+
                     var quillEditors = {
                         'lessons': quill,
                         'notes': notesQuill,
@@ -387,6 +401,24 @@
                 }
             }
         }
+
+
+        $('#discardData').click(function() {
+            event.preventDefault();
+
+            localStorage.removeItem('monitorresponsedata' + indicatorId);
+            Toastify({
+                text: "Response data discarded successfully!",
+                duration: 3000,
+                gravity: 'bottom',
+                position: 'left',
+                backgroundColor: '#ff8282',
+            }).showToast();
+
+            setTimeout(function() {
+                window.location.reload();
+            }, 3000);
+        });
 
     });
 </script>
