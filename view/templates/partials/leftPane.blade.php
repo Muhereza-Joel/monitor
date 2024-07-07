@@ -33,8 +33,6 @@
       </a>
     </li>
 
-    <li class="nav-heading mb-3">Modules</li>
-
     @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/" ? 'active' : 'collapsed'; ?> " href="/{{$appName}}/dashboard/manage-indicators/">
@@ -49,7 +47,7 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Indicators</span>
+        <span>Indicators</span>
       </a>
     </li>
 
@@ -57,7 +55,7 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/resposes/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/manage-indicators/resposes/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Responses</span>
+        <span>Responses</span>
       </a>
     </li>
 
@@ -71,13 +69,11 @@
     </li>
     @endif
 
-    <hr>
-
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Indicators</span>
+        <span>Archived Indicators</span>
       </a>
     </li>
 
@@ -85,12 +81,9 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Responses</span>
+        <span>Archived Responses</span>
       </a>
     </li>
-
-    <hr>
-
 
     @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
     <li class="nav-item pb-2">
@@ -162,8 +155,6 @@
       </a>
     </li>
 
-    <li class="nav-heading mb-3">Modules</li>
-
     @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-indicators/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/manage-indicators/">
@@ -179,7 +170,7 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Indicators</span>
+        <span>Indicators</span>
       </a>
     </li>
 
@@ -193,12 +184,11 @@
     </li>
     @endif
 
-    <hr>
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Indicators</span>
+        <span>Archived Indicators</span>
       </a>
     </li>
 
@@ -206,10 +196,9 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Responses</span>
+        <span>Archived Responses</span>
       </a>
     </li>
-    <hr>
 
     @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
     <li class="nav-item pb-2">
@@ -244,13 +233,11 @@
       </a>
     </li>
 
-    <li class="nav-heading mb-3">Modules</li>
-
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/archived/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/indicators/archived/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Indicators</span>
+        <span>Archived Indicators</span>
       </a>
     </li>
 
@@ -258,7 +245,7 @@
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/all-archived-responses/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/dashboard/all-archived-responses/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
         <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
-        <span>All Archived Responses</span>
+        <span>Archived Responses</span>
       </a>
     </li>
 
