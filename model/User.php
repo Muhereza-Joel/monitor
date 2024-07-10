@@ -6,6 +6,7 @@ use controller\MailController;
 use core\DatabaseConnection;
 use core\Request;
 use core\Session;
+use Ramsey\Uuid\Uuid;
 
 class User
 {
@@ -72,32 +73,35 @@ class User
 
             if ($user && password_verify($password, $user['password'])) {
                 Session::start();
+
                 if ($user['profile_created'] == true) {
                     $user_data = $this->get_user_data($user['id']);
                     $result = $this->get_user_organisation($user['id']);
                     $organization_data = $result['response'];
 
-                    Session::set('user_id', $user['id']);
-                    Session::set('my_organization_id', $user['organization_id']);
-                    Session::set('my_organization_name', $organization_data['name']);
-                    Session::set('username', $user['username']);
-                    Session::set('email', $user['email']);
-                    Session::set('avator', $user_data['image_url']);
-                    Session::set('role', $user['role']);
+                    Session::set('user_id', isset($user['id']) ? $user['id'] : null);
+                    Session::set('my_organization_id', isset($user['organization_id']) ? $user['organization_id'] : null);
+                    Session::set('my_organization_name', isset($organization_data['name']) ? $organization_data['name'] : null);
+                    Session::set('username', isset($user['username']) ? $user['username'] : null);
+                    Session::set('email', isset($user['email']) ? $user['email'] : null);
+                    Session::set('avator', isset($user_data['image_url']) ? $user_data['image_url'] : null);
+                    Session::set('role', isset($user['role']) ? $user['role'] : null);
                 } else {
-                    Session::set('user_id', $user['id']);
-                    Session::set('my_organization_id', $user['organization_id']);
-                    Session::set('username', $user['username']);
-                    Session::set('email', $user['email']);
-                    Session::set('role', $user['role']);
+                    Session::set('user_id', isset($user['id']) ? $user['id'] : null);
+                    Session::set('my_organization_id', isset($user['organization_id']) ? $user['organization_id'] : null);
+                    Session::set('username', isset($user['username']) ? $user['username'] : null);
+                    Session::set('email', isset($user['email']) ? $user['email'] : null);
+                    Session::set('role', isset($user['role']) ? $user['role'] : null);
                 }
 
-
+                sleep(1); // Sleep for to ensure session data is set
                 $response = [
                     'message' => 'Authentication successful',
                     'role' => $user['role'],
                     'profileCreated' => $user['profile_created'],
                     'username' => $user['username'],
+                    'organization_id' => $user['organization_id'],
+                    'organization_name' => Session::get('my_organization_name'),
                     'approved' => $user['approved'],
                     'user_id' => Session::get('user_id'),
                 ];
@@ -135,7 +139,7 @@ class User
         $query = "SELECT * FROM user_profile WHERE user_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -173,7 +177,7 @@ class User
         WHERE app_users.id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -188,6 +192,7 @@ class User
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
@@ -206,10 +211,10 @@ class User
         }
 
         if (!$user) {
-            $query = "INSERT INTO app_users(username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?)";
+            $query = "INSERT INTO app_users(id, username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("ssssi", $username, $email, $hashed_password, $role, $organization_id);
+            $stmt->bind_param("ssssss", $id, $username, $email, $hashed_password, $role, $organization_id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -225,11 +230,12 @@ class User
             }
         }
     }
-    
+
     public function add_viewer()
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
@@ -248,10 +254,10 @@ class User
         }
 
         if (!$user) {
-            $query = "INSERT INTO app_users(username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?)";
+            $query = "INSERT INTO app_users(id, username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("ssssi", $username, $email, $hashed_password, $role, $organization_id);
+            $stmt->bind_param("ssssss", $id, $username, $email, $hashed_password, $role, $organization_id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -272,6 +278,7 @@ class User
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
@@ -290,10 +297,10 @@ class User
         }
 
         if (!$user) {
-            $query = "INSERT INTO app_users(username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?)";
+            $query = "INSERT INTO app_users(id, username, email, password, role, organization_id) VALUES(?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("ssssi", $username, $email, $hashed_password, $role, $organization_id);
+            $stmt->bind_param("ssssss", $id, $username, $email, $hashed_password, $role, $organization_id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -378,6 +385,7 @@ class User
 
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $image_url = $request->input('image_url');
         $fullname = $request->input('fullName');
         $nin = $request->input('nin');
@@ -394,8 +402,8 @@ class User
         $user_id = Session::get('user_id');
         $organization_id = Session::get('my_organization_id');
 
-        $insert_query = "INSERT INTO user_profile(name, nin, dob, gender, about, company, job, country, district, village, phone, image_url, user_id, organization_id)
-                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insert_query = "INSERT INTO user_profile(id, name, nin, dob, gender, about, company, job, country, district, village, phone, image_url, user_id, organization_id)
+                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Begin transaction
         $this->database->begin_transaction();
@@ -413,7 +421,7 @@ class User
         }
 
         // Bind parameters
-        $bind_result = $stmt->bind_param("ssssssssssssii", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone, $image_url, $user_id, $organization_id);
+        $bind_result = $stmt->bind_param("sssssssssssssss", $id, $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone, $image_url, $user_id, $organization_id);
         if ($bind_result === false) {
             // Handle bind_param error
             $error_message = "Bind param failed: " . $stmt->error;
@@ -439,7 +447,7 @@ class User
         if ($stmt->affected_rows > 0) {
             // Prepare update query
             $stmt2 = $this->database->prepare("UPDATE app_users SET profile_created = 1 WHERE id = ?");
-            $stmt2->bind_param("i", $user_id);
+            $stmt2->bind_param("s", $user_id);
             $update_result = $stmt2->execute();
             $stmt2->close();
 
@@ -491,7 +499,7 @@ class User
                                 WHERE user_id = ?";
 
         $stmt2 = $this->database->prepare($profile_update_query);
-        $stmt2->bind_param("sssssssssssi", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone,  $user_id);
+        $stmt2->bind_param("ssssssssssss", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone,  $user_id);
         $stmt2->execute();
 
 
@@ -510,7 +518,7 @@ class User
         $current_user = Session::get('user_id');
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("si", $image_url, $current_user);
+        $stmt->bind_param("ss", $image_url, $current_user);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -538,7 +546,7 @@ class User
             $query = "UPDATE app_users SET password = ? WHERE id = ?";
 
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param("si", $hashed_password, $current_user_id);
+            $stmt->bind_param("ss", $hashed_password, $current_user_id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -564,7 +572,7 @@ class User
         $stmt->execute();
 
         $result = $stmt->get_result();
-       
+
 
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
@@ -604,8 +612,6 @@ class User
             sleep(3);
             Request::send_response($httpStatus, $response);
         }
-
-        
     }
 
     public function generateOTP($length = 6)
@@ -616,9 +622,10 @@ class User
     public function save_confirm_email_row($user_id, $otp)
     {
         $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        $id = Uuid::uuid4()->toString();
 
-        $stmt = $this->database->prepare("INSERT INTO confirm_email_codes (user_id, otp, expires_at) VALUES (?, ?, ?)");
-        $stmt->bind_param('iss', $user_id, $otp, $expires_at);
+        $stmt = $this->database->prepare("INSERT INTO confirm_email_codes (id, user_id, otp, expires_at) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('ssss', $id, $user_id, $otp, $expires_at);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -656,11 +663,11 @@ class User
             // Execute the UPDATE query
             $stmt = $this->database->prepare($update_query);
             $email_confirmed = 1;
-            $stmt->bind_param("ii", $email_confirmed, $user_id);
+            $stmt->bind_param("is", $email_confirmed, $user_id);
             $stmt->execute();
 
             $stmt = $this->database->prepare($delete_query);
-            $stmt->bind_param("i", $user_id);
+            $stmt->bind_param("s", $user_id);
             $stmt->execute();
 
 
@@ -699,7 +706,7 @@ class User
         if ($result->num_rows > 0) {
 
             $stmt = $this->database->prepare($delete_query);
-            $stmt->bind_param("i", $user_id);
+            $stmt->bind_param("s", $user_id);
             $stmt->execute();
 
 
@@ -725,7 +732,7 @@ class User
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
         $stmt = $this->database->prepare("UPDATE app_users SET password = ? WHERE id = ?");
-        $stmt->bind_param('si', $hashed_password, $user_id);
+        $stmt->bind_param('ss', $hashed_password, $user_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

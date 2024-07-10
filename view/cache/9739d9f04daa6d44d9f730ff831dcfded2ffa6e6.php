@@ -27,7 +27,7 @@
                                     <label for="yourUsername" class="form-label">Username or Email</label>
                                     <div class="input-group has-validation">
                                         <input type="text" name="username" class="form-control" id="yourUsername" required placeholder="Enter your username or email">
-                                        
+
                                     </div>
                                 </div>
 
@@ -38,7 +38,7 @@
                                             <input type="password" name="password" class="form-control" id="yourPassword" required placeholder="Enter your password">
                                             <button class="btn btn-secondary" type="button" id="togglePasswordVisibility" onclick="togglePasswordVisibility()"><i class="bi bi-eye"></i></button>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
 
@@ -52,7 +52,7 @@
                                             <a href="/<?php echo e($appName); ?>/auth/accounts/reset/" class="btn btn-link text-danger ms-2">Forgot Password</a>
                                         </p>
                                     </div>
-                                    
+
                                 </div>
                             </form>
                         </div>
@@ -92,7 +92,13 @@
                     success: function(response) {
                         if (response.profileCreated == true) {
                             $("#login-button").text("Please wait...").attr('disabled', 'true').text("Authentication Successful, redirecting...");
-                            window.location.replace("/<?php echo e($appName); ?>/dashboard/organizations/choose/");
+
+                            if (response.organization_name == 'Administrator') {
+                                window.location.replace("/<?php echo e($appName); ?>/dashboard/");
+                            } else {
+                                window.location.replace("/<?php echo e($appName); ?>/dashboard/organizations/choose/");
+                            }
+                            
                         } else if (response.profileCreated == false) {
                             window.location.replace("/<?php echo e($appName); ?>/auth/create-profile/");
                         }

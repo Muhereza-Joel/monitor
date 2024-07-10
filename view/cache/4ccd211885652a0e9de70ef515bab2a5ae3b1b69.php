@@ -54,6 +54,11 @@
                     <h5 class="card-title">Current Registered Organizations</h5>
 
                     <div class="card-body">
+                        <?php if(count($organisations) == 0): ?>
+                        <div class="alert alert-warning text-center" role="alert">
+                            <strong>No organizations found!</strong> Please register an organization to get started.
+                        </div>
+                        <?php else: ?>
                         <div class="row g-1" style="display: flex; flex-wrap: wrap;">
                             <?php $__currentLoopData = $organisations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="col-sm-4 d-flex">
@@ -62,9 +67,9 @@
                                         <?php echo e($row['name']); ?>
 
                                         <?php if($row['active'] == 'true'): ?>
-                                          <span class="badge bg-success text-light">Active</span>
-                                          <?php else: ?>
-                                          <span class="badge bg-danger text-light">Inactive</span>
+                                        <span class="badge bg-success text-light">Active</span>
+                                        <?php else: ?>
+                                        <span class="badge bg-danger text-light">Inactive</span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="card-body text-center">
@@ -75,6 +80,7 @@
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

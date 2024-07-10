@@ -6,6 +6,7 @@ use core\DatabaseConnection;
 use core\Request;
 use core\Session;
 use Exception;
+use Ramsey\Uuid\Uuid;
 
 class Model
 {
@@ -41,17 +42,33 @@ class Model
         $this->database = $database_connection->get_connection();
     }
 
+
     public function get_all_users()
     {
-        $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
-        FROM app_users au JOIN user_profile up
-        ON au.id = up.user_id 
-        WHERE up.organization_id = ?";
+        $query = "";
+        $params = [];
+        $types = "";
 
-        $organization_id = Session::get('selected_organisation_id');
+        if (Session::get('my_organization_name') == 'Administrator') {
+            $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
+                  FROM app_users au JOIN user_profile up
+                  ON au.id = up.user_id";
+        } else {
+            $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
+                  FROM app_users au JOIN user_profile up
+                  ON au.id = up.user_id 
+                  WHERE up.organization_id = ?";
+            $organization_id = Session::get('selected_organisation_id');
+            $params[] = $organization_id;
+            $types .= "s";
+        }
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -70,7 +87,7 @@ class Model
                 WHERE up.id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -116,6 +133,7 @@ class Model
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $indicator_title = $request->input('indicator-title');
         $definition = $request->input('definition');
         $baseline = $request->input('baseline');
@@ -126,10 +144,10 @@ class Model
         $reporting = $request->input('reporting');
         $organization_id = Session::get('my_organization_id');
 
-        $query = "INSERT INTO indicators(indicator_title, definition, baseline, target, data_source, frequency, responsible, reporting, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO indicators(id, indicator_title, definition, baseline, target, data_source, frequency, responsible, reporting, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('ssssssssi', $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting, $organization_id);
+        $stmt->bind_param('ssssssssss', $id, $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting, $organization_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -165,7 +183,7 @@ class Model
         try {
             $query = "UPDATE indicators SET indicator_title = ?, definition = ?, baseline = ?, target = ?, data_source = ?, frequency = ?, responsible = ?, reporting = ? WHERE id = ?";
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param('ssssssssi', $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting, $indicator_id);
+            $stmt->bind_param('sssssssss', $indicator_title, $definition, $baseline, $target, $data_source, $frequency, $responsible, $reporting, $indicator_id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -206,7 +224,7 @@ class Model
         $query = "DELETE FROM indicators WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -247,13 +265,13 @@ class Model
                 FROM 
                     indicators AS i
                 WHERE organization_id = ?
-                ORDER BY i.status;
+                ORDER BY i.status, i.created_at;
             ";
 
         $organization_id = Session::get('selected_organisation_id');
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -306,7 +324,7 @@ class Model
         $query = "SELECT * FROM indicators WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -325,7 +343,7 @@ class Model
             // Update indicator status
             $query = "UPDATE indicators SET status = ? WHERE id = ?";
             $stmt = $this->database->prepare($query);
-            $stmt->bind_param('si', $status, $id);
+            $stmt->bind_param('ss', $status, $id);
             $stmt->execute();
 
             // Check if the indicator update was successful
@@ -333,7 +351,7 @@ class Model
                 // Update related responses' status
                 $query = "UPDATE responses SET status = ? WHERE indicator_id = ?";
                 $stmt = $this->database->prepare($query);
-                $stmt->bind_param('si', $status, $id);
+                $stmt->bind_param('ss', $status, $id);
                 $stmt->execute();
 
                 if ($stmt->affected_rows > 0) {
@@ -375,7 +393,7 @@ class Model
         LIMIT 1";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -393,7 +411,7 @@ class Model
         WHERE responses.id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -408,6 +426,7 @@ class Model
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $indicator_id = $request->input('indicator_id');
         $current = $request->input('current');
         $progress = $request->input('progress');
@@ -417,10 +436,10 @@ class Model
         $user_id = Session::get('user_id');
         $organization_id = Session::get('my_organization_id');
 
-        $query = "INSERT INTO responses(indicator_id, current, progress, notes, lessons, recommendations, user_id, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO responses(id, indicator_id, current, progress, notes, lessons, recommendations, user_id, organization_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('iiisssii', $indicator_id, $current, $progress, $notes, $lessons, $recommendations, $user_id, $organization_id);
+        $stmt->bind_param('ssiisssss', $id, $indicator_id, $current, $progress, $notes, $lessons, $recommendations, $user_id, $organization_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -451,7 +470,7 @@ class Model
         $query = "UPDATE responses SET current = ?, progress = ?, notes = ?, lessons = ?, recommendations = ? WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('iisssi', $current, $progress, $notes, $lessons, $recommendations, $response_id);
+        $stmt->bind_param('iissss', $current, $progress, $notes, $lessons, $recommendations, $response_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -482,7 +501,7 @@ class Model
         $query = "UPDATE app_users SET role = ? WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('si', $role, $user_id);
+        $stmt->bind_param('ss', $role, $user_id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -610,7 +629,7 @@ class Model
         $query = "DELETE FROM responses WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -635,13 +654,14 @@ class Model
     {
         $request = Request::capture();
 
+        $id = Uuid::uuid4()->toString();
         $organization_logo = $request->input('image_url');
         $organization_name = $request->input('organization-name');
 
-        $query = "INSERT INTO organizations(name, logo) VALUES(?, ?)";
+        $query = "INSERT INTO organizations(id, name, logo) VALUES(?, ?, ?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('ss', $organization_name, $organization_logo);
+        $stmt->bind_param('sss', $id, $organization_name, $organization_logo);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -659,7 +679,7 @@ class Model
 
     public function get_organisations()
     {
-        $query = "SELECT * FROM organizations WHERE name <> 'Administrator'";
+        $query = "SELECT * FROM organizations WHERE name <> 'Administrator' ORDER BY created_at ASC";
 
         $stmt = $this->database->prepare($query);
         $stmt->execute();
@@ -677,7 +697,7 @@ class Model
         $query = "SELECT * FROM organizations WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -688,6 +708,39 @@ class Model
         return ['httpStatus' => 200, 'response' => $rows];
     }
 
+    public function update_organisation()
+    {
+        $request = Request::capture();
+
+        $organization_logo = $request->input('image_url');
+        $organization_id = $request->input('organisation-id');
+        $organization_name = $request->input('organization-name');
+        $status = $request->input('active');
+
+        $query = "UPDATE organizations SET name = ?, active = ?, logo = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ssss', $organization_name, $status, $organization_logo, $organization_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Organisation Details Updated Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'You did not change anything'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
     public function get_indicators_count()
     {
         $count = 0;
@@ -696,7 +749,7 @@ class Model
         $query = "SELECT COUNT(*) FROM indicators WHERE indicators.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -715,7 +768,7 @@ class Model
         $query = "SELECT COUNT(*) FROM responses WHERE responses.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -751,7 +804,7 @@ class Model
         $query = "SELECT COUNT(*) FROM app_users WHERE profile_created = 1 AND app_users.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -761,7 +814,7 @@ class Model
 
         return $count;
     }
-    
+
     public function get_public_and_archived_indicators_count()
     {
         $count = 0;
@@ -769,7 +822,7 @@ class Model
         $query = "SELECT COUNT(*) FROM indicators WHERE status = 'public' OR status = 'archived' AND indicators.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 
@@ -786,7 +839,7 @@ class Model
         $query = "SELECT logo FROM organizations WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
         $stmt->bind_result($logo);
 
@@ -795,38 +848,5 @@ class Model
         $stmt->close();
 
         return $logo;
-    }
-
-    public function update_organisation()
-    {
-        $request = Request::capture();
-
-        $organization_logo = $request->input('image_url');
-        $organization_id = $request->input('organisation-id');
-        $organization_name = $request->input('organization-name');
-        $status = $request->input('active');
-
-        $query = "UPDATE organizations SET name = ?, active = ?, logo = ? WHERE id = ?";
-
-        $stmt = $this->database->prepare($query);
-        $stmt->bind_param('sssi', $organization_name, $status, $organization_logo, $organization_id);
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            $response = ['message' => 'Organisation Details Updated Successfully'];
-            $httpStatus = 200;
-
-            Request::send_response($httpStatus, $response);
-        } elseif ($stmt->affected_rows == 0) {
-            $response = ['message' => 'You did not change anything'];
-            $httpStatus = 200;
-
-            Request::send_response($httpStatus, $response);
-        } else {
-            $response = ['error' => $stmt->error];
-            $httpStatus = 500;
-
-            Request::send_response($httpStatus, $response);
-        }
     }
 }

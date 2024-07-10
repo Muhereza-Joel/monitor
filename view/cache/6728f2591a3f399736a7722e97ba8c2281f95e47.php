@@ -240,8 +240,8 @@
           contentType: false,
           success: function(response) {
 
-            $('#image_url').val("<?php echo e($baseUrl); ?>/<?php echo e($appName); ?>/uploads/images/" + response);
-            $('#profile-photo').attr('src', "<?php echo e($baseUrl); ?>/<?php echo e($appName); ?>/uploads/images/" + response);
+            $('#image_url').val("<?php echo e($baseUrl); ?>/uploads/images/" + response);
+            $('#profile-photo').attr('src', "<?php echo e($baseUrl); ?>/uploads/images/" + response);
 
           },
           error: function(jqXHR, textStatus, errorThrown) {

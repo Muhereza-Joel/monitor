@@ -65,6 +65,14 @@
     height: 10px;
     background-color: #1cc9be;
   }
+
+  .drag-active {
+    border: 2px dashed #28a745;
+    /* Change border color */
+    background-color: #f0f0f0;
+    /* Light background */
+    /* Add more styles as needed */
+  }
 </style>
 
 <main id="main" class="main">
@@ -170,18 +178,19 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator' || $role == 'User'): ?>
-                        <?php if($response['status'] == 'draft' || $response['status'] == 'review'): ?>
-                          <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                          <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
-                          <?php endif; ?>
-                        <?php endif; ?>
+                      <?php if($response['status'] == 'draft' || $response['status'] == 'review'): ?>
+                      <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                      <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">Edit Response</a>
+                      <a href="#" id="add-file" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#fileUploadModal">Add Files</a>
+                      <?php endif; ?>
+                      <?php endif; ?>
                       <?php endif; ?>
                       <?php if($role == 'Administrator'): ?>
-                        <?php if($response['status'] == 'draft'): ?>
-                          <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                          <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
-                          <?php endif; ?>
-                        <?php endif; ?>
+                      <?php if($response['status'] == 'draft'): ?>
+                      <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                      <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
+                      <?php endif; ?>
+                      <?php endif; ?>
                       <?php endif; ?>
                     </div>
                   </div>
@@ -214,6 +223,31 @@
   </div>
 </div>
 
+<div class="modal fade lg" id="fileUploadModal" size="md" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fileUploadModalLabel">Upload Files</h5>
+        <button type="button" class="close btn btn-light btn-sm" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- File Upload Input -->
+        <input type="file" multiple class="form-control" id="fileInput">
+        <!-- Drag and Drop Area -->
+        <div id="dropArea" style="height: 40vh; border: 2px dashed #ccc; padding: 20px; margin-top: 15px; text-align: center;">
+          Drag and drop files here
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-sm">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <script>
@@ -234,10 +268,44 @@
             backgroundColor: 'green',
           }).showToast();
           setTimeout(function() {
-            window.location.reload();
+            // window.location.reload();
           }, 3000);
         });
       });
+    });
+
+    $('#dropArea').on('dragover', function(event) {
+      event.preventDefault(); // Prevent default behavior
+      $(this).addClass('drag-active');
+    });
+
+    $('#dropArea').on('dragleave drop', function(event) {
+      event.preventDefault();
+      $(this).removeClass('drag-active').empty();
+    });
+
+    $('#dropArea').on('drop', function(event) {
+      event.preventDefault();
+      var files = event.originalEvent.dataTransfer.files;
+      if (files.length > 0) {
+        var fileType = files[0].type;
+        var fileName = files[0].name; // Get the file name
+        var iconHtml = ''; // Default icon
+        if (fileType.includes('word') || fileType.includes('document')) {
+          iconHtml = '<i class="bi bi-file-word file-icon h1"></i> ';
+        } else if (fileType.includes('excel') || fileType.includes('spreadsheet')) {
+          iconHtml = '<i class="bi bi-file-excel file-icon h1"></i> ';
+        } else if (fileType.includes('pdf')) {
+          iconHtml = '<i class="bi bi-file-pdf file-icon h1"></i> ';
+        } else if (fileType.includes('image')) {
+          iconHtml = '<i class="bi bi-file-image file-icon h1"></i> ';
+        }
+        $('#dropArea').html(iconHtml + fileName); // Insert the icon HTML and file name
+      }
+    });
+
+    $('#fileUploadModal').on('hidden.bs.modal', function() {
+      $('#dropArea').empty(); 
     });
   });
 </script>

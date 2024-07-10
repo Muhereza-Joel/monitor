@@ -275,7 +275,7 @@
         </div>
         <div class="modal-body">
           <h6 class="text-dark">Are you sure you want to execute this action?</h6>
-          <div class="alert alert-danger">When you make this indicator public, you will nolonger add responses to it again, please continue with caution.</div>
+          <div class="alert alert-danger">When you make this indicator public, this indicator will be archived as well when archiving indicators.</div>
           <div class="alert alert-info p-1 mt-2">Note that this action will move the indicator to the public status and will update all responses for this indicator to public as well. Continue with caution because the action is irreversible!</div>
         </div>
         <div class="modal-footer">

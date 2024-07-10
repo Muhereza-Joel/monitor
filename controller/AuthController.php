@@ -207,7 +207,7 @@ class AuthController
         // Sleep for 1 second
         sleep(1);
 
-        if ($organisation_id > 0) {
+        if ($organisation_id !== 0) {
             $response = ['message' => 'Organisation Set Successfully'];
             $httpStatus = 200;
 

@@ -54,6 +54,11 @@
                     <h5 class="card-title">Current Registered Organizations</h5>
 
                     <div class="card-body">
+                        @if(count($organisations) == 0)
+                        <div class="alert alert-warning text-center" role="alert">
+                            <strong>No organizations found!</strong> Please register an organization to get started.
+                        </div>
+                        @else
                         <div class="row g-1" style="display: flex; flex-wrap: wrap;">
                             @foreach($organisations as $row)
                             <div class="col-sm-4 d-flex">
@@ -61,9 +66,9 @@
                                     <div class="card-title">
                                         {{$row['name']}}
                                         @if($row['active'] == 'true')
-                                          <span class="badge bg-success text-light">Active</span>
-                                          @else
-                                          <span class="badge bg-danger text-light">Inactive</span>
+                                        <span class="badge bg-success text-light">Active</span>
+                                        @else
+                                        <span class="badge bg-danger text-light">Inactive</span>
                                         @endif
                                     </div>
                                     <div class="card-body text-center">
@@ -74,6 +79,7 @@
                             </div>
                             @endforeach
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
