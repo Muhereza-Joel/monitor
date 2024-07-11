@@ -308,7 +308,7 @@ class Model
         $organization_id = Session::get('selected_organisation_id');
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
