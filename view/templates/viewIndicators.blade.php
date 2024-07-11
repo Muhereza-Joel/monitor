@@ -72,7 +72,6 @@
     align-items: center;
     gap: 5px;
   }
-  
 </style>
 
 <main id="main" class="main">
@@ -106,8 +105,8 @@
               <div class="key-archived"></div> Archived
             </span>
             <div class="text-end">
-              @if($publicAndArchivedIndicatorsCount > 0)
-              <span id="move-to-archive-btn" class="btn btn-light btn-sm"> Move <span class="badge bg-primary" id="public-archived-count">{{$publicAndArchivedIndicatorsCount}}</span> {{$publicAndArchivedIndicatorsCount > 1 ? 'Indicators' : 'Indicator'}}  To Archives.</span>
+              @if($publicAndArchivedIndicatorsCount > 0 && $chosenOrganisationId == $myOrganisation['id'])
+              <span id="move-to-archive-btn" class="btn btn-light btn-sm"> Move <span class="badge bg-primary" id="public-archived-count">{{$publicAndArchivedIndicatorsCount}}</span> {{$publicAndArchivedIndicatorsCount > 1 ? 'Indicators' : 'Indicator'}} To Archives.</span>
               @endif
             </div>
           </div>
@@ -176,7 +175,7 @@
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @endif
-                        
+
                         @if($role == 'User' || $role == 'Administrator')
                         @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
                         @if($indicator['status'] == 'draft')

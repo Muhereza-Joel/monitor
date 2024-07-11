@@ -293,12 +293,12 @@ class Model
                                 ROUND(
                                     MAX((r.current - i.baseline) / (i.target - i.baseline) * 100), 0
                                 ) 
-                            FROM responses AS r 
+                            FROM responses_archive AS r 
                             WHERE r.indicator_id = i.id
                         ), 
                         0
                     ) AS cumulative_progress,
-                    (SELECT COUNT(id) FROM responses WHERE indicator_id = i.id) AS response_count
+                    (SELECT COUNT(id) FROM responses_archive WHERE indicator_id = i.id) AS response_count
                 FROM 
                     indicators_archive AS i
                 WHERE organization_id = ?
@@ -529,7 +529,7 @@ class Model
         $query = "CALL GetResponses(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -548,7 +548,7 @@ class Model
         $query = "CALL ArchiveOrganisationData(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
 
         $response = ['message' => 'All public and archived indicators moved to archives successfully.y'];
@@ -564,7 +564,7 @@ class Model
         $query = "CALL GetAllArchivedResponses(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $organization_id);
+        $stmt->bind_param('s', $organization_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -581,7 +581,7 @@ class Model
         $query = "CALL GetUserResponses(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $current_user);
+        $stmt->bind_param('s', $current_user);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -597,7 +597,7 @@ class Model
         $query = "CALL GetIndicatorResponses(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $indicator_id);
+        $stmt->bind_param('s', $indicator_id);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -613,7 +613,7 @@ class Model
         $query = "CALL GetIndicatorArchivedResponses(?)";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $indicator_id);
+        $stmt->bind_param('s', $indicator_id);
         $stmt->execute();
 
         $result = $stmt->get_result();

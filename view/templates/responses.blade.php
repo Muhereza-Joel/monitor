@@ -268,7 +268,7 @@
             backgroundColor: 'green',
           }).showToast();
           setTimeout(function() {
-            // window.location.reload();
+            window.location.reload();
           }, 3000);
         });
       });

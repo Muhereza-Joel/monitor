@@ -67,7 +67,7 @@ Route::post("/$app_name/dashboard/manage-indicators/update/", "controller\Indica
 Route::post("/$app_name/dashboard/manage-indicators/delete/", "controller\IndicatorController@delete_indicator");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/create/", "controller\IndicatorController@create_response");
 Route::post("/$app_name/dashboard/manage-indicators/resposes/response/edit/", "controller\IndicatorController@edit_response");
-Route::post("/$app_name/dashboard/manage-indicators/resposes/delete", "controller\IndicatorController@delete_response");
+Route::post("/$app_name/dashboard/manage-indicators/responses/delete", "controller\IndicatorController@delete_response");
 Route::post("/$app_name/dashboard/users/update-role", "controller\IndicatorController@update_user_role");
 Route::post("/$app_name/dashboard/indicators/status/update", "controller\IndicatorController@update_indicator_status");
 Route::post("/$app_name/dashboard/indicators/move-to-archives/", "controller\IndicatorController@archive_indicators");

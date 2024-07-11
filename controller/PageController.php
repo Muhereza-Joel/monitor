@@ -149,7 +149,6 @@ class PageController
         $indicators = $this->model->get_all_indicators();
         $publicAndArchivedIndicatorsCount = $this->model->get_public_and_archived_indicators_count();
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
-        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('viewIndicators', [
             'pageTitle' => " $this->app_name - view indicators",
@@ -244,7 +243,7 @@ class PageController
 
     public function render_archived_indicator_responses($id)
     {
-        $responses = $this->model->get_indicator_responses($id);
+        $responses = $this->model->get_indicator_archived_responses($id);
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
         $html = $this->blade_view->render('archivedResponses', [

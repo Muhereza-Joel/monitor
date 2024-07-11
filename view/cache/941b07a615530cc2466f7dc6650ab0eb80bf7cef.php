@@ -72,7 +72,6 @@
     align-items: center;
     gap: 5px;
   }
-  
 </style>
 
 <main id="main" class="main">
@@ -106,8 +105,8 @@
               <div class="key-archived"></div> Archived
             </span>
             <div class="text-end">
-              <?php if($publicAndArchivedIndicatorsCount > 0): ?>
-              <span id="move-to-archive-btn" class="btn btn-light btn-sm"> Move <span class="badge bg-primary" id="public-archived-count"><?php echo e($publicAndArchivedIndicatorsCount); ?></span> <?php echo e($publicAndArchivedIndicatorsCount > 1 ? 'Indicators' : 'Indicator'); ?>  To Archives.</span>
+              <?php if($publicAndArchivedIndicatorsCount > 0 && $chosenOrganisationId == $myOrganisation['id']): ?>
+              <span id="move-to-archive-btn" class="btn btn-light btn-sm"> Move <span class="badge bg-primary" id="public-archived-count"><?php echo e($publicAndArchivedIndicatorsCount); ?></span> <?php echo e($publicAndArchivedIndicatorsCount > 1 ? 'Indicators' : 'Indicator'); ?> To Archives.</span>
               <?php endif; ?>
             </div>
           </div>
@@ -178,7 +177,7 @@
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         <?php endif; ?>
-                        
+
                         <?php if($role == 'User' || $role == 'Administrator'): ?>
                         <?php if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
                         <?php if($indicator['status'] == 'draft'): ?>
