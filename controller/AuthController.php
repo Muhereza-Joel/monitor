@@ -311,6 +311,12 @@ class AuthController
         
     }
 
+    public function get_archived_response_files($response_id)
+    {
+         $this->model->get_archived_response_files($response_id);
+        
+    }
+
 
     public function check_nin()
     {

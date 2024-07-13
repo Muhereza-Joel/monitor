@@ -783,6 +783,39 @@ class Model
         Request::send_response($httpStatus, $response);
     }
 
+    public function get_archived_response_files($response_id)
+    {
+        // Retrieve the current file info from the database
+        $query = "SELECT files FROM responses_archive WHERE id = ?";
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $response_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $files_json = $row['files'];
+
+            // Decode the JSON-encoded file info
+            $files = json_decode($files_json, true);
+
+            // Check if the decoded data is an array
+            if (is_array($files)) {
+                $response = ['files' => $files];
+                $httpStatus = 200;
+            } else {
+                $response = ['message' => 'No files found or invalid data format'];
+                $httpStatus = 404;
+            }
+        } else {
+            $response = ['error' => 'Response not found'];
+            $httpStatus = 404;
+        }
+
+        // Send the response
+        Request::send_response($httpStatus, $response);
+    }
+
     public function create_organisation()
     {
         $request = Request::capture();

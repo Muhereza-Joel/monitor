@@ -17,6 +17,7 @@ Route::post("/$app_name/image-upload/", "controller\AuthController@upload_photo"
 Route::post("/$app_name/file-upload/", "controller\AuthController@upload_file");
 Route::post("/$app_name/file-remove/", "controller\AuthController@remove_file");
 Route::post("/$app_name/response/files/", "controller\AuthController@get_files");
+Route::post("/$app_name/archived/response/files/", "controller\AuthController@get_archived_response_files");
 Route::post("/$app_name/auth/check-nin/", "controller\AuthController@check_nin");
 Route::post("/$app_name/auth/check-email/", "controller\AuthController@check_email");
 Route::post("/$app_name/auth/check-password/", "controller\AuthController@check_password");

@@ -93,11 +93,14 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator' || $role == 'User')
-                        @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                        <a href="#" class="dropdown-item"><i class="bi bi-book"></i>Export File</a>
-                        @endif
+                      @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                      <a href="#" class="dropdown-item"><i class="bi bi-book"></i>Export File</a>
+                      <a href="#reponse-files" id="view-files" class="dropdown-item" data-response-id="{{$response['id']}}">
+                        <i class="bi bi-file-earmark"></i> Response Files
+                      </a>
                       @endif
-                     
+                      @endif
+
                     </div>
                   </div>
                 </td>
@@ -111,10 +114,95 @@
   </section>
 </main><!-- End #main -->
 
+<div class="modal fade" id="responseFilesModal" tabindex="-1" aria-labelledby="responseFilesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="responseFilesModalLabel">Response Files</h5>
+        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="files-section">
+        <!-- Files for selected response will be displayed here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @include('partials/footer')
 
 <script>
   $(document).ready(function() {
-    
+
+    $('#responses-table').on('click', '#view-files', function() {
+      const responseId = $(this).data('response-id');
+      $('#responseFilesModal').modal('show');
+
+      // Make an AJAX request to fetch files for the given response ID
+      $.ajax({
+        url: `/{{$appName}}/archived/response/files/?response_id=${responseId}`,
+        method: 'GET',
+        success: function(data) {
+          const filesSection = $('#files-section');
+          filesSection.empty(); // Clear previous files
+
+          const panel = $('<div></div>')
+            .addClass('alert alert-light')
+            .css('background-color', '#f8f9fa') // Set background color
+            .append(
+              $('<div></div>')
+              .addClass('panel-body')
+              .append(
+                $('<div></div>')
+                .addClass('list-group')
+              )
+            );
+
+          data.files.forEach(file => {
+            const fileNameWithoutExtension = file.original_name.split('.').slice(0, -1).join('.');
+            const fileExtension = file.original_name.split('.').pop();
+            const cleanedUrl = `{{$baseUrl}}/uploads/files/${file.unique_name}`;
+            const fileLink = $('<a></a>')
+              .attr('href', cleanedUrl)
+              .text(`${file.original_name} (Added on: ${file.date_added} at ${file.time_added})`)
+              .addClass('alert-link p-3')
+              .on('click', function(event) {
+                event.preventDefault(); // Prevent navigation
+
+                // Trigger download via JavaScript
+                downloadFile(cleanedUrl, file.original_name);
+              });
+
+
+            
+            const listItem = $('<div></div>')
+              .addClass('list-group-item d-flex justify-content-between align-items-center')
+              .append(fileLink)
+              
+
+            panel.find('.list-group').append(listItem);
+          });
+
+          filesSection.append(panel);
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching files:', error);
+        }
+      });
+
+      function downloadFile(url, fileName) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        console.log(link);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    });
   });
 </script>
