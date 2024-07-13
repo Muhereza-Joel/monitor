@@ -14,6 +14,9 @@ Route::post("/$app_name/auth/create-account/", "controller\AuthController@create
 Route::post("/$app_name/auth/organisation/create-account/", "controller\AuthController@create_organisation_account");
 Route::post("/$app_name/auth/viewer/create-account/", "controller\AuthController@create_viewer_account");
 Route::post("/$app_name/image-upload/", "controller\AuthController@upload_photo");
+Route::post("/$app_name/file-upload/", "controller\AuthController@upload_file");
+Route::post("/$app_name/file-remove/", "controller\AuthController@remove_file");
+Route::post("/$app_name/response/files/", "controller\AuthController@get_files");
 Route::post("/$app_name/auth/check-nin/", "controller\AuthController@check_nin");
 Route::post("/$app_name/auth/check-email/", "controller\AuthController@check_email");
 Route::post("/$app_name/auth/check-password/", "controller\AuthController@check_password");
@@ -71,6 +74,7 @@ Route::post("/$app_name/dashboard/manage-indicators/responses/delete", "controll
 Route::post("/$app_name/dashboard/users/update-role", "controller\IndicatorController@update_user_role");
 Route::post("/$app_name/dashboard/indicators/status/update", "controller\IndicatorController@update_indicator_status");
 Route::post("/$app_name/dashboard/indicators/move-to-archives/", "controller\IndicatorController@archive_indicators");
+Route::post("/$app_name/dashboard/indicators/responses/files/download", "controller\IndicatorController@download_file");
 
 //Routes for mail controller
 Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@request_otp");
@@ -78,4 +82,3 @@ Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@
 //Routes for organisations controller
 Route::post("/$app_name/organisations/create/", "controller\OrganisationController@create_organisation");
 Route::post("/$app_name/organisations/update/", "controller\OrganisationController@update_organisation");
-?>

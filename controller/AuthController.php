@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use core\FileUploader;
 use core\Request;
 use Illuminate\Support\Facades\URL;
 use core\Session;
@@ -252,6 +253,64 @@ class AuthController
             }
         }
     }
+
+
+    public function upload_file()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
+            $uploadedFiles = $_FILES['files'];
+            $responseId = $_POST['responseId'];
+            $uploadedFileInfos = [];
+
+            // Get baseUrl from environment variable
+            $baseUrl = getenv('APP_BASE_URL');
+
+            // Flatten the $_FILES array structure for ease of processing
+            $filesCount = count($uploadedFiles['name']);
+            $files = [];
+            for ($i = 0; $i < $filesCount; $i++) {
+                $files[] = [
+                    'name' => $uploadedFiles['name'][$i],
+                    'type' => $uploadedFiles['type'][$i],
+                    'tmp_name' => $uploadedFiles['tmp_name'][$i],
+                    'error' => $uploadedFiles['error'][$i],
+                    'size' => $uploadedFiles['size'][$i]
+                ];
+            }
+
+            foreach ($files as $file) {
+                $uploader = new \core\FileUploader($file);
+                $uploader->save_in("../$this->app_name/uploads/files/");
+                $savedFileInfo = $uploader->save();
+
+                if ($savedFileInfo === false) {
+                    http_response_code(500);
+                    echo 'Error uploading file: ' . $file['name'];
+                    return;
+                } else {
+                    // Append baseUrl to each saved file info URL
+                    $savedFileInfo['url'] = rtrim($baseUrl, '/') . "/uploads/files/" . $savedFileInfo['unique_name'];
+                    $uploadedFileInfos[] = $savedFileInfo;
+                }
+            }
+
+            // Return the JSON representation of the uploaded files
+            $fileInfosJson = json_encode($uploadedFileInfos);
+            $this->model->add_files($responseId, $fileInfosJson);
+        }
+    }
+
+    public function remove_file($response_id, $file_id)
+    {
+        $this->model->remove_file($response_id, $file_id);
+    }
+
+    public function get_files($response_id)
+    {
+         $this->model->get_files($response_id);
+        
+    }
+
 
     public function check_nin()
     {

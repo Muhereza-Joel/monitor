@@ -650,6 +650,139 @@ class Model
         }
     }
 
+    public function add_files($response_id, $file_infos_json)
+    {
+        // Retrieve the current file info from the database
+        $query = "SELECT files FROM responses WHERE id = ?";
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $response_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $existing_files = json_decode($row['files'], true);
+
+            // Check if existing files is an array, if not initialize it
+            if (!is_array($existing_files)) {
+                $existing_files = [];
+            }
+
+            // Decode the new file info
+            $new_files_array = json_decode($file_infos_json, true);
+            // Append new file info to the existing array
+            $updated_files = array_merge($existing_files, $new_files_array);
+
+            // Encode the updated array back to JSON
+            $updated_files_json = json_encode(array_values($updated_files));
+
+            // Update the database with the new file info
+            $update_query = "UPDATE responses SET files = ? WHERE id = ?";
+            $update_stmt = $this->database->prepare($update_query);
+            $update_stmt->bind_param('ss', $updated_files_json, $response_id);
+            $update_stmt->execute();
+
+            if ($update_stmt->affected_rows > 0) {
+                $response = ['message' => 'Files added successfully'];
+                $httpStatus = 200;
+            } elseif ($update_stmt->affected_rows == 0) {
+                $response = ['message' => 'You did not change anything'];
+                $httpStatus = 200;
+            } else {
+                $response = ['error' => $update_stmt->error];
+                $httpStatus = 500;
+            }
+        } else {
+            $response = ['error' => 'Response not found'];
+            $httpStatus = 404;
+        }
+
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function remove_file($response_id, $file_id)
+    {
+        // Retrieve the current file info from the database
+        $query = "SELECT files FROM responses WHERE id = ?";
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $response_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $existing_files = json_decode($row['files'], true);
+
+            // Check if existing files is an array, if not initialize it
+            if (!is_array($existing_files)) {
+                $existing_files = [];
+            }
+
+            // Remove the file with the specified ID
+            $updated_files = array_filter($existing_files, function ($file) use ($file_id) {
+                return $file['id'] !== $file_id;
+            });
+
+            // Encode the updated array back to JSON
+            $updated_files_json = json_encode(array_values($updated_files));
+
+            // Update the database with the new file info
+            $update_query = "UPDATE responses SET files = ? WHERE id = ?";
+            $update_stmt = $this->database->prepare($update_query);
+            $update_stmt->bind_param('ss', $updated_files_json, $response_id);
+            $update_stmt->execute();
+
+            if ($update_stmt->affected_rows > 0) {
+                $response = ['message' => 'File removed successfully'];
+                $httpStatus = 200;
+            } elseif ($update_stmt->affected_rows == 0) {
+                $response = ['message' => 'File not found'];
+                $httpStatus = 200;
+            } else {
+                $response = ['error' => $update_stmt->error];
+                $httpStatus = 500;
+            }
+        } else {
+            $response = ['error' => 'Response not found'];
+            $httpStatus = 404;
+        }
+
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function get_files($response_id)
+    {
+        // Retrieve the current file info from the database
+        $query = "SELECT files FROM responses WHERE id = ?";
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $response_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $files_json = $row['files'];
+
+            // Decode the JSON-encoded file info
+            $files = json_decode($files_json, true);
+
+            // Check if the decoded data is an array
+            if (is_array($files)) {
+                $response = ['files' => $files];
+                $httpStatus = 200;
+            } else {
+                $response = ['message' => 'No files found or invalid data format'];
+                $httpStatus = 404;
+            }
+        } else {
+            $response = ['error' => 'Response not found'];
+            $httpStatus = 404;
+        }
+
+        // Send the response
+        Request::send_response($httpStatus, $response);
+    }
+
     public function create_organisation()
     {
         $request = Request::capture();

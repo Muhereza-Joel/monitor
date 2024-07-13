@@ -180,21 +180,32 @@
                       @if($role == 'Administrator' || $role == 'User')
                       @if($response['status'] == 'draft' || $response['status'] == 'review')
                       @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                      <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">Edit Response</a>
-                      <a href="#" id="add-file" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#fileUploadModal">Add Files</a>
+                      <a href="/{{$appName}}/dashboard/indicators/responses/edit?id={{$response['id']}}" class="dropdown-item">
+                        <i class="bi bi-pencil"></i> Edit Response
+                      </a>
+                      <a href="#add-files" id="add-file" class="dropdown-item" data-response-id="{{$response['id']}}" data-bs-toggle="modal" data-bs-target="#fileUploadModal">
+                        <i class="bi bi-paperclip"></i> Add Files
+                      </a>
+                      <a href="#reponse-files" id="view-files" class="dropdown-item" data-response-id="{{$response['id']}}">
+                        <i class="bi bi-file-earmark"></i> Response Files
+                      </a>
                       @endif
                       @endif
                       @endif
                       @if($role == 'Administrator')
                       @if($response['status'] == 'draft')
                       @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                      <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">Delete Response</a>
+                      <a href="/{{$appName}}/dashboard/manage-indicators/responses/delete?id={{$response['id']}}" class="dropdown-item text-danger" id="delete-btn">
+                        <i class="bi bi-trash"></i> Delete Response
+                      </a>
                       @endif
                       @endif
                       @endif
                     </div>
                   </div>
                 </td>
+
+
               </tr>
               @endforeach
             </tbody>
@@ -233,20 +244,45 @@
         </button>
       </div>
       <div class="modal-body">
+        <p class="text-muted">You can choose files or drag and drop them into the area below:</p>
         <!-- File Upload Input -->
         <input type="file" multiple class="form-control" id="fileInput">
         <!-- Drag and Drop Area -->
         <div id="dropArea" style="height: 40vh; border: 2px dashed #ccc; padding: 20px; margin-top: 15px; text-align: center;">
           Drag and drop files here
         </div>
+        <!-- Selected Files Container -->
+        <div id="selectedFilesContainer" class="mt-3"></div>
+        <!-- Hidden Input for File Links -->
+        <input type="hidden" id="fileLinksInput" name="fileLinks">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary btn-sm">Upload</button>
+        <button type="button" class="btn btn-primary btn-sm" id="uploadButton">Upload</button>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="responseFilesModal" tabindex="-1" aria-labelledby="responseFilesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="responseFilesModalLabel">Response Files</h5>
+        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="files-section">
+        <!-- Files for selected response will be displayed here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 @include('partials/footer')
 
@@ -272,6 +308,97 @@
           }, 3000);
         });
       });
+    });
+
+    $('#responses-table').on('click', '#view-files', function() {
+      const responseId = $(this).data('response-id');
+      $('#responseFilesModal').modal('show');
+
+      // Make an AJAX request to fetch files for the given response ID
+      $.ajax({
+        url: `/monitor/response/files/?response_id=${responseId}`,
+        method: 'GET',
+        success: function(data) {
+          const filesSection = $('#files-section');
+          filesSection.empty(); // Clear previous files
+
+          const panel = $('<div></div>')
+            .addClass('alert alert-light')
+            .css('background-color', '#f8f9fa') // Set background color
+            .append(
+              $('<div></div>')
+              .addClass('panel-body')
+              .append(
+                $('<div></div>')
+                .addClass('list-group')
+              )
+            );
+
+          data.files.forEach(file => {
+            const fileNameWithoutExtension = file.original_name.split('.').slice(0, -1).join('.');
+            const fileExtension = file.original_name.split('.').pop();
+            const cleanedUrl = `{{$baseUrl}}/uploads/files/${file.unique_name}`;
+            const fileLink = $('<a></a>')
+              .attr('href', cleanedUrl)
+              .text(`${file.original_name} (Added on: ${file.date_added} at ${file.time_added})`)
+              .addClass('alert-link p-3')
+              .on('click', function(event) {
+                event.preventDefault(); // Prevent navigation
+
+                // Trigger download via JavaScript
+                downloadFile(cleanedUrl, file.original_name);
+              });
+
+
+            const removeButton = $('<button></button>')
+              .text('Delete')
+              .addClass('btn btn-danger btn-sm float-right')
+              .on('click', function() {
+                // Remove file logic here
+                $.ajax({
+                  url: `{{$baseUrl}}/file-remove/?response_id=${responseId}&file_id=${file.id}`,
+                  type: 'DELETE',
+                  success: function(response) {
+                    // Remove the file link from the list
+                    listItem.remove();
+                    Toastify({
+                      text: response.message || 'File Removed Successfully.',
+                      duration: 5000,
+                      gravity: 'bottom',
+                      position: 'left',
+                      backgroundColor: '#28a745',
+                    }).showToast();
+                  },
+                  error: function(xhr, status, error) {
+                    console.error('Failed to remove file:', error);
+                  }
+                });
+              });
+
+            const listItem = $('<div></div>')
+              .addClass('list-group-item d-flex justify-content-between align-items-center')
+              .append(fileLink)
+              .append(removeButton);
+
+            panel.find('.list-group').append(listItem);
+          });
+
+          filesSection.append(panel);
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching files:', error);
+        }
+      });
+
+      function downloadFile(url, fileName) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        console.log(link);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     });
 
     $('#dropArea').on('dragover', function(event) {
@@ -305,7 +432,164 @@
     });
 
     $('#fileUploadModal').on('hidden.bs.modal', function() {
-      $('#dropArea').empty(); 
+      $('#dropArea').empty();
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    let selectedFiles = [];
+    let responseId = null;
+
+    $('#fileUploadModal').on('show.bs.modal', function(event) {
+      const button = $(event.relatedTarget); // Button that triggered the modal
+      responseId = button.data('response-id'); // Extract info from data-* attributes
+    });
+
+    // Handle file selection
+    function handleFiles(files) {
+      for (let file of files) {
+        selectedFiles.push(file);
+        displayFile(file);
+      }
+      updateFileInput();
+    }
+
+    // Display file in the selected files container
+    function displayFile(file) {
+      const fileType = file.type;
+      let iconHtml = '';
+      if (fileType.includes('word') || fileType.includes('document')) {
+        iconHtml = '<i class="bi bi-file-word file-icon h1"></i>';
+      } else if (fileType.includes('excel') || fileType.includes('spreadsheet')) {
+        iconHtml = '<i class="bi bi-file-excel file-icon h1"></i>';
+      } else if (fileType.includes('pdf')) {
+        iconHtml = '<i class="bi bi-file-pdf file-icon h1"></i>';
+      } else if (fileType.includes('image')) {
+        iconHtml = '<i class="bi bi-file-image file-icon h1"></i>';
+      } else {
+        iconHtml = '<i class="bi bi-file-earmark file-icon h1"></i>';
+      }
+
+      const fileBox = `
+      <div class="file-box" data-file-name="${file.name}">
+        ${iconHtml} <span>${file.name}</span>
+        <button type="button" class="btn btn-danger btn-sm remove-file-btn">Remove</button>
+      </div>`;
+      $('#selectedFilesContainer').append(fileBox);
+    }
+
+    // Handle file removal
+    $('#selectedFilesContainer').on('click', '.remove-file-btn', function() {
+      const fileName = $(this).closest('.file-box').data('file-name');
+      selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+      $(this).closest('.file-box').remove();
+      updateFileInput();
+    });
+
+    // Handle drag and drop
+    $('#dropArea').on('dragover', function(event) {
+      event.preventDefault();
+      $(this).addClass('drag-active');
+    });
+
+    $('#dropArea').on('dragleave drop', function(event) {
+      event.preventDefault();
+      $(this).removeClass('drag-active');
+    });
+
+    $('#dropArea').on('drop', function(event) {
+      event.preventDefault();
+      const files = event.originalEvent.dataTransfer.files;
+      handleFiles(files);
+    });
+
+    // Handle file input selection
+    $('#fileInput').on('change', function(event) {
+      const files = event.target.files;
+      handleFiles(files);
+    });
+
+    // Update the file input with the current selected files
+    function updateFileInput() {
+      const dataTransfer = new DataTransfer();
+      selectedFiles.forEach(file => dataTransfer.items.add(file));
+      $('#fileInput')[0].files = dataTransfer.files;
+    }
+
+    // Handle upload button click
+    $('#uploadButton').on('click', function() {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+      const validFiles = selectedFiles.filter(file => allowedTypes.includes(file.type));
+
+      if (validFiles.length === 0) {
+        Toastify({
+          text: 'No valid files selected. Only images, PDF, Word, and Excel files are allowed.',
+          duration: 5000,
+          gravity: 'bottom',
+          position: 'left',
+          backgroundColor: '#f44336',
+        }).showToast();
+
+        return;
+      }
+
+      if (validFiles.length !== selectedFiles.length) {
+        Toastify({
+          text: 'Some files are not allowed, please remove them. Only images, PDF, Word, and Excel files are allowed.',
+          duration: 5000,
+          gravity: 'bottom',
+          position: 'left',
+          backgroundColor: '#f44336',
+        }).showToast();
+
+        return;
+      }
+      const fileLinks = selectedFiles.map(file => URL.createObjectURL(file));
+      $('#fileLinksInput').val(JSON.stringify(fileLinks));
+
+      // Perform AJAX upload
+      const formData = new FormData();
+      validFiles.forEach(file => formData.append('files[]', file));
+      formData.append('responseId', responseId);
+
+      $.ajax({
+        url: '{{$baseUrl}}/file-upload/',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          Toastify({
+            text: response.message || 'Files Added Successfully.',
+            duration: 5000,
+            gravity: 'bottom',
+            position: 'left',
+            backgroundColor: '#28a745',
+          }).showToast();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          Toastify({
+            text: jqXHR.responseJSON.error || 'Filled to upload files.',
+            duration: 5000,
+            gravity: 'bottom',
+            position: 'left',
+            backgroundColor: '#f44336',
+          }).showToast();
+        }
+      });
+
+      console.log(fileLinks); // For debugging
+    });
+    // Clear selected files when the modal is closed
+    $('#fileUploadModal').on('hidden.bs.modal', function() {
+      selectedFiles = [];
+      responseId = null;
+      $('#selectedFilesContainer').empty();
+      $('#fileLinksInput').val('');
+      $('#fileInput').val('');
+      $('#dropArea').removeClass('drag-active');
     });
   });
 </script>

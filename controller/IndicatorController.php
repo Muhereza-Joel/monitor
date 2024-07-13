@@ -57,4 +57,41 @@ class IndicatorController
     {
         $this->model->archive_indicators();
     }
+
+    public function download_file($file)
+    {
+        if ($file) {
+            // Define the full file path
+            $filePath = realpath('uploads/files/' . $file);  // Use the realpath function to get the absolute path
+
+            // Check if the file exists and is within the intended directory
+            if ($filePath && strpos($filePath, realpath('uploads/files/')) === 0 && file_exists($filePath)) {
+                // Clear output buffer
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
+
+                // Set headers
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=' . basename($filePath));
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+
+
+                // Read the file
+                readfile($filePath);
+                exit;
+            } else {
+                // Return 404 if file not found
+                http_response_code(404);
+                die('File not found');
+            }
+        } else {
+            // Return 400 for bad request if file is 0
+            http_response_code(400);
+            die('Invalid file parameter');
+        }
+    }
 }
