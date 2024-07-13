@@ -159,7 +159,7 @@ class User
         WHERE app_users.id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
 
         $result = $stmt->get_result();
