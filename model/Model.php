@@ -949,10 +949,11 @@ class Model
     {
         $count = 0;
         $current_user = Session::get('user_id');
-        $query = "SELECT COUNT(*) FROM responses WHERE responses.user_id = ?";
+        $selected_organization_id = Session::get('selected_organisation_id');
+        $query = "SELECT COUNT(*) FROM responses WHERE responses.user_id = ? AND responses.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('i', $current_user);
+        $stmt->bind_param('ss', $current_user, $selected_organization_id); 
         $stmt->execute();
         $stmt->bind_result($count);
 

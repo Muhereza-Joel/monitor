@@ -316,7 +316,7 @@
 
       // Make an AJAX request to fetch files for the given response ID
       $.ajax({
-        url: `/monitor/response/files/?response_id=${responseId}`,
+        url: `/<?php echo e($appName); ?>/response/files/?response_id=${responseId}`,
         method: 'GET',
         success: function(data) {
           const filesSection = $('#files-section');
