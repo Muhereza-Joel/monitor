@@ -219,9 +219,9 @@ h6 {
 
 /* Card */
 .card {
-  margin-bottom: 10px;
+  margin-bottom: 1px;
   border: none;
-  border-radius: 5px;
+  border-radius: 0px;
   background-color: #fefefe;
   /* background-color: #dcf0e4; */
   /* box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1); */
@@ -481,7 +481,7 @@ h6 {
 }
 
 .header-nav .nav-profile {
-  color: #012970;
+  color: #f8fafc;
 }
 
 .header-nav .nav-profile img {

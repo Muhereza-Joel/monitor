@@ -120,23 +120,6 @@
     </li>
     <?php endif; ?>
 
-    <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    <?php endif; ?>
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
-
-
     <?php endif; ?>
 
     <?php if($role == 'User'): ?>
@@ -200,22 +183,6 @@
       </a>
     </li>
 
-    <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    <?php endif; ?>
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
-
     <?php endif; ?>
 
     <?php if($role == 'Viewer'): ?>
@@ -259,21 +226,6 @@
     </li>
     <?php endif; ?>
 
-    <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    <?php endif; ?>
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
     <?php endif; ?>
 
   </ul>

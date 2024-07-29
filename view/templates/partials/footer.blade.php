@@ -12,7 +12,7 @@
 <script src="{{$baseUrl}}/assets/vendor/tinymce/tinymce.min.js"></script>
 <script src="{{$baseUrl}}/assets/vendor/php-email-form/validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js" integrity="sha512-79j1YQOJuI8mLseq9icSQKT6bLlLtWknKwj1OpJZMdPt2pFBry3vQTt+NZuJw7NSd1pHhZlu0s12Ngqfa371EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
 <!-- Template Main JS File -->
 <script src="{{$baseUrl}}/assets/js/jquery.min.js"></script>
 <script src="{{$baseUrl}}/assets/js/moments.js"></script>

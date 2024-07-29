@@ -11,95 +11,171 @@
       <h6 class="badge bg-primary">
         You are on the
         <?php if($role == 'Administrator'): ?>
-          Administrator
+        Administrator
         <?php elseif($role == 'Viewer'): ?>
-          Viewer
+        Viewer
         <?php else: ?>
-          User
+        User
         <?php endif; ?>
         dashboard
       </h6>
     </div>
 
-      <?php if($role == 'Viewer'): ?>
-        <div class="alert alert-danger p-2">
-          <?php echo e($username); ?>, your permissions only allows you to view data. If you need to modify or delete any information, please contact the Administrator to update your permissions.
-        </div>
-      <?php endif; ?>
+    <?php if($role == 'Viewer'): ?>
+    <div class="alert alert-danger p-2">
+      <?php echo e($username); ?>, your permissions only allows you to view data. If you need to modify or delete any information, please contact the Administrator to update your permissions.
+    </div>
+    <?php endif; ?>
 
-      <div class="row g-1 mt-4">
-        <div class="col-sm-4">
-          <div class="card info-card sales-card">
-            <div class="card-body">
-              <h5 class="card-title">All <span>| Active Indicators</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-graph-up"></i>
-                </div>
-                <div class="ps-3">
-                  <h6><?php echo e($indicatorsCount); ?></h6>
-                  
+    <div class="row g-1 mt-4">
+      <div class="col-md-4">
+        <div class="row g-1">
+          <div class="">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">All <span>| Active Indicators</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-up"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><?php echo e($indicatorsCount); ?></h6>
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-sm-4">
-          <div class="card info-card sales-card">
-            <div class="card-body">
-              <h5 class="card-title">All <span>| Active Responses</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="ps-3">
-                  <h6><?php echo e($responsesCount); ?></h6>
-                  
+          <div class="">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">All <span>| Active Responses</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-check-circle"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><?php echo e($responsesCount); ?></h6>
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
-        <div class="col-sm-4">
-          <div class="card info-card sales-card">
-            <div class="card-body">
-              <h5 class="card-title">Your <span>| Responses</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="ps-3">
-                  <h6><?php echo e($userResponsesCount); ?></h6>
-                  
+          <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
+          <div class="">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Your <span>| Responses</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-check-circle"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><?php echo e($userResponsesCount); ?></h6>
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <?php endif; ?>
+          <?php endif; ?>
 
-        <div class="col-sm-4">
-          <div class="card info-card sales-card">
-            <div class="card-body">
-              <h5 class="card-title">All <span>| Users</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-person-circle"></i>
-                </div>
-                <div class="ps-3">
-                  <h6><?php echo e($usersCount); ?></h6>
-                  
+          <div class="">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">All <span>| Users</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-circle"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><?php echo e($usersCount); ?></h6>
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+        </div>
+
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
+          <div class="col">
+            
+            <div class="card info-card calendar-card" style="background-color: #eeeeee;">
+              <div class="card-body">
+                <h5 class="card-title">Events Calendar.</h5>
+                <div id="calendar"></div>
+              </div>
+            </div>
+          </div>
+          <?php endif; ?>
         </div>
       </div>
+    </div>
     </div>
   </section>
 </main><!-- End #main -->
 
 <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<script>
+  $(document).ready(function() {
+    var calendarEl = $('#calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl[0], {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,dayGridYear'
+      },
+      views: {
+        dayGridMonth: {
+          buttonText: 'Month'
+        },
+        timeGridWeek: {
+          buttonText: 'Week'
+        },
+        timeGridDay: {
+          buttonText: 'Day'
+        },
+        listMonth: {
+          buttonText: 'List'
+        },
+        dayGridYear: {
+          buttonText: 'Year'
+        }
+      },
+      events: [{
+          title: 'Event 1',
+          start: '2024-07-01',
+          end: '2024-07-04'
+        },
+        {
+          title: 'Event 2',
+          start: '2024-07-05',
+          end: '2024-07-07'
+        }
+      ]
+    });
+
+    calendar.render();
+
+    // Custom CSS to reduce the size of calendar buttons
+    var style = document.createElement('style');
+    style.innerHTML = `
+      .fc-button-group button {
+        padding: 0.25em 0.5em;
+        font-size: 0.5em;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>

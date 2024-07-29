@@ -120,23 +120,6 @@
     </li>
     @endif
 
-    @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    @endif
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
-
-
     @endif
 
     @if($role == 'User')
@@ -200,22 +183,6 @@
       </a>
     </li>
 
-    @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    @endif
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
-
     @endif
 
     @if($role == 'Viewer')
@@ -259,21 +226,6 @@
     </li>
     @endif
 
-    @if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator')
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/user/profile/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/user/profile/">
-        <i class="bi bi-card-list"></i>
-        <span>My Profile</span>
-      </a>
-    </li>
-    @endif
-
-    <li class="nav-item pb-2">
-      <a class="nav-link <?php echo $currentPath == "/$appName/auth/sign-out/" ? 'active' : 'collapsed'; ?>" href="/{{$appName}}/auth/sign-out/">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Log Out</span>
-      </a>
-    </li>
     @endif
 
   </ul>
