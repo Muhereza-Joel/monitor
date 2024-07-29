@@ -2,6 +2,26 @@
 
 @include('partials/topBar');
 
+<style>
+  #progress-bar-container {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  #progress-bar {
+    width: 100%;
+    height: 10px;
+  }
+
+  #progress-percentage {
+    display: inline-block;
+    margin-top: 5px;
+    color: #000;
+  }
+</style>
+
 @include('partials/leftPane');
 <main id="main" class="main">
   <div class="d-flex align-items-center px-3">
@@ -34,7 +54,7 @@
     <div class="row">
       <div class="col-xl-4">
         <div class="text-center">
-        <img src="{{$avator}}" alt="Profile" class="rounded-circle" width="300px" height="300px" style="border: 3px solid #999; object-fit: cover;" onerror="this.onerror=null;this.src='/{{$appName}}/assets/img/avatar.png';">
+          <img src="{{$avator}}" alt="Profile" class="rounded-circle" width="300px" height="300px" style="border: 3px solid #999; object-fit: cover;" onerror="this.onerror=null;this.src='/{{$appName}}/assets/img/avatar.png';">
 
           <h2>{{$userDetails['name']}}</h2>
           <span class="text-secondary"><strong>Your Role : </strong> {{$role}}</span>
@@ -84,7 +104,7 @@
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Full Name</div>
                   <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['name']}}</div>
                 </div>
-               
+
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Date of Birth</div>
                   <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['dob']}}</div>
@@ -349,6 +369,12 @@
           <br><br><br>
           <input data-parsley-error-message="Please choose an image" id="image" type="file" accept="image/jpeg" title="Choose Image" required>
           <input type="hidden" name="image_url" id="image_url">
+
+          <div id="progress-bar-container" style="display: none;">
+            <progress id="progress-bar" value="0" max="100"></progress>
+            <span id="progress-percentage">0%</span>
+          </div>
+
           <button id="save-new-profile-pic-btn" type="submit" class="btn btn-primary btn-sm">Save Photo</button>
           <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
         </form>
@@ -383,12 +409,25 @@
       let formData = new FormData();
       formData.append('image', this.files[0]);
 
+      $('#progress-bar-container').show();
+
       $.ajax({
         method: 'post',
         url: '/{{$appName}}/image-upload/',
         data: formData,
         processData: false,
         contentType: false,
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener("progress", function(evt) {
+            if (evt.lengthComputable) {
+              var percentComplete = evt.loaded / evt.total * 100;
+              $('#progress-bar').val(percentComplete);
+              $('#progress-percentage').text(Math.round(percentComplete) + '%');
+            }
+          }, false);
+          return xhr;
+        },
         success: function(response) {
 
           $('#image_url').val("{{$baseUrl}}/uploads/images/" + response);

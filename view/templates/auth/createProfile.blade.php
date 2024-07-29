@@ -1,5 +1,25 @@
 @include('partials/header')
 
+<style>
+  #progress-bar-container {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  #progress-bar {
+    width: 100%;
+    height: 10px;
+  }
+
+  #progress-percentage {
+    display: inline-block;
+    margin-top: 5px;
+    color: #000;
+  }
+</style>
+
 <body>
 
   <main>
@@ -28,10 +48,10 @@
 
                 <div class="col-xl-5">
 
-                <div class="text-center">
-                  <img id="profile-photo" src="/{{$appName}}/assets/img/avatar.png" class="rounded-circle" alt="Profile" width="250px" height="250px" style="border: 3px solid #999; object-fit: cover;">
+                  <div class="text-center">
+                    <img id="profile-photo" src="/{{$appName}}/assets/img/avatar.png" class="rounded-circle" alt="Profile" width="250px" height="250px" style="border: 3px solid #999; object-fit: cover;">
 
-                </div>
+                  </div>
                   <div class="">
                     <div class=" profile-card pt-4 d-flex flex-column align-items-center">
 
@@ -46,6 +66,10 @@
                             <input type="file" name="image" id="image" class="btn btn-outline btn-sm" required accept="image/jpeg">
                             <div class="invalid-feedback">Please choose a profile photo</div>
                           </div>
+                          <div id="progress-bar-container" style="display: none;">
+                            <progress id="progress-bar" value="0" max="100"></progress>
+                            <span id="progress-percentage">0%</span>
+                          </div>
 
 
 
@@ -56,7 +80,7 @@
                   </div>
 
                   <div class=" p-2">
-                    
+
 
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Your Full Name</label>
@@ -83,12 +107,12 @@
                   <div class="" style="border-left: 2px solid #777;">
                     <div class="card-body pt-3">
 
-                    <div class="row mb-3">
-                      <label for="about" class="col-md-4 col-lg-3 col-form-label">About (Optional)</label>
-                      <div class="col-md-8 col-lg-9">
-                        <textarea id="about-textarea" name="about" class="form-control" id="about" style="height: 150px" placeholder="Brief info about your self"></textarea>
+                      <div class="row mb-3">
+                        <label for="about" class="col-md-4 col-lg-3 col-form-label">About (Optional)</label>
+                        <div class="col-md-8 col-lg-9">
+                          <textarea id="about-textarea" name="about" class="form-control" id="about" style="height: 150px" placeholder="Brief info about your self"></textarea>
+                        </div>
                       </div>
-                    </div>
 
                       <div class="row mb-3">
                         <label for="Job" class="col-md-4 col-lg-3 col-form-label">Your Job Title</label>
@@ -232,12 +256,25 @@
         let formData = new FormData();
         formData.append('image', this.files[0]);
 
+        $('#progress-bar-container').show();
+
         $.ajax({
           method: 'post',
           url: '/{{$appName}}/image-upload/',
           data: formData,
           processData: false,
           contentType: false,
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total * 100;
+                $('#progress-bar').val(percentComplete);
+                $('#progress-percentage').text(Math.round(percentComplete) + '%');
+              }
+            }, false);
+            return xhr;
+          },
           success: function(response) {
 
             $('#image_url').val("{{$baseUrl}}/uploads/images/" + response);

@@ -2,6 +2,26 @@
 
 @include('partials/topBar');
 
+<style>
+    #progress-bar-container {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #progress-bar {
+        width: 100%;
+        height: 10px;
+    }
+
+    #progress-percentage {
+        display: inline-block;
+        margin-top: 5px;
+        color: #000;
+    }
+</style>
+
 @include('partials/leftPane');
 
 <main id="main" class="main">
@@ -35,6 +55,10 @@
                                     <input type="file" name="image" id="image" class="btn btn-outline btn-sm" accept="image/jpeg, image/png">
                                     <div class="invalid-feedback">Please choose organization logo</div>
                                 </div>
+                                <div id="progress-bar-container" style="display: none;">
+                                    <progress id="progress-bar" value="0" max="100"></progress>
+                                    <span id="progress-percentage">0%</span>
+                                </div>
                             </div>
                             <div class="form-group my-2">
                                 <label for="">Organization Name</label>
@@ -47,8 +71,8 @@
                                 <label for="">Active</label>
                                 <select name="active" id="" required class="form-control">
                                     <option value="">Select Status</option>
-                                    <option value="true" {{ $organisation['active'] == 'true' ? 'selected' : '' }} >Yes</option>
-                                    <option value="false" {{ $organisation['active'] == 'false' ? 'selected' : '' }} >No</option>
+                                    <option value="true" {{ $organisation['active'] == 'true' ? 'selected' : '' }}>Yes</option>
+                                    <option value="false" {{ $organisation['active'] == 'false' ? 'selected' : '' }}>No</option>
 
                                 </select>
                                 <div class="invalid-feedback">This value is required</div>
@@ -61,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
 
@@ -130,12 +154,25 @@
             let formData = new FormData();
             formData.append('image', this.files[0]);
 
+            $('#progress-bar-container').show();
+
             $.ajax({
                 method: 'post',
                 url: '/{{$appName}}/image-upload/',
                 data: formData,
                 processData: false,
                 contentType: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total * 100;
+                            $('#progress-bar').val(percentComplete);
+                            $('#progress-percentage').text(Math.round(percentComplete) + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
                 success: function(response) {
                     $('#image_url').val("{{$baseUrl}}/uploads/images/" + response);
                     $('#profile-photo').attr('src', "{{$baseUrl}}/uploads/images/" + response);
