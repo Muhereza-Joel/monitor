@@ -52,18 +52,28 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                      <?php if($role == 'Administrator'): ?>
-                        <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                        <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">View User Details</a> <!-- Replace "1" with the actual book ID -->
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">Update User Role</a>
-                        <a class="dropdown-item text-danger" href="#">Block User</a> 
-                        <a class="dropdown-item text-danger" href="#">Delete User</a> 
+                        <?php if($role == 'Administrator'): ?>
+                            <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                                <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">
+                                    <i class="bi bi-eye"></i> View User Details
+                                </a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">
+                                    <i class="bi bi-pencil-square"></i> Update User Role
+                                </a>
+                                <a class="dropdown-item text-danger" href="#">
+                                    <i class="bi bi-slash-circle"></i> Block User
+                                </a>
+                                <a class="dropdown-item text-danger" href="#">
+                                    <i class="bi bi-trash"></i> Delete User
+                                </a>
+                            <?php endif; ?>
                         <?php endif; ?>
-                      <?php endif; ?>
-
-                      <?php if($role == 'Viewer'): ?>
-                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">View User Details</a> <!-- Replace "1" with the actual book ID -->
-                      <?php endif; ?>
+                    
+                        <?php if($role == 'Viewer'): ?>
+                            <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">
+                                <i class="bi bi-eye"></i> View User Details
+                            </a>
+                        <?php endif; ?>
                     </div>
                   </div>
                 </td>

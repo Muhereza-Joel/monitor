@@ -52,18 +52,28 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                      @if($role == 'Administrator')
-                        @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                        <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">Update User Role</a>
-                        <a class="dropdown-item text-danger" href="#">Block User</a> 
-                        <a class="dropdown-item text-danger" href="#">Delete User</a> 
+                        @if($role == 'Administrator')
+                            @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                                <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">
+                                    <i class="bi bi-eye"></i> View User Details
+                                </a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">
+                                    <i class="bi bi-pencil-square"></i> Update User Role
+                                </a>
+                                <a class="dropdown-item text-danger" href="#">
+                                    <i class="bi bi-slash-circle"></i> Block User
+                                </a>
+                                <a class="dropdown-item text-danger" href="#">
+                                    <i class="bi bi-trash"></i> Delete User
+                                </a>
+                            @endif
                         @endif
-                      @endif
-
-                      @if($role == 'Viewer')
-                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">View User Details</a> <!-- Replace "1" with the actual book ID -->
-                      @endif
+                    
+                        @if($role == 'Viewer')
+                            <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">
+                                <i class="bi bi-eye"></i> View User Details
+                            </a>
+                        @endif
                     </div>
                   </div>
                 </td>
