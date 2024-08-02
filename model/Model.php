@@ -907,6 +907,172 @@ class Model
         }
     }
 
+    public function create_event()
+    {
+        $request = Request::capture();
+
+        $id = Uuid::uuid4()->toString();
+        $event_title = $request->input('event');
+        $start_date = $request->input('startDate');
+        $end_date = $request->input('endDate');
+        $organization_id = Session::get('selected_organisation_id');
+        $user_id = Session::get('user_id');
+        $event_status = $request->input('active');
+        $event_visibility = $request->input('visibility');
+
+        $query = "INSERT INTO events(id, event, start_date, end_date, organisation_id, user_id, active, viewer) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ssssssss', $id, $event_title, $start_date, $end_date, $organization_id, $user_id, $event_status, $event_visibility);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Row Created Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
+
+    public function get_events($visibility, $active)
+    {
+        $organisation_id = Session::get('selected_organisation_id');
+
+        $query = "SELECT events.event AS title, events.start_date AS start, events.end_date AS end, organizations.logo, events.viewer 
+                  FROM events 
+                  LEFT JOIN organizations ON events.organisation_id = organizations.id 
+                  WHERE events.organisation_id = ? AND events.active = ? AND events.viewer = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('sis', $organisation_id, $active, $visibility);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function get_my_organisation_events($visibility)
+    {
+        $organisation_id = Session::get('my_organization_id');
+
+        // Base query
+        $query = "SELECT events.id, events.event AS title, events.start_date AS start, events.end_date AS end, organizations.logo, events.viewer, events.active, events.created_at
+              FROM events 
+              JOIN organizations ON events.organisation_id = organizations.id 
+              WHERE events.organisation_id = ?";
+
+        // Add visibility filter
+        if ($visibility === 'all' || $visibility === 'internal' || $visibility === 'external') {
+            $query .= " AND events.viewer = ?";
+        }
+
+        $stmt = $this->database->prepare($query);
+
+        // Bind parameters
+        if ($visibility === 'all' || $visibility === 'internal' || $visibility === 'external') {
+            $stmt->bind_param('ss', $organisation_id, $visibility);
+        } else {
+            $stmt->bind_param('s', $organisation_id);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $rows];
+    }
+
+    public function delete_event($id)
+    {
+        $query = "DELETE FROM events WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Record Deleted Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'Record Not Found'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
+    public function get_event($id)
+    {
+        $query = "SELECT * FROM events WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return ['httpStatus' => 200, 'response' => $row];
+    }
+
+    public function update_event()
+    {
+        $request = Request::capture();
+
+        $event_id = $request->input('id');
+        $event_title = $request->input('event');
+        $start_date = $request->input('startDate');
+        $end_date = $request->input('endDate');
+        $event_status = $request->input('active');
+        $event_visibility = $request->input('visibility');
+
+        $query = "UPDATE events SET event = ?, start_date = ?, end_date = ?, active = ?, viewer = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ssssss', $event_title, $start_date, $end_date, $event_status, $event_visibility, $event_id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Record Updated Successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => "You didn't change anything"];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+    }
+
+
     public function get_indicators_count()
     {
         $count = 0;
@@ -953,7 +1119,7 @@ class Model
         $query = "SELECT COUNT(*) FROM responses WHERE responses.user_id = ? AND responses.organization_id = ?";
 
         $stmt = $this->database->prepare($query);
-        $stmt->bind_param('ss', $current_user, $selected_organization_id); 
+        $stmt->bind_param('ss', $current_user, $selected_organization_id);
         $stmt->execute();
         $stmt->bind_result($count);
 

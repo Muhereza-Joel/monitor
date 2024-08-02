@@ -43,6 +43,16 @@
     </li>
     <?php endif; ?>
 
+    <?php if($myOrganisation['id'] == $chosenOrganisationId || $myOrganisation['name'] == 'Administrator'): ?>
+    <li class="nav-item">
+      <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/manage-events/" ? 'active' : 'collapsed'; ?> " href="/<?php echo e($appName); ?>/dashboard/manage-events/">
+        <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>
+        <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mx-1" width="25px" height="25px">
+        <span>Manage Events</span>
+      </a>
+    </li>
+    <?php endif; ?>
+
     <li class="nav-item">
       <a class="nav-link <?php echo $currentPath == "/$appName/dashboard/indicators/" ? 'active' : 'collapsed'; ?>" href="/<?php echo e($appName); ?>/dashboard/indicators/">
         <?php $imageUrl = isset($chosenOrganisationLogo) ? $chosenOrganisationLogo : "/{$appName}/assets/img/avatar.png"; ?>

@@ -515,6 +515,33 @@ class PageController
         echo ($html);
     }
 
+    public function render_manage_events($action = null, $id = null)
+    {
+        $eventIsActive = 1;
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+        $events = $this->model->get_my_organisation_events("all");
+        $event_details = $this->model->get_event($id);
+
+        $html = $this->blade_view->render('manageEvents', [
+            'pageTitle' => "$this->app_name - manage events",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'events' => $events['response'],
+            'action' => $action,
+            'eventDetails' => $event_details['response']
+            
+        ]);
+
+        echo ($html);
+    }
+
     public function render_database_connection_error()
     {
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));

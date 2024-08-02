@@ -61,6 +61,7 @@ Route::post("/$app_name/dashboard/organizations/update", "controller\PageControl
 Route::post("/$app_name/dashboard/organizations/users/create/", "controller\PageController@render_create_organization_user");
 Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@render_choose_organisation");
 Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
+Route::post("/$app_name/dashboard/manage-events/", "controller\PageController@render_manage_events");
 Route::post("/$app_name/database/connection/error/", "controller\ErrorPageController@render_database_connection_error");
 
 
@@ -83,3 +84,10 @@ Route::post("/$app_name/auth/accounts/request-otp/", "controller\MailController@
 //Routes for organisations controller
 Route::post("/$app_name/organisations/create/", "controller\OrganisationController@create_organisation");
 Route::post("/$app_name/organisations/update/", "controller\OrganisationController@update_organisation");
+
+//Routes for events controller
+Route::post("/$app_name/events/create/", "controller\EventsController@create_event");
+Route::post("/$app_name/events/update/", "controller\EventsController@update_event");
+Route::post("/$app_name/events/delete/", "controller\EventsController@delete_event");
+Route::post("/$app_name/events/get-events/", "controller\EventsController@get_events");
+Route::post("/$app_name/events/get-my-organisation-events/", "controller\EventsController@get_my_organisation_events");

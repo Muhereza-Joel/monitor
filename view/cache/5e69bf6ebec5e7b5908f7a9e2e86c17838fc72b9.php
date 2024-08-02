@@ -17,6 +17,7 @@
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
   <!-- Vendor CSS Files -->
   <link href="<?php echo e($baseUrl); ?>/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="<?php echo e($baseUrl); ?>/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -76,6 +77,12 @@
       user-select: none;
       /* Non-prefixed version, currently supported by Chrome, Opera, and Firefox */
     }
+
+    .btn{
+      border-radius: 0px !important;
+    }
+
+    
   </style>
 
 </head>
