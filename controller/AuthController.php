@@ -193,7 +193,7 @@ class AuthController
     public function sign_out()
     {
         Session::destroy();
-        header("location:/$this->app_name/auth/challenge/login/");
+        header("location:/$this->app_name/auth/login/");
     }
 
     public function set_choosen_organisation()

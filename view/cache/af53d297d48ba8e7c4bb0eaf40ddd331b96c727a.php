@@ -9,17 +9,17 @@
         </tr>
         <tr>
             <td style="text-align: center;">
-                <h1 style="font-size: 24px; margin-top: 20px; margin-bottom: 10px;">Open Data Analytics Monitor</h1>
+                <h1 style="font-size: 24px; margin-top: 20px; margin-bottom: 10px;">M & E Monitor</h1>
             </td>
         </tr>
         
         <tr>
             <td style="text-align: center;">
-                <div style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">
-                    Your OTP: <span style="color: #d9534f;"><?php echo e($otp); ?></span>
-                </div>
                 <div style="font-size: 18px; color: #333; margin-bottom: 20px;">
                     Please use this code to confirm your email address.
+                </div>
+                <div style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">
+                    Your OTP: <span style="color: #d9534f;"><?php echo e($otp); ?></span>
                 </div>
             </td>
         </tr>

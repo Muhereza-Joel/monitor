@@ -193,9 +193,17 @@
                           <i class="bi bi-globe"></i> Make Indicator Public
                         </a>
                         @endif
+                        @if($indicator['status'] == 'archived')
+                        <a href="/{{$appName}}/dashboard/reports/create-report/?id={{$indicator['id']}}" class="dropdown-item">
+                          <i class="bi bi-file-earmark"></i> Create Report
+                        </a>
+                        @endif
                         @if($indicator['status'] == 'review' || $indicator['status'] == 'public')
                         <a id="archive-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=archived" class="dropdown-item">
                           <i class="bi bi-archive"></i> Archive Indicator
+                        </a>
+                        <a href="/{{$appName}}/dashboard/reports/create-report/?id={{$indicator['id']}}" class="dropdown-item">
+                          <i class="bi bi-file-earmark"></i> Create Report
                         </a>
                         @endif
                         @endif

@@ -195,9 +195,17 @@
                           <i class="bi bi-globe"></i> Make Indicator Public
                         </a>
                         <?php endif; ?>
+                        <?php if($indicator['status'] == 'archived'): ?>
+                        <a href="/<?php echo e($appName); ?>/dashboard/reports/create-report/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                          <i class="bi bi-file-earmark"></i> Create Report
+                        </a>
+                        <?php endif; ?>
                         <?php if($indicator['status'] == 'review' || $indicator['status'] == 'public'): ?>
                         <a id="archive-indicator-btn" href="/<?php echo e($appName); ?>/dashboard/indicators/status/update?id=<?php echo e($indicator['id']); ?>&status=archived" class="dropdown-item">
                           <i class="bi bi-archive"></i> Archive Indicator
+                        </a>
+                        <a href="/<?php echo e($appName); ?>/dashboard/reports/create-report/?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                          <i class="bi bi-file-earmark"></i> Create Report
                         </a>
                         <?php endif; ?>
                         <?php endif; ?>

@@ -939,7 +939,6 @@ class Model
         }
     }
 
-
     public function get_events($visibility, $active)
     {
         $organisation_id = Session::get('selected_organisation_id');

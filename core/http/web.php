@@ -63,6 +63,7 @@ Route::post("/$app_name/auth/organizations/choose/", "controller\PageController@
 Route::post("/$app_name/dashboard/organizations/choose/", "controller\PageController@render_dashboard_choose_organisation");
 Route::post("/$app_name/dashboard/manage-events/", "controller\PageController@render_manage_events");
 Route::post("/$app_name/database/connection/error/", "controller\ErrorPageController@render_database_connection_error");
+Route::post("/$app_name/dashboard/reports/create-report/", "controller\PageController@render_create_report");
 
 
 
@@ -91,3 +92,9 @@ Route::post("/$app_name/events/update/", "controller\EventsController@update_eve
 Route::post("/$app_name/events/delete/", "controller\EventsController@delete_event");
 Route::post("/$app_name/events/get-events/", "controller\EventsController@get_events");
 Route::post("/$app_name/events/get-my-organisation-events/", "controller\EventsController@get_my_organisation_events");
+
+//Routes for reports controller
+Route::post("/$app_name/reports/pdf/export/single/", "controller\ReportsController@export_single_pdf_report");
+Route::post("/$app_name/reports/pdf/export/multiple/", "controller\ReportsController@export_multiple_pdf_report");
+Route::post("/$app_name/reports/word/export/single/", "controller\ReportsController@export_single_word_report");
+Route::post("/$app_name/reports/word/export/multiple/", "controller\ReportsController@export_multiple_word_report");
