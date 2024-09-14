@@ -1,0 +1,6 @@
+parameters:
+    level: 5  # Analysis level (0-9, where 0 is the least strict and 9 is the most strict)
+    paths:
+        - ..  # The directory where your PHP code is located
+    autoload_files:
+        - %rootDir%/../../../vendor/autoload.php  # For loading Composer's autoload file

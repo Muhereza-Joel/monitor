@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '3b4bae0a0c718d32efd96e23cce64e2b837a72fe',
+        'reference' => 'f7d44b9d027ebf67669c0fc0642a7ce1df6e140c',
         'name' => 'stella/monitor',
         'dev' => true,
     ),
@@ -235,6 +235,15 @@
             'reference' => '451c3cd1418cf640de218914901e51b064abb093',
             'dev_requirement' => false,
         ),
+        'phpstan/phpstan' => array(
+            'pretty_version' => '1.12.3',
+            'version' => '1.12.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpstan/phpstan',
+            'aliases' => array(),
+            'reference' => '0fcbf194ab63d8159bb70d9aa3e1350051632009',
+            'dev_requirement' => true,
+        ),
         'phpunit/php-code-coverage' => array(
             'pretty_version' => '4.0.8',
             'version' => '4.0.8.0',
@@ -427,7 +436,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '3b4bae0a0c718d32efd96e23cce64e2b837a72fe',
+            'reference' => 'f7d44b9d027ebf67669c0fc0642a7ce1df6e140c',
             'dev_requirement' => false,
         ),
         'symfony/debug' => array(

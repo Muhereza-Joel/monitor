@@ -309,10 +309,10 @@ class PageController
         echo ($html);
     }
 
-    public function render_create_report($indicator_id = null){
+    public function render_create_report($id = null){
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
-        $indicator_details = $this->model->get_indicator($indicator_id);
-        $responses = $this->model->get_indicator_responses($indicator_id);
+        $indicator_details = $this->model->get_indicator($id);
+        $responses = $this->model->get_indicator_responses($id);
 
         $html = $this->blade_view->render('createReport', [
             'pageTitle' => "$this->app_name - create report",
@@ -325,7 +325,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id'),
-            'indicatorId' => $indicator_id,
+            'indicatorId' => $id,
             'indicatorDetails' => $indicator_details['response'],
             'responses' => $responses['response']
         ]);

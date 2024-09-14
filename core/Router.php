@@ -25,7 +25,7 @@ class Router
         $this->routes = $routes;
     }
 
-    public function routeRequest($path, $middlewareClass, $method = 'POST')
+    public function routeRequest($path, $middlewareClass, $method = 'GET')
     {
         $this->handleRequest($path, $middlewareClass, $method);
     }
@@ -141,16 +141,47 @@ class Router
             // Extract individual details
             $controllerMethod = $matchingRoute['controllerMethod'];
             $methods = $matchingRoute['methods'];
-            // Split the controller and method
-            list($controllerName, $methodName) = explode('@', $controllerMethod);
-            if (!empty($controllerName) && class_exists($controllerName)) {
-                $controller = new $controllerName();
-                // Extract route parameters from the URL
-                $routeParams = $this->extractRouteParameters($matchingRoute['path'], $path);
-                // Merge route parameters and query parameters
-                $params = array_merge($routeParams, $queryParams);
-                // Call the controller method and pass parameters
-                call_user_func_array([$controller, $methodName], $params);
+            // Check if the request method is allowed
+            if (in_array($_SERVER['REQUEST_METHOD'], $methods)) {
+                // Split the controller and method
+                list($controllerName, $methodName) = explode('@', $controllerMethod);
+                if (!empty($controllerName) && class_exists($controllerName)) {
+                    $controller = new $controllerName();
+                    // Extract route parameters from the URL
+                    $routeParams = $this->extractRouteParameters($matchingRoute['path'], $path);
+                    // Merge route parameters and query parameters
+                    $params = array_merge($routeParams, $queryParams);
+
+                    // Ensure parameters are passed correctly as named parameters
+                    try {
+                        $reflectionMethod = new \ReflectionMethod($controller, $methodName);
+                        $args = [];
+                        foreach ($reflectionMethod->getParameters() as $param) {
+                            $paramName = $param->getName();
+                            if (array_key_exists($paramName, $params)) {
+                                $args[$paramName] = $params[$paramName];
+                            } else {
+                                // Handle optional parameters
+                                if ($param->isOptional()) {
+                                    $args[$paramName] = $param->getDefaultValue();
+                                } else {
+                                    throw new \Exception("Missing required parameter \$$paramName");
+                                }
+                            }
+                        }
+
+                        // Call the controller method and pass parameters
+                        $reflectionMethod->invokeArgs($controller, $args);
+                    } catch (\Exception $e) {
+                        // Handle error, log it or return a proper response
+                        header("HTTP/1.0 500 Internal Server Error");
+                        echo "Error: " . $e->getMessage();
+                    }
+                }
+            } else {
+                // If the request method is not allowed, return a 404 response
+                header("HTTP/1.0 404 Not Found");
+                echo "404 Not Found";
             }
         } else {
             // If the route is not found, return a 404 response

@@ -25,26 +25,29 @@
           <table class="table datatable table-bordered">
             <thead>
               <tr>
-                <th>
-                  Username
-                </th>
+                <th>Organisation</th>
                 <th>Full Name</th>
-                <th>Role</th>
                 <th>Email</th>
-                <th>Home Country</th>
-                <th>District</th>
+                <th>Prevellage</th>
+                <th>Address</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
               <tr>
-                <td><?php echo e($user['username']); ?></td>
+                <td>
+                  <?php $imageUrl = isset($user['organization_logo']) ? $user['organization_logo'] : "/{$appName}/assets/img/placeholder.png"; ?>
+                  <div style="display: flex; align-items: center;">
+                    <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle" width="25px" height="25px" style="margin-right: 8px;">
+                    <span><?php echo e($user['organization_name']); ?></span>
+                  </div>
+                </td>
+
                 <td><?php echo e($user['name']); ?></td>
-                <td><?php echo e($user['role']); ?></td>
                 <td><?php echo e($user['email']); ?></td>
-                <td><?php echo e($user['country']); ?></td>
-                <td><?php echo e($user['district']); ?></td>
+                <td><?php echo e($user['role']); ?></td>
+                <td><?php echo e($user['country']); ?>, <?php echo e($user['district']); ?></td>
 
                 <td>
                   <div class="dropdown">
@@ -52,28 +55,34 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                        <?php if($role == 'Administrator'): ?>
-                            <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                                <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">
-                                    <i class="bi bi-eye"></i> View User Details
-                                </a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">
-                                    <i class="bi bi-pencil-square"></i> Update User Role
-                                </a>
-                                <a class="dropdown-item text-danger" href="#">
-                                    <i class="bi bi-slash-circle"></i> Block User
-                                </a>
-                                <a class="dropdown-item text-danger" href="#">
-                                    <i class="bi bi-trash"></i> Delete User
-                                </a>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    
-                        <?php if($role == 'Viewer'): ?>
-                            <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view?id=<?php echo e($user['id']); ?>">
-                                <i class="bi bi-eye"></i> View User Details
-                            </a>
-                        <?php endif; ?>
+                      <?php if($role == 'Administrator'): ?>
+                      <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
+                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">
+                        <i class="bi bi-pencil-square"></i> Update User Role
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="bi bi-slash-circle"></i> Block User
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="bi bi-trash"></i> Delete User
+                      </a>
+                      <?php endif; ?>
+                      <?php endif; ?>
+
+                      <?php if($role == 'User'): ?>
+                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      <?php endif; ?>
+
+                      <?php if($role == 'Viewer'): ?>
+                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </td>
@@ -162,7 +171,9 @@
             backgroundColor: 'green',
           }).showToast();
 
-          setTimeout(function(){window.location.reload()}, 3000)
+          setTimeout(function() {
+            window.location.reload()
+          }, 3000)
 
         },
         error: function(xhr, status, error) {

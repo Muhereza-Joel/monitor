@@ -74,13 +74,13 @@
                       </button>
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
                         <?php if($role == 'User' || $role == 'Administrator'): ?>
-                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/archived/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/archived/responses/all/<?php echo e($indicator['id']); ?>" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         <?php endif; ?>
 
                         <?php if($role == 'Viewer'): ?>
-                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/archived/responses/all?id=<?php echo e($indicator['id']); ?>" class="dropdown-item">
+                        <a href="/<?php echo e($appName); ?>/dashboard/indicators/archived/responses/all/<?php echo e($indicator['id']); ?>" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         <?php endif; ?>

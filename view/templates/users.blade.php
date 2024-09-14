@@ -25,26 +25,29 @@
           <table class="table datatable table-bordered">
             <thead>
               <tr>
-                <th>
-                  Username
-                </th>
+                <th>Organisation</th>
                 <th>Full Name</th>
-                <th>Role</th>
                 <th>Email</th>
-                <th>Home Country</th>
-                <th>District</th>
+                <th>Prevellage</th>
+                <th>Address</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               @foreach($users as $user)
               <tr>
-                <td>{{$user['username']}}</td>
+                <td>
+                  <?php $imageUrl = isset($user['organization_logo']) ? $user['organization_logo'] : "/{$appName}/assets/img/placeholder.png"; ?>
+                  <div style="display: flex; align-items: center;">
+                    <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle" width="25px" height="25px" style="margin-right: 8px;">
+                    <span>{{$user['organization_name']}}</span>
+                  </div>
+                </td>
+
                 <td>{{$user['name']}}</td>
-                <td>{{$user['role']}}</td>
                 <td>{{$user['email']}}</td>
-                <td>{{$user['country']}}</td>
-                <td>{{$user['district']}}</td>
+                <td>{{$user['role']}}</td>
+                <td>{{$user['country']}}, {{$user['district']}}</td>
 
                 <td>
                   <div class="dropdown">
@@ -52,28 +55,34 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                        @if($role == 'Administrator')
-                            @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                                <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">
-                                    <i class="bi bi-eye"></i> View User Details
-                                </a>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">
-                                    <i class="bi bi-pencil-square"></i> Update User Role
-                                </a>
-                                <a class="dropdown-item text-danger" href="#">
-                                    <i class="bi bi-slash-circle"></i> Block User
-                                </a>
-                                <a class="dropdown-item text-danger" href="#">
-                                    <i class="bi bi-trash"></i> Delete User
-                                </a>
-                            @endif
-                        @endif
-                    
-                        @if($role == 'Viewer')
-                            <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view?id={{$user['id']}}">
-                                <i class="bi bi-eye"></i> View User Details
-                            </a>
-                        @endif
+                      @if($role == 'Administrator')
+                      @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
+                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">
+                        <i class="bi bi-pencil-square"></i> Update User Role
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="bi bi-slash-circle"></i> Block User
+                      </a>
+                      <a class="dropdown-item text-danger" href="#">
+                        <i class="bi bi-trash"></i> Delete User
+                      </a>
+                      @endif
+                      @endif
+
+                      @if($role == 'User')
+                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      @endif
+
+                      @if($role == 'Viewer')
+                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                        <i class="bi bi-eye"></i> View User Details
+                      </a>
+                      @endif
                     </div>
                   </div>
                 </td>
@@ -162,7 +171,9 @@
             backgroundColor: 'green',
           }).showToast();
 
-          setTimeout(function(){window.location.reload()}, 3000)
+          setTimeout(function() {
+            window.location.reload()
+          }, 3000)
 
         },
         error: function(xhr, status, error) {

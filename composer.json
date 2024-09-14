@@ -27,5 +27,8 @@
         "allow-plugins": {
             "kylekatarnls/update-helper": true
         }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.12"
     }
 }

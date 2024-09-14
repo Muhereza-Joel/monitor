@@ -50,14 +50,39 @@ class Model
         $types = "";
 
         if (Session::get('my_organization_name') == 'Administrator') {
-            $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
-                  FROM app_users au JOIN user_profile up
-                  ON au.id = up.user_id";
+            $query = "SELECT 
+                    up.*, 
+                    au.id AS user_id, 
+                    au.username, 
+                    au.approved, 
+                    au.email, 
+                    au.role, 
+                    organizations.logo AS organization_logo, 
+                    organizations.name AS organization_name
+                FROM 
+                    app_users au 
+                JOIN 
+                    user_profile up ON au.id = up.user_id
+                JOIN 
+                    organizations ON au.organization_id = organizations.id;
+                ";
         } else {
-            $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
-                  FROM app_users au JOIN user_profile up
-                  ON au.id = up.user_id 
-                  WHERE up.organization_id = ?";
+            $query = "SELECT 
+                        up.*, 
+                        au.id AS user_id, 
+                        au.username, 
+                        au.approved, 
+                        au.email, 
+                        au.role, 
+                        organizations.logo AS organization_logo, 
+                        organizations.name AS organization_name
+                    FROM 
+                        app_users au 
+                    JOIN 
+                        user_profile up ON au.id = up.user_id
+                    JOIN 
+                        organizations ON au.organization_id = organizations.id
+                    WHERE up.organization_id = ?";
             $organization_id = Session::get('selected_organisation_id');
             $params[] = $organization_id;
             $types .= "s";

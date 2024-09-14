@@ -180,7 +180,7 @@
                       <?php if($role == 'Administrator' || $role == 'User'): ?>
                       <?php if($response['status'] == 'draft' || $response['status'] == 'review'): ?>
                       <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                      <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit?id=<?php echo e($response['id']); ?>" class="dropdown-item">
+                      <a href="/<?php echo e($appName); ?>/dashboard/indicators/responses/edit/<?php echo e($response['id']); ?>" class="dropdown-item">
                         <i class="bi bi-pencil"></i> Edit Response
                       </a>
                       <a href="#add-files" id="add-file" class="dropdown-item" data-response-id="<?php echo e($response['id']); ?>" data-bs-toggle="modal" data-bs-target="#fileUploadModal">
@@ -195,7 +195,7 @@
                       <?php if($role == 'Administrator'): ?>
                       <?php if($response['status'] == 'draft'): ?>
                       <?php if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                      <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete?id=<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">
+                      <a href="/<?php echo e($appName); ?>/dashboard/manage-indicators/responses/delete/<?php echo e($response['id']); ?>" class="dropdown-item text-danger" id="delete-btn">
                         <i class="bi bi-trash"></i> Delete Response
                       </a>
                       <?php endif; ?>

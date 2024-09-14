@@ -248,7 +248,7 @@
                                     </div>
                                     <div class="button-group ms-3 ps-1 mb-3">
                                         <a href="/{{$appName}}/dashboard/manage-events/?action=edit&id={{$event['id']}}" class="btn btn-primary btn-sm">Edit Event Details</a>
-                                        <a href="/{{$appName}}/events/delete/?id={{$event['id']}}" id="delete-event-btn" class="btn btn-danger btn-sm">Delete Event</a>
+                                        <a href="/{{$appName}}/events/delete/{{$event['id']}}" id="delete-event-btn" class="btn btn-danger btn-sm">Delete Event</a>
                                     </div>
                                 </div>
                             </div>
@@ -424,8 +424,9 @@
             $('#confirmDeleteModal').on('click', '#confirmDeleteBtn', function() {
                 $.ajax({
                     url: deleteUrl,
-                    type: 'GET',
+                    method: 'POST',
                     success: function(response) {
+                        $('#confirmDeleteModal').modal('hide');
                         Toastify({
                             text: response.message || "Event Deleted Successfully",
                             duration: 4000,
@@ -469,7 +470,7 @@
 
         $.ajax({
             url: `/{{$appName}}/events/get-my-organisation-events/?visibility=${filter}`,
-            type: 'GET',
+            method: 'GET',
             processData: false,
             contentType: false,
             success: function(data) {
@@ -498,7 +499,7 @@
                                     </div>
                                     <div class="button-group ms-3 ps-1 mb-3">
                                         <a href="/{{$appName}}/dashboard/manage-events/?action=edit&id=${event.id}" class="btn btn-primary btn-sm">Edit Event Details</a>
-                                        <a href="/{{$appName}}/events/delete/?id=${event.id}" id="delete-event-btn" class="btn btn-danger btn-sm">Delete Event</a>
+                                        <a href="/{{$appName}}/events/delete/${event.id}" id="delete-event-btn" class="btn btn-danger btn-sm">Delete Event</a>
                                     </div>
                                 </div>
                             </div>

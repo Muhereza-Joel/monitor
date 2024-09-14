@@ -4,7 +4,6 @@ namespace core;
 
 class Route
 {
-
     private static $routes = [];
 
     public static function init()
@@ -34,5 +33,25 @@ class Route
     public static function post($path, $controllerMethod)
     {
         self::add($path, $controllerMethod, ['POST']);
+    }
+
+    public static function put($path, $controllerMethod)
+    {
+        self::add($path, $controllerMethod, ['PUT']);
+    }
+
+    public static function delete($path, $controllerMethod)
+    {
+        self::add($path, $controllerMethod, ['DELETE']);
+    }
+
+    public static function patch($path, $controllerMethod)
+    {
+        self::add($path, $controllerMethod, ['PATCH']);
+    }
+
+    public static function options($path, $controllerMethod)
+    {
+        self::add($path, $controllerMethod, ['OPTIONS']);
     }
 }

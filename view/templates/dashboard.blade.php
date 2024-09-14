@@ -249,7 +249,9 @@
 
       $.ajax({
         url: url,
-        type: 'GET',
+        method: 'GET',
+        processData: false,
+        contentType: false,
         success: function(response) {
           events = response.response.map(event => ({
             title: stripHtml(event.title),

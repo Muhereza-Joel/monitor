@@ -25,14 +25,14 @@ class EventsController
         $this->model->create_event();
     }
 
-    public function get_events($visibilty = null)
+    public function get_events($visibility = null, $active = 1)
     {
-        Request::send_response(200, $this->model->get_events($visibilty, $active = 1));
+        Request::send_response(200, $this->model->get_events($visibility, $active));
     }
 
-    public function get_my_organisation_events($visibilty)
+    public function get_my_organisation_events($visibility)
     {
-        Request::send_response(200, $this->model->get_my_organisation_events($visibilty));
+        Request::send_response(200, $this->model->get_my_organisation_events($visibility));
     }
 
     public function delete_event($id)

@@ -18,4 +18,4 @@ $routes = Route::get_routes();
 
 $router->setRoutes($routes);
 
-$router->routeRequest($_SERVER['REQUEST_URI'], "middleware\AuthMiddleware");
+$router->routeRequest($_SERVER['REQUEST_URI'], "middleware\AuthMiddleware", $_SERVER['REQUEST_METHOD']);
