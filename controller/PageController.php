@@ -234,7 +234,8 @@ class PageController
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
-            'chosenOrganisationId' => Session::get('selected_organisation_id')
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'indicatorId' => $id
 
         ]);
 

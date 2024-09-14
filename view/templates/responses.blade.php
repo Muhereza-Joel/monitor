@@ -79,12 +79,22 @@
 
   <div class="pagetitle mt-3">
     <h1>All Responses</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
-        <li class="breadcrumb-item active">Responses</li>
-      </ol>
-    </nav>
+    <div class="d-flex align-items-center">
+      <nav class="d-flex align-self-center w-50">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Home</a></li>
+          <li class="breadcrumb-item active">Responses</li>
+        </ol>
+      </nav>
+
+      <div style="border-radius: 50%;" class="d-flex align-self-center justify-content-end w-50">
+        <div class="btn-group" role="group" aria-label="Administrator Actions">
+          <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add More Responses To This Indicator."  class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/responses/add/{{$indicatorId}}"><i class="bi bi-plus-circle"></i> Add More Responses</a>
+          <a class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/edit/{{$indicatorId}}"><i class="bi bi-pencil px-1"></i>Edit Indicator</a>
+          <!-- <button id="delete-button" class="btn btn-danger btn-sm"><i class="bi bi-trash px-1"></i>Move To Trash</button> -->
+        </div>
+      </div>
+    </div>
   </div><!-- End Page Title -->
 
   <section class="section dashboard">
