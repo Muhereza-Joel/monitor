@@ -102,6 +102,7 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
+            'Psr\\Container\\' => 14,
             'Prophecy\\' => 9,
             'PhpOption\\' => 10,
             'PhpOffice\\PhpWord\\' => 18,
@@ -192,6 +193,10 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'Prophecy\\' => 
         array (

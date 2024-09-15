@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f7d44b9d027ebf67669c0fc0642a7ce1df6e140c',
+        'reference' => '4c647145148a2eed22be613e903e710cad2524db',
         'name' => 'stella/monitor',
         'dev' => true,
     ),
@@ -307,6 +307,15 @@
             'reference' => 'a23b761686d50a560cc56233b9ecf49597cc9118',
             'dev_requirement' => false,
         ),
+        'psr/container' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/container',
+            'aliases' => array(),
+            'reference' => 'c71ecc56dfe541dbd90c5360474fbc405f8d5963',
+            'dev_requirement' => false,
+        ),
         'psr/log' => array(
             'pretty_version' => '1.1.4',
             'version' => '1.1.4.0',
@@ -436,7 +445,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f7d44b9d027ebf67669c0fc0642a7ce1df6e140c',
+            'reference' => '4c647145148a2eed22be613e903e710cad2524db',
             'dev_requirement' => false,
         ),
         'symfony/debug' => array(

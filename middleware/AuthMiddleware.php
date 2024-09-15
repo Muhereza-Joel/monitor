@@ -3,14 +3,17 @@
 namespace middleware;
 
 use core\Session;
+use middleware\MiddlewareHandler as MiddlewareMiddlewareHandler;
 
-class AuthMiddleware
+class AuthMiddleware extends MiddlewareMiddlewareHandler
 {
     private $app_name;
+    private $app_base_url;
 
     public function __construct()
     {
         $this->app_name = getenv("APP_NAME");
+        $this->app_base_url = getenv("APP_BASE_URL");
     }
     public function handle()
     {
@@ -37,7 +40,11 @@ class AuthMiddleware
         if (in_array($currentRoute, $allowedRoutes)) {
             return true;
         } else {
-            return Session::isLoggedIn();
+            if(Session::isLoggedIn()){
+                return true;
+            } else{
+                header("Location: {$this->app_base_url}/auth/login/");
+            };
         }
     }
 }

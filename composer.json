@@ -21,7 +21,9 @@
         "phpoffice/phpspreadsheet": "^1.8",
         "phpoffice/phpword": "^0.18.3",
         "ramsey/uuid": "^3.9",
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "^5.7",
+        "psr/container": "^2.0",
+        "psr/simple-cache": "^1.0"
     },
     "config": {
         "allow-plugins": {

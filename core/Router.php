@@ -2,17 +2,22 @@
 
 namespace core;
 
+use core\exceptions\RouteNotFoundException;
+use Psr\Container\ContainerInterface; // PSR-11 Container Interface for DI
+
 class Router
 {
     private $routes = [];
     private $defaultRoute;
     private $app_name;
     private $app_base_url;
+    private $container;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
         $this->app_name = getenv("APP_NAME");
         $this->app_base_url = rtrim(getenv("APP_BASE_URL"), '/');
+        $this->container = $container;
     }
 
     public function setDefaultRoute($controllerMethod)
@@ -25,51 +30,85 @@ class Router
         $this->routes = $routes;
     }
 
-    public function routeRequest($path, $middlewareClass, $method = 'GET')
+    public function routeRequest($path, $method = 'GET')
     {
-        $this->handleRequest($path, $middlewareClass, $method);
+        try {
+            $this->handleRequest($path, $method);
+        } catch (RouteNotFoundException $e) {
+            $this->handleError(404, $e->getMessage());
+        }
     }
 
-    private function handleRequest($requestedUrl, $middlewareClass = null, $method = 'GET')
+    private function handleRequest($requestedUrl, $method = 'GET')
     {
-        // Remove the base URL from the requested URL
         $requestedUrl = str_replace($this->app_base_url, '', $requestedUrl);
+        $path = parse_url($requestedUrl, PHP_URL_PATH);
+        $queryParams = $this->parseQueryString($requestedUrl);
 
-        // Check if the user is logged in when accessing the base URL
-        if ($requestedUrl === "/" && Session::isLoggedIn()) {
-            header("Location: {$this->app_base_url}/dashboard/");
+        try {
+            // Check if the route exists for the given HTTP method
+            $matchingRoutes = array_filter($this->routes, function ($route) use ($path, $method) {
+                return $this->matchRoute($route['path'], $path) && in_array($method, $route['methods']);
+            });
+
+            if (!empty($matchingRoutes)) {
+                $route = reset($matchingRoutes);
+
+                if ($route) {
+                    $this->applyMiddleware($route);
+                    $this->invokeController($route, $path, $queryParams);
+                }
+            } else {
+                throw new RouteNotFoundException();
+            }
+        } catch (RouteNotFoundException $e) {
+
+            $e->render_404();
+        }
+    }
+
+
+    private function parseQueryString($url)
+    {
+        $queryString = parse_url($url, PHP_URL_QUERY);
+        parse_str($queryString, $queryParams);
+        return $queryParams;
+    }
+
+    private function applyMiddleware($route)
+    {
+
+        if (!isset($route['middleware'])) {
             return;
         }
-
-        // Remove query string parameters from the URL
-        $urlParts = explode('?', $requestedUrl);
-        $path = $urlParts[0];
-        $queryString = isset($urlParts[1]) ? $urlParts[1] : '';
-
-        // Parse query parameters
-        parse_str($queryString, $queryParams);
-
-        // Check if the route exists for the given HTTP method
-        $matchingRoutes = array_filter($this->routes, function ($route) use ($path, $method) {
-            return $this->matchRoute($route['path'], $path) && in_array($method, $route['methods']);
-        });
-
-        if (!empty($matchingRoutes)) {
-            $route = reset($matchingRoutes);
-            // Split the controller and method
-            list($controllerName, $methodName) = explode('@', $route['controllerMethod']);
-            // Apply middleware if provided
-            if ($middlewareClass !== null) {
-                $this->applyMiddlewareLogic($middlewareClass, $path, $controllerName, $methodName, $queryParams);
-            } else {
-                // No middleware, proceed with regular route logic
-                $this->handleRegularRouteLogic($path, $controllerName, $methodName, $queryParams);
+        foreach ($route['middleware'] as $middlewareClass) {
+            $middleware = $this->container->get($middlewareClass);
+            if (!$middleware->handle()) {
+                
+                exit();
             }
-        } else {
-            // If the route is not found, return a 404 response
-            header("HTTP/1.0 404 Not Found");
-            echo "404 Not Found";
         }
+    }
+
+    private function invokeController($route, $path, $queryParams)
+    {
+        list($controllerName, $methodName) = explode('@', $route['controllerMethod']);
+        $controller = $this->resolveController($controllerName);
+        $routeParams = $this->extractRouteParameters($route['path'], $path);
+        $params = array_merge($routeParams, $queryParams);
+        call_user_func_array([$controller, $methodName], $params);
+    }
+
+    private function resolveController($controllerName)
+    {
+        // Use DI Container to resolve the controller
+        return $this->container->get($controllerName);
+    }
+
+    private function handleError($statusCode, $message)
+    {
+        http_response_code($statusCode);
+        echo $message;
     }
 
     private function matchRoute($routePath, $requestedPath)
@@ -108,85 +147,5 @@ class Router
         }
 
         return $routeParams;
-    }
-
-    private function applyMiddlewareLogic($middlewareClass, $path, $controllerName, $methodName, $queryParams)
-    {
-        // Create an instance of the middleware
-        $middleware = new $middlewareClass();
-        // Check if the middleware allows access
-        if ($middleware->handle()) {
-            // Continue with regular route logic
-            $this->handleRegularRouteLogic($path, $controllerName, $methodName, $queryParams);
-        } else {
-            // Handle unauthorized access (e.g., redirect to login page)
-            header("Location: {$this->app_base_url}/auth/login/");
-            exit();
-        }
-    }
-
-    private function handleRegularRouteLogic($path, $controllerName = null, $methodName = null, $queryParams = [])
-    {
-        // Find the route that matches the specified path
-        $matchingRoute = null;
-        foreach ($this->routes as $route) {
-            if ($this->matchRoute($route['path'], $path)) {
-                $matchingRoute = $route;
-                break;
-            }
-        }
-
-        // Check if a matching route was found
-        if ($matchingRoute !== null) {
-            // Extract individual details
-            $controllerMethod = $matchingRoute['controllerMethod'];
-            $methods = $matchingRoute['methods'];
-            // Check if the request method is allowed
-            if (in_array($_SERVER['REQUEST_METHOD'], $methods)) {
-                // Split the controller and method
-                list($controllerName, $methodName) = explode('@', $controllerMethod);
-                if (!empty($controllerName) && class_exists($controllerName)) {
-                    $controller = new $controllerName();
-                    // Extract route parameters from the URL
-                    $routeParams = $this->extractRouteParameters($matchingRoute['path'], $path);
-                    // Merge route parameters and query parameters
-                    $params = array_merge($routeParams, $queryParams);
-
-                    // Ensure parameters are passed correctly as named parameters
-                    try {
-                        $reflectionMethod = new \ReflectionMethod($controller, $methodName);
-                        $args = [];
-                        foreach ($reflectionMethod->getParameters() as $param) {
-                            $paramName = $param->getName();
-                            if (array_key_exists($paramName, $params)) {
-                                $args[$paramName] = $params[$paramName];
-                            } else {
-                                // Handle optional parameters
-                                if ($param->isOptional()) {
-                                    $args[$paramName] = $param->getDefaultValue();
-                                } else {
-                                    throw new \Exception("Missing required parameter \$$paramName");
-                                }
-                            }
-                        }
-
-                        // Call the controller method and pass parameters
-                        $reflectionMethod->invokeArgs($controller, $args);
-                    } catch (\Exception $e) {
-                        // Handle error, log it or return a proper response
-                        header("HTTP/1.0 500 Internal Server Error");
-                        echo "Error: " . $e->getMessage();
-                    }
-                }
-            } else {
-                // If the request method is not allowed, return a 404 response
-                header("HTTP/1.0 404 Not Found");
-                echo "404 Not Found";
-            }
-        } else {
-            // If the route is not found, return a 404 response
-            header("HTTP/1.0 404 Not Found");
-            echo "404 Not Found";
-        }
     }
 }
