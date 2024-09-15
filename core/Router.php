@@ -77,18 +77,38 @@ class Router
 
     private function applyMiddleware($route)
     {
-
-        if (!isset($route['middleware'])) {
-            return;
+        if (!isset($route['middleware']) || empty($route['middleware'])) {
+            return true; // No middleware, allow request to proceed
         }
-        foreach ($route['middleware'] as $middlewareClass) {
-            $middleware = $this->container->get($middlewareClass);
+    
+        foreach ($route['middleware'] as $middlewareDefinition) {
+            // Check if middleware has arguments (e.g., "RoleMiddleware:admin,user")
+            if (strpos($middlewareDefinition, ':') !== false) {
+                list($middlewareClass, $argsString) = explode(':', $middlewareDefinition, 2);
+                $args = explode(',', $argsString);
+            } else {
+                $middlewareClass = $middlewareDefinition;
+                $args = [];
+            }
+    
+            // Resolve middleware class from container
+            if ($this->container->has($middlewareClass)) {
+                // If the container knows about the middleware, resolve it
+                // Pass dynamic arguments (e.g., params) if needed
+                $middleware = $this->container->get($middlewareClass, ['params' => $args]);
+            } else {
+                // If not in the container, directly create the middleware instance and pass arguments
+                $middleware = new $middlewareClass(...$args);
+            }
+    
+            // Check if middleware passes
             if (!$middleware->handle()) {
-                
-                exit();
+                exit(); // Block the request if the middleware check fails
             }
         }
     }
+    
+
 
     private function invokeController($route, $path, $queryParams)
     {

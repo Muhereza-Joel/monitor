@@ -28,7 +28,7 @@ class Container implements ContainerInterface
         $this->bindings[$id] = ['class' => $className, 'params' => $parameters];
     }
 
-    public function get(string $id)
+    public function get(string $id, array $runtimeParameters = [])
     {
         if ($this->has($id)) {
             if (isset($this->instances[$id])) {
@@ -40,19 +40,20 @@ class Container implements ContainerInterface
             }
 
             if (isset($this->bindings[$id])) {
-                return $this->resolve($id);
+                return $this->resolve($id, $runtimeParameters);
             }
         }
 
         throw new NotFoundException("No entry found for '$id'.");
     }
 
+
     public function has(string $id): bool
     {
         return isset($this->instances[$id]) || isset($this->factories[$id]) || isset($this->bindings[$id]);
     }
 
-    private function resolve(string $id)
+    private function resolve(string $id, array $runtimeParameters = [])
     {
         if (!isset($this->bindings[$id])) {
             throw new NotFoundException("No binding found for '$id'.");
@@ -75,26 +76,37 @@ class Container implements ContainerInterface
         }
 
         $params = $constructor->getParameters();
-        $dependencies = $this->resolveDependencies($params, $parameters);
+        $dependencies = $this->resolveDependencies($params, $parameters, $runtimeParameters);
 
         return $reflector->newInstanceArgs($dependencies);
     }
 
-    private function resolveDependencies(array $parameters, array $bindings)
+    private function resolveDependencies(array $parameters, array $bindings, array $runtimeParameters = [])
     {
         $dependencies = [];
         foreach ($parameters as $param) {
             $name = $param->getName();
-            if (isset($bindings[$name])) {
+
+            // 1. Check if runtime parameters were passed for this dependency
+            if (isset($runtimeParameters[$name])) {
+                $dependencies[] = $runtimeParameters[$name];
+            }
+            // 2. Check if bindings have this dependency
+            elseif (isset($bindings[$name])) {
                 $dependencies[] = $bindings[$name];
-            } elseif ($param->getClass()) {
+            }
+            // 3. Check if the parameter is a class dependency (autowiring)
+            elseif ($param->getClass()) {
                 $dependencies[] = $this->get($param->getClass()->name);
-            } elseif ($param->isDefaultValueAvailable()) {
+            }
+            // 4. Check if the parameter has a default value
+            elseif ($param->isDefaultValueAvailable()) {
                 $dependencies[] = $param->getDefaultValue();
             } else {
-                throw new \RuntimeException("Cannot resolve dependency {$name}.");
+                throw new \RuntimeException("Cannot resolve dependency '{$name}'.");
             }
         }
+
         return $dependencies;
     }
 
@@ -113,11 +125,6 @@ class Container implements ContainerInterface
     }
 }
 
+class NotFoundException extends \RuntimeException implements NotFoundExceptionInterface {}
 
-class NotFoundException extends \RuntimeException implements NotFoundExceptionInterface
-{
-}
-
-class ContainerException extends \RuntimeException implements ContainerExceptionInterface
-{
-}
+class ContainerException extends \RuntimeException implements ContainerExceptionInterface {}

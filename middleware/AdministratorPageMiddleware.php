@@ -17,7 +17,7 @@ class AdministratorPageMiddleware extends MiddlewareHandler
             }
             return true;
         } catch (PageProhibitedException $e) {
-            $e->render_404();
+            $e->render_403();
             return false;
         }
     }

@@ -49,27 +49,27 @@ Route::group([
     Route::get("/$app_name/page-not-found/", "PageController@render_404");
     Route::get("/$app_name/dashboard/", "PageController@render_dashboard");
     Route::get("/$app_name/dashboard/users/", "PageController@render_users");
-    Route::get("/$app_name/dashboard/users/add-new/", "PageController@render_create_user");
+    Route::get("/$app_name/dashboard/users/add-new/", "PageController@render_create_user")->middleware(["RoleMiddleware:Administrator"]);
     Route::get("/$app_name/dashboard/users/view/{id}", "PageController@render_user_details");
-    Route::get("/$app_name/dashboard/manage-indicators/", "PageController@render_manage_indicator");
+    Route::get("/$app_name/dashboard/manage-indicators/", "PageController@render_manage_indicator")->middleware(["RoleMiddleware:Administrator,User"]);
     Route::get("/$app_name/dashboard/indicators/", "PageController@render_view_indicators");
     Route::get("/$app_name/dashboard/indicators/archived/", "PageController@render_archived_indicators");
     Route::get("/$app_name/dashboard/all-archived-responses/", "PageController@render_archived_responses");
-    Route::get("/$app_name/dashboard/indicators/edit/{id}", "PageController@render_edit_indicator");
-    Route::get("/$app_name/dashboard/indicators/responses/edit/{id}", "PageController@render_edit_response");
-    Route::get("/$app_name/dashboard/indicators/responses/add/{id}", "PageController@render_add_response");
+    Route::get("/$app_name/dashboard/indicators/edit/{id}", "PageController@render_edit_indicator")->middleware(["RoleMiddleware:Administrator,User"]);
+    Route::get("/$app_name/dashboard/indicators/responses/edit/{id}", "PageController@render_edit_response")->middleware(["RoleMiddleware:Administrator,User"]);
+    Route::get("/$app_name/dashboard/indicators/responses/add/{id}", "PageController@render_add_response")->middleware(["RoleMiddleware:Administrator,User"]);
     Route::get("/$app_name/dashboard/indicators/responses/all/{id}", "PageController@render_indicator_responses");
     Route::get("/$app_name/dashboard/indicators/archived/responses/all/{id}", "PageController@render_archived_indicator_responses");
     Route::get("/$app_name/dashboard/manage-indicators/resposes/", "PageController@render_responses");
     Route::get("/$app_name/dashboard/manage-indicators/u/resposes/", "PageController@render_user_responses");
     Route::get("/$app_name/dashboard/organizations/create/", "PageController@render_create_organization")->middleware(["AdministratorPageMiddleware"]);
-    Route::get("/$app_name/dashboard/organizations/edit/{id}", "PageController@render_update_organization");
-    Route::get("/$app_name/dashboard/organizations/users/create/", "PageController@render_create_organization_user");
+    Route::get("/$app_name/dashboard/organizations/edit/{id}", "PageController@render_update_organization")->middleware(["AdministratorPageMiddleware"]);
+    Route::get("/$app_name/dashboard/organizations/users/create/", "PageController@render_create_organization_user")->middleware(["AdministratorPageMiddleware"]);
     Route::get("/$app_name/auth/organizations/choose/", "PageController@render_choose_organisation");
     Route::get("/$app_name/dashboard/organizations/choose/", "PageController@render_dashboard_choose_organisation");
-    Route::get("/$app_name/dashboard/manage-events/", "PageController@render_manage_events");
+    Route::get("/$app_name/dashboard/manage-events/", "PageController@render_manage_events")->middleware(["RoleMiddleware:Administrator"]);
     Route::get("/$app_name/database/connection/error/", "ErrorPageController@render_database_connection_error");
-    Route::get("/$app_name/dashboard/reports/create-report/{id}", "PageController@render_create_report");
+    Route::get("/$app_name/dashboard/reports/create-report/{id}", "PageController@render_create_report")->middleware(["RoleMiddleware:Administrator,User"]);
 
 
     //Routes for indicator controller

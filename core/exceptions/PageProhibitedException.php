@@ -18,7 +18,7 @@ class PageProhibitedException extends Exception {
         $this->app_base_url = getenv("APP_BASE_URL");
     }
 
-    public function render_404()
+    public function render_403()
     {
         $html = $this->blade_view->render("403", [
             'pageTitle' => " $this->app_name - your not allowed to access this resource",

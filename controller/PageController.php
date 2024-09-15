@@ -197,6 +197,7 @@ class PageController
 
     public function render_responses()
     {
+        $id = null;
         $responses = $this->model->get_all_responses();
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
@@ -211,8 +212,8 @@ class PageController
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
-            'chosenOrganisationId' => Session::get('selected_organisation_id')
-
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'indicatorId' => $id
         ]);
 
         echo ($html);
@@ -267,6 +268,7 @@ class PageController
 
     public function render_user_responses()
     {
+        $id = null;
         $responses = $this->model->get_all_user_responses();
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
 
@@ -281,8 +283,8 @@ class PageController
             'responses' => $responses['response'],
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
-            'chosenOrganisationId' => Session::get('selected_organisation_id')
-
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'indicatorId' => $id
         ]);
 
         echo ($html);
@@ -310,7 +312,8 @@ class PageController
         echo ($html);
     }
 
-    public function render_create_report($id = null){
+    public function render_create_report($id = null)
+    {
         $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
         $indicator_details = $this->model->get_indicator($id);
         $responses = $this->model->get_indicator_responses($id);
@@ -371,7 +374,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -394,7 +397,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -417,7 +420,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -441,7 +444,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -465,7 +468,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -488,7 +491,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -511,7 +514,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -534,7 +537,7 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
@@ -561,7 +564,7 @@ class PageController
             'events' => $events['response'],
             'action' => $action,
             'eventDetails' => $event_details['response']
-            
+
         ]);
 
         echo ($html);
@@ -582,10 +585,9 @@ class PageController
             'myOrganisation' => $myOrganisation['response'],
             'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
             'chosenOrganisationId' => Session::get('selected_organisation_id')
-            
+
         ]);
 
         echo ($html);
     }
-
-} 
+}

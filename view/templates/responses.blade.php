@@ -88,11 +88,13 @@
       </nav>
 
       <div style="border-radius: 50%;" class="d-flex align-self-center justify-content-end w-50">
+        @if($indicatorId != null)
         <div class="btn-group" role="group" aria-label="Administrator Actions">
-          <!-- <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add More Responses To This Indicator."  class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/responses/add/{{$indicatorId}}"><i class="bi bi-plus-circle"></i> Add More Responses</a>
-          <a class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/edit/{{$indicatorId}}"><i class="bi bi-pencil px-1"></i>Edit Indicator</a> -->
+          <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add More Responses To This Indicator."  class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/responses/add/{{$indicatorId}}"><i class="bi bi-plus-circle"></i> Add More Responses</a>
+          <a class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/edit/{{$indicatorId}}"><i class="bi bi-pencil px-1"></i>Edit Indicator</a>
           
         </div>
+        @endif
       </div>
     </div>
   </div><!-- End Page Title -->
