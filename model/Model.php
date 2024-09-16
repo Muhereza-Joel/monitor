@@ -3,6 +3,7 @@
 namespace model;
 
 use core\DatabaseConnection;
+use core\Registry;
 use core\Request;
 use core\Session;
 use Exception;
@@ -38,8 +39,7 @@ class Model
 
     private function get_database_connection()
     {
-        $database_connection = DatabaseConnection::getInstance(getenv('DB_HOST'), getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
-        $this->database = $database_connection->get_connection();
+        $this->database = Registry::get("database");
     }
 
 

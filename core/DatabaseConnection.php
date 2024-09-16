@@ -27,7 +27,13 @@ class DatabaseConnection
         $this->connect();
     }
 
-    public static function getInstance($host, $dbname, $username, $password, $charset = 'utf8')
+    public static function init()
+    {
+        // Static function to initialize and return the instance
+        return self::get_instance(getenv('DB_HOST'), getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
+    }
+
+    public static function get_instance($host, $dbname, $username, $password, $charset = 'utf8')
     {
         if (self::$instance === null) {
             self::$instance = new self($host, $dbname, $username, $password, $charset);

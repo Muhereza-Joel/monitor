@@ -4,6 +4,7 @@ namespace model;
 
 use controller\MailController;
 use core\DatabaseConnection;
+use core\Registry;
 use core\Request;
 use core\Session;
 use Ramsey\Uuid\Uuid;
@@ -11,11 +12,13 @@ use Ramsey\Uuid\Uuid;
 class User
 {
     private $database;
+    private $logger;
     private static $instance = null;
 
     private function __construct()
     {
         $this->get_database_connection();
+        $this->logger = Registry::get("logger");
     }
 
     public static function getInstance()
@@ -38,8 +41,7 @@ class User
 
     private function get_database_connection()
     {
-        $database_connection = DatabaseConnection::getInstance(getenv('DB_HOST'), getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
-        $this->database = $database_connection->get_connection();
+        $this->database = Registry::get("database");
     }
 
     public function check_password($password)
@@ -86,6 +88,9 @@ class User
                     Session::set('email', isset($user['email']) ? $user['email'] : null);
                     Session::set('avator', isset($user_data['image_url']) ? $user_data['image_url'] : null);
                     Session::set('role', isset($user['role']) ? $user['role'] : null);
+
+                    $this->logger->log_login($user['id']);
+                    
                 } else {
                     Session::set('user_id', isset($user['id']) ? $user['id'] : null);
                     Session::set('my_organization_id', isset($user['organization_id']) ? $user['organization_id'] : null);
