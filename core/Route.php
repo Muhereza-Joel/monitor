@@ -1,12 +1,15 @@
 <?php
 namespace core;
 
+use Exception;
+
 class Route
 {
     private static $routes = [];
     private static $currentRoute = [];
     private static $groupMiddleware = [];
     private static $prefix = '';
+    private static $namedRoutes = [];
     private static $controllerNamespace = "controller\\";
     private static $middlewareNamespace = "middleware\\";
 
@@ -25,8 +28,11 @@ class Route
         // Apply group middleware and prefix to each route
         $path = self::$prefix . $path;
 
-        // Automatically resolve controller namespace
-        $controllerMethod = self::resolveNamespace($controllerMethod, self::$controllerNamespace);
+        // If $controllerMethod is a callable (function), do not resolve the namespace
+        if (!is_callable($controllerMethod)) {
+            // Automatically resolve controller namespace for controller methods
+            $controllerMethod = self::resolveNamespace($controllerMethod, self::$controllerNamespace);
+        }
 
         // Merge group middleware with route-specific middleware
         $middleware = array_merge(self::$groupMiddleware, self::resolveMiddleware($middleware));
@@ -41,6 +47,26 @@ class Route
         self::$routes[] = self::$currentRoute;
 
         return new self;
+    }
+
+    public static function name($routeName)
+    {
+        // Map the current route to the given name
+        if (!empty(self::$currentRoute)) {
+            self::$namedRoutes[$routeName] = self::$currentRoute['path'];
+        }
+
+        return new self;
+    }
+
+    public static function getNamedRoute($name)
+    {
+        // Check if the named route exists
+        if (isset(self::$namedRoutes[$name])) {
+            return self::$namedRoutes[$name];
+        }
+
+        throw new Exception("Route with name '{$name}' not found.");
     }
 
     public static function get($path, $controllerMethod, $middleware = [])

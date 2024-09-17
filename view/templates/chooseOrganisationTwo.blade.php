@@ -71,7 +71,7 @@
                         organisation_id: selectedOrgId
                     },
                     success: function(response) {
-                        $('#proceed-button').attr('href', '/{{$appName}}/dashboard/').removeClass('d-none');
+                        $('#proceed-button').attr('href', '{{ url("dashboard/", null, true)}} ').removeClass('d-none');
                         Toastify({
                             text: 'Please click proceed button to continue...',
                             duration: 4000,

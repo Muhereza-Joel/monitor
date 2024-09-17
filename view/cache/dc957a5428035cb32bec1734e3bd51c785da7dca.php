@@ -57,7 +57,7 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator'): ?>
                       <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">
@@ -73,13 +73,13 @@
                       <?php endif; ?>
 
                       <?php if($role == 'User'): ?>
-                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <?php endif; ?>
 
                       <?php if($role == 'Viewer'): ?>
-                      <a class="dropdown-item" href="/<?php echo e($appName); ?>/dashboard/users/view/<?php echo e($user['id']); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <?php endif; ?>

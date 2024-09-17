@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo e(get_locale()); ?>">
 
 <head>
   <meta charset="utf-8">
@@ -10,8 +10,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="<?php echo e($baseUrl); ?>/assets/img/logo_yellow.png" rel="icon">
-  <link href="<?php echo e($baseUrl); ?>/assets/img/logo_yellow.png" rel="apple-touch-icon">
+  <link href="<?php echo e(asset('img/logo_yellow.png')); ?>" rel="icon">
+  <link href="<?php echo e(asset('img/logo_yellow.png')); ?>" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -19,18 +19,18 @@
   <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
   <!-- Vendor CSS Files -->
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-  <link href="<?php echo e($baseUrl); ?>/assets/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/bootstrap/css/bootstrap.min.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/bootstrap-icons/bootstrap-icons.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/boxicons/css/boxicons.min.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/quill/quill.snow.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/quill/quill.bubble.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/remixicon/remixicon.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/simple-datatables/style.css')); ?>" rel="stylesheet">
+  <link href="<?php echo e(asset('vendor/jquery-ui/jquery-ui.min.css')); ?>" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" integrity="sha512-UiKdzM5DL+I+2YFxK+7TDedVyVm7HMp/bN85NeWMJNYortoll+Nd6PU9ZDrZiaOsdarOyk9egQm6LOJZi36L2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Template Main CSS File -->
-  <link href="<?php echo e($baseUrl); ?>/assets/css/style.css" rel="stylesheet">
+  <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
 
   <style>
     #loading-overlay {

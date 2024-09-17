@@ -10,6 +10,7 @@ use core\Router;
 
 require_once "vendor/autoload.php";
 require_once "autoload.php";
+require_once "core/Functions.php";
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -17,6 +18,8 @@ $dotenv->load();
 $container = new Container();
 $container->autoRegister(__DIR__ . '/controller', 'controller\\');
 $container->autoRegister(__DIR__ . '/middleware', 'middleware\\');
+
+Registry::set("locales", ['en', 'fr', 'de']);
 
 $connection = DatabaseConnection::init();
 $database = $connection->get_connection();

@@ -57,7 +57,7 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator')
                       @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">
@@ -73,13 +73,13 @@
                       @endif
 
                       @if($role == 'User')
-                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       @endif
 
                       @if($role == 'Viewer')
-                      <a class="dropdown-item" href="/{{$appName}}/dashboard/users/view/{{$user['id']}}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       @endif

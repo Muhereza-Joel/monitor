@@ -3,6 +3,7 @@
 namespace core;
 
 use core\exceptions\RouteNotFoundException;
+use core\helpers\LocaleHelper;
 use Psr\Container\ContainerInterface; // PSR-11 Container Interface for DI
 
 class Router
@@ -41,8 +42,10 @@ class Router
 
     private function handleRequest($requestedUrl, $method = 'GET')
     {
+        $requestedUrl = LocaleHelper::cleanLocaleFromRoute($requestedUrl);
         $requestedUrl = str_replace($this->app_base_url, '', $requestedUrl);
         $path = parse_url($requestedUrl, PHP_URL_PATH);
+
         $queryParams = $this->parseQueryString($requestedUrl);
 
         try {
@@ -56,17 +59,22 @@ class Router
 
                 if ($route) {
                     $this->applyMiddleware($route);
-                    $this->invokeController($route, $path, $queryParams);
+
+                    // Check if the controllerMethod is a callable
+                    if (is_callable($route['controllerMethod'])) {
+                        dd($route['controllerMethod']);
+                        call_user_func($route['controllerMethod'], ...array_values($queryParams));
+                    } else {
+                        $this->invokeController($route, $path, $queryParams);
+                    }
                 }
             } else {
                 throw new RouteNotFoundException();
             }
         } catch (RouteNotFoundException $e) {
-
             $e->render_404();
         }
     }
-
 
     private function parseQueryString($url)
     {
@@ -80,7 +88,7 @@ class Router
         if (!isset($route['middleware']) || empty($route['middleware'])) {
             return true; // No middleware, allow request to proceed
         }
-    
+
         foreach ($route['middleware'] as $middlewareDefinition) {
             // Check if middleware has arguments (e.g., "RoleMiddleware:admin,user")
             if (strpos($middlewareDefinition, ':') !== false) {
@@ -90,7 +98,7 @@ class Router
                 $middlewareClass = $middlewareDefinition;
                 $args = [];
             }
-    
+
             // Resolve middleware class from container
             if ($this->container->has($middlewareClass)) {
                 // If the container knows about the middleware, resolve it
@@ -100,15 +108,13 @@ class Router
                 // If not in the container, directly create the middleware instance and pass arguments
                 $middleware = new $middlewareClass(...$args);
             }
-    
+
             // Check if middleware passes
             if (!$middleware->handle()) {
                 exit(); // Block the request if the middleware check fails
             }
         }
     }
-    
-
 
     private function invokeController($route, $path, $queryParams)
     {

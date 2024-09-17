@@ -3,13 +3,13 @@
 
   <div class="d-flex align-items-center justify-content-between">
     <i class="bi bi-list toggle-sidebar-btn"></i>
-    <a href="/<?php echo e($appName); ?>/dashboard/" class="logo d-flex align-items-center">
+    <a href="<?php echo e(url('dashboard', null, true)); ?>" class="logo d-flex align-items-center">
       <span class="d-none d-lg-block">M & E Monitor</span>
     </a>
   </div><!-- End Logo -->
 
   <div class="d-flex ps-3 ms-3">
-    <?php $imageUrl = isset($myOrganisation['logo']) ? $myOrganisation['logo'] : "/{$appName}/assets/img/placeholder.png"; ?>
+    <?php $imageUrl = isset($myOrganisation['logo']) ? $myOrganisation['logo'] : asset('img/placeholder.png'); ?>
     <img src="<?php echo $imageUrl; ?>" alt="Profile" class="rounded-circle mt-3" width="40px" height="40px">
     <h4 class="h6 text-light mt-3"> <?php echo e($myOrganisation['name']); ?> <br>
       <small>is your organisation</small>
@@ -38,7 +38,7 @@
 
         
           <li>
-            <a class="dropdown-item d-flex align-items-center justify-content-start" href="/<?php echo e($appName); ?>/auth/user/profile/">
+            <a class="dropdown-item d-flex align-items-center justify-content-start" href="<?php echo e(url('auth/user/profile/', null, true)); ?>">
               <i class="bi bi-person"></i>
               <span>Your Profile</span>
             </a>

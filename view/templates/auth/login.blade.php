@@ -43,19 +43,29 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <button id="login-button" class="btn btn-secondary w-100" type="submit">Sign in</button>
+                                    <button id="login-button" class="btn btn-secondary w-100" type="submit">{{ __('sign_in') }}</button>
+
                                 </div>
                                 <div class="card-footer p-0">
                                     <div class="col-12 text-center">
                                         <p>
-                                            <a href="/{{$appName}}/auth/organizations/choose/" class="btn btn-link">Create an account</a> |
-                                            <a href="/{{$appName}}/auth/accounts/reset/" class="btn btn-link text-danger ms-2">Forgot Password</a>
+                                            <a href="{{ url('auth/organizations/choose/', null, true) }}" class="btn btn-link">Create an account</a> |
+                                            <a href="{{ url('auth/accounts/reset/', null , true) }}" class="btn btn-link text-danger ms-2">Forgot Password</a>
+
+
                                         </p>
                                     </div>
 
                                 </div>
                             </form>
+
+
                         </div>
+                    </div>
+                    <div class="btn-group mt-3" role="group" aria-label="Language Switcher">
+                        <a href="{{ route('lang.switch', ['locale' => 'en']) }}" class="btn btn-link">English</a>
+                        <a href="{{ route('lang.switch', ['locale' => 'fr']) }}" class="btn btn-link">Français</a>
+                        <a href="{{ route('lang.switch', ['locale' => 'de']) }}" class="btn btn-link">Deutsch</a>
                     </div>
                 </div>
             </div>
@@ -87,20 +97,20 @@
 
                 $.ajax({
                     method: 'post',
-                    url: '/{{$appName}}/auth/login/sign-in/',
+                    url: "{{ url('/auth/login/sign-in/') }}",
                     data: formData,
                     success: function(response) {
                         if (response.profileCreated == true) {
                             $("#login-button").text("Please wait...").attr('disabled', 'true').text("Authentication Successful, redirecting...");
 
                             if (response.organization_name == 'Administrator') {
-                                window.location.replace("/{{$appName}}/dashboard/");
+                                window.location.replace("{{ url('dashboard/', null, true) }}");
                             } else {
-                                window.location.replace("/{{$appName}}/dashboard/organizations/choose/");
+                                window.location.replace("{{ url('dashboard/organizations/choose/', null, true) }}");
                             }
-                            
+
                         } else if (response.profileCreated == false) {
-                            window.location.replace("/{{$appName}}/auth/create-profile/");
+                            window.location.replace("{{ url('auth/create-profile/') }}");
                         }
                     },
                     error: function(jqXHR) {

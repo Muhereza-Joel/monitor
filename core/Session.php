@@ -90,4 +90,22 @@ class Session
         self::start();
         return isset($_SESSION['user_id']);
     }
+
+    // Flash message methods
+    public static function set_flash_message($key, $message)
+    {
+        self::start();
+        $_SESSION['flash_messages'][$key] = $message;
+    }
+
+    public static function get_flash_message($key)
+    {
+        self::start();
+        if (isset($_SESSION['flash_messages'][$key])) {
+            $message = $_SESSION['flash_messages'][$key];
+            unset($_SESSION['flash_messages'][$key]); // Remove the message after it's retrieved
+            return $message;
+        }
+        return null;
+    }
 }

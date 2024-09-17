@@ -2,6 +2,7 @@
 
 namespace middleware;
 
+use core\helpers\LocaleHelper;
 use core\Session;
 use middleware\MiddlewareHandler as MiddlewareMiddlewareHandler;
 
@@ -37,6 +38,8 @@ class AuthMiddleware extends MiddlewareMiddlewareHandler
         ];
 
         $currentRoute = $_SERVER['REQUEST_URI'];
+        $currentRoute = LocaleHelper::cleanLocaleFromRoute($currentRoute);
+
         if (in_array($currentRoute, $allowedRoutes)) {
             return true;
         } else {
