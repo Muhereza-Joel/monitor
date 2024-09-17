@@ -3,6 +3,7 @@
 namespace controller;
 
 use core\FileUploader;
+use core\Registry;
 use core\Request;
 use Illuminate\Support\Facades\URL;
 use core\Session;
@@ -19,6 +20,7 @@ class AuthController
     private $app_base_url;
     private $user_model;
     private $model;
+    private $logger;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ class AuthController
         $this->app_base_url = getenv("APP_BASE_URL");
         $this->user_model = User::getInstance();
         $this->model = Model::getInstance();
+        $this->logger = Registry::get('logger');
     }
 
     public function index()
@@ -192,8 +195,10 @@ class AuthController
 
     public function sign_out()
     {
+        $this->logger->log_logout(session('user_id'));
         Session::destroy();
-        header("location:/$this->app_name/auth/login/");
+        redirect('auth/login/');
+
     }
 
     public function set_choosen_organisation()

@@ -2,6 +2,7 @@
 
 namespace model;
 
+use core\constants\ActionRegistry;
 use core\DatabaseConnection;
 use core\Registry;
 use core\Request;
@@ -12,11 +13,13 @@ use Ramsey\Uuid\Uuid;
 class Model
 {
     private $database;
+    private $logger;
     private static $instance = null;
 
     private function __construct()
     {
         $this->get_database_connection();
+        $this->logger = Registry::get("logger");
     }
 
     public static function getInstance()
@@ -179,6 +182,8 @@ class Model
             $response = ['message' => 'Row Created Successfully'];
             $httpStatus = 200;
 
+            $this->logger->log_create(session('user_id'), $id, ActionRegistry::INDICATORS_TABLE);
+
             Request::send_response($httpStatus, $response);
         } else {
             $response = ['error' => $stmt->error];
@@ -224,6 +229,8 @@ class Model
                 $response = ['message' => 'Record Updated Successfully'];
                 $httpStatus = 200;
 
+                $this->logger->log_update(session('user_id'), $indicator_id, ActionRegistry::INDICATORS_TABLE);
+
                 Request::send_response($httpStatus, $response);
             } elseif ($stmt->affected_rows == 0) {
                 $response = ['message' => 'You did not change anything.'];
@@ -246,29 +253,121 @@ class Model
 
     public function delete_indicator($id)
     {
-        $query = "DELETE FROM indicators WHERE id = ?";
+        // Start the transaction
+        $this->database->begin_transaction();
+        $responseCount = 0;
 
-        $stmt = $this->database->prepare($query);
-        $stmt->bind_param('s', $id);
-        $stmt->execute();
+        try {
+            // Step 1: Copy the indicator to the indicators_deleted_archive table
+            $archiveIndicatorQuery = "INSERT INTO indicators_deleted_archive SELECT * FROM indicators WHERE id = ?";
+            $archiveIndicatorStmt = $this->database->prepare($archiveIndicatorQuery);
 
-        if ($stmt->affected_rows > 0) {
-            $response = ['message' => 'Record Deleted Successfully'];
-            $httpStatus = 200;
+            if (!$archiveIndicatorStmt) {
+                throw new \Exception("Error in query: " . $this->database->error);
+            }
 
-            Request::send_response($httpStatus, $response);
-        } elseif ($stmt->affected_rows == 0) {
-            $response = ['message' => 'Record Not Found'];
-            $httpStatus = 200;
+            $archiveIndicatorStmt->bind_param('s', $id);
+            $archiveIndicatorStmt->execute();
 
-            Request::send_response($httpStatus, $response);
-        } else {
-            $response = ['error' => $stmt->error];
+            // Check if the indicator was successfully copied to the archive
+            if ($archiveIndicatorStmt->affected_rows > 0) {
+
+                // Step 2: Check if there are any responses related to the indicator
+                $checkResponseQuery = "SELECT COUNT(*) as response_count FROM responses WHERE indicator_id = ?";
+                $checkResponseStmt = $this->database->prepare($checkResponseQuery);
+
+                if (!$checkResponseStmt) {
+                    throw new \Exception("Error in query: " . $this->database->error);
+                }
+
+                $checkResponseStmt->bind_param('s', $id);
+                $checkResponseStmt->execute();
+                $checkResponseStmt->bind_result($responseCount);
+                $checkResponseStmt->fetch();
+
+                // **Close the previous statement**
+                $checkResponseStmt->close();  // Close the result set
+
+                if ($responseCount > 0) {
+                    // Step 3: Copy the related responses to responses_deleted_archive table
+                    $archiveResponseQuery = "INSERT INTO responses_deleted_archive SELECT * FROM responses WHERE indicator_id = ?";
+                    $archiveResponseStmt = $this->database->prepare($archiveResponseQuery);
+
+                    if (!$archiveResponseStmt) {
+                        throw new \Exception("Error in query: " . $this->database->error);
+                    }
+
+                    $archiveResponseStmt->bind_param('s', $id);
+                    $archiveResponseStmt->execute();
+
+                    // Step 4: Delete the responses from the responses table
+                    $deleteResponsesQuery = "DELETE FROM responses WHERE indicator_id = ?";
+                    $deleteResponsesStmt = $this->database->prepare($deleteResponsesQuery);
+
+                    if (!$deleteResponsesStmt) {
+                        throw new \Exception("Error in query: " . $this->database->error);
+                    }
+
+                    $deleteResponsesStmt->bind_param('s', $id);
+                    $deleteResponsesStmt->execute();
+                }
+
+                // Step 5: Delete the indicator from the indicators table
+                $deleteIndicatorQuery = "DELETE FROM indicators WHERE id = ?";
+                $deleteIndicatorStmt = $this->database->prepare($deleteIndicatorQuery);
+
+                if (!$deleteIndicatorStmt) {
+                    throw new \Exception("Error in query: " . $this->database->error);
+                }
+
+                $deleteIndicatorStmt->bind_param('s', $id);
+                $deleteIndicatorStmt->execute();
+
+                // Check if the indicator was successfully deleted
+                if ($deleteIndicatorStmt->affected_rows > 0) {
+                    // Step 6: Log the delete action for the indicator and responses (if any)
+                    $this->logger->log_delete(session('user_id'), $id, ActionRegistry::COPY_TO_DELETED_INDICATORS_ARCHIVES_TABLE);
+
+                    if ($responseCount > 0) {
+                        $this->logger->log_delete(session('user_id'), $id, ActionRegistry::COPY_TO_DELETED_RESPONSES_ARCHIVES_TABLE);
+                    }
+
+                    // Commit the transaction
+                    $this->database->commit();
+
+                    // Send success response
+                    $response = ['message' => 'Indicator and its responses (if any) deleted successfully'];
+                    $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
+                } else {
+                    // Rollback the transaction if the delete fails
+                    $this->database->rollback();
+
+                    // Record not found for deletion
+                    $response = ['message' => 'Record Not Found'];
+                    $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
+                }
+            } else {
+                // Rollback the transaction if the archive copy fails
+                $this->database->rollback();
+
+                // Record not found for archiving
+                $response = ['message' => 'Indicator Not Found for Archiving'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+            }
+        } catch (\Exception $e) {
+            // Rollback the transaction on any error
+            $this->database->rollback();
+
+            // Send error response with the exception message
+            $response = ['error' => $e->getMessage()];
             $httpStatus = 500;
-
             Request::send_response($httpStatus, $response);
         }
     }
+
 
     public function get_all_indicators()
     {
@@ -380,11 +479,16 @@ class Model
                 $stmt->execute();
 
                 if ($stmt->affected_rows > 0) {
+
+                    $this->logger->log_update(session('user_id'), $id, ActionRegistry::INDICATORS_TABLE);
+                    $this->logger->log_update(session('user_id'), $id, ActionRegistry::RESPONSES_TABLE);
+
                     $this->database->commit();
                     $response = ['message' => 'Indicator and related responses updated successfully'];
                     $httpStatus = 200;
                 } else {
                     // No responses to update, but indicator status update was successful
+                    $this->logger->log_update(session('user_id'), $id, ActionRegistry::INDICATORS_TABLE);
                     $this->database->commit();
                     $response = ['message' => 'Indicator status updated, but no related responses found'];
                     $httpStatus = 200;
@@ -471,6 +575,8 @@ class Model
             $response = ['message' => 'Row Created Successfully'];
             $httpStatus = 200;
 
+            $this->logger->log_create(session('user_id'), $id, ActionRegistry::RESPONSES_TABLE);
+
             Request::send_response($httpStatus, $response);
         } else {
             $response = ['error' => $stmt->error];
@@ -501,7 +607,7 @@ class Model
         if ($stmt->affected_rows > 0) {
             $response = ['message' => 'Row Updated Successfully'];
             $httpStatus = 200;
-
+            $this->logger->log_update(session('user_id'), $response_id, ActionRegistry::RESPONSES_TABLE);
             Request::send_response($httpStatus, $response);
         } elseif ($stmt->affected_rows == 0) {
             $response = ['message' => "You din't change anything"];
@@ -532,6 +638,8 @@ class Model
         if ($stmt->affected_rows > 0) {
             $response = ['message' => 'Role Updated Successfully'];
             $httpStatus = 200;
+
+            $this->logger->log_update(session('user_id'), $user_id, ActionRegistry::USERS_TABLE);
 
             Request::send_response($httpStatus, $response);
         } elseif ($stmt->affected_rows == 0) {
@@ -651,29 +759,65 @@ class Model
 
     public function delete_response($id)
     {
-        $query = "DELETE FROM responses WHERE id = ?";
+        // Start the transaction
+        $this->database->begin_transaction();
 
-        $stmt = $this->database->prepare($query);
-        $stmt->bind_param('s', $id);
-        $stmt->execute();
+        try {
+            // Step 1: Copy the response to the responses_deleted_archive table
+            $archiveResponseQuery = "INSERT INTO responses_deleted_archive SELECT * FROM responses WHERE id = ?";
+            $archiveResponseStmt = $this->database->prepare($archiveResponseQuery);
+            $archiveResponseStmt->bind_param('s', $id);
+            $archiveResponseStmt->execute();
 
-        if ($stmt->affected_rows > 0) {
-            $response = ['message' => 'Record Deleted Successfully'];
-            $httpStatus = 200;
+            // Check if the response was successfully copied to the archive
+            if ($archiveResponseStmt->affected_rows > 0) {
+                // Step 2: Delete the response from the responses table
+                $deleteResponseQuery = "DELETE FROM responses WHERE id = ?";
+                $deleteResponseStmt = $this->database->prepare($deleteResponseQuery);
+                $deleteResponseStmt->bind_param('s', $id);
+                $deleteResponseStmt->execute();
 
-            Request::send_response($httpStatus, $response);
-        } elseif ($stmt->affected_rows == 0) {
-            $response = ['message' => 'Record Not Found'];
-            $httpStatus = 200;
+                // Check if the response was successfully deleted
+                if ($deleteResponseStmt->affected_rows > 0) {
+                    // Step 3: Log the delete action
+                    $this->logger->log_delete(session('user_id'), $id, ActionRegistry::COPY_TO_DELETED_RESPONSES_ARCHIVES_TABLE);
 
-            Request::send_response($httpStatus, $response);
-        } else {
-            $response = ['error' => $stmt->error];
+                    // Commit the transaction
+                    $this->database->commit();
+
+                    // Send success response
+                    $response = ['message' => 'Response deleted successfully'];
+                    $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
+                } else {
+                    // Rollback the transaction if the delete fails
+                    $this->database->rollback();
+
+                    // Response not found for deletion
+                    $response = ['message' => 'Record Not Found'];
+                    $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
+                }
+            } else {
+                // Rollback the transaction if the archive copy fails
+                $this->database->rollback();
+
+                // Response not found for archiving
+                $response = ['message' => 'Record Not Found'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+            }
+        } catch (\Exception $e) {
+            // Rollback the transaction on any error
+            $this->database->rollback();
+
+            // Send error response
+            $response = ['error' => $e->getMessage()];
             $httpStatus = 500;
-
             Request::send_response($httpStatus, $response);
         }
     }
+
 
     public function add_files($response_id, $file_infos_json)
     {
