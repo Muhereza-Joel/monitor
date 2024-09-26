@@ -101,11 +101,7 @@ Route::group([
     Route::post("reports/word/export/single/", "ReportsController@export_single_word_report");
     Route::post("reports/word/export/multiple/", "ReportsController@export_multiple_word_report");
 
-    Route::get('lang/{locale}', function ($locale) {
-        if (in_array($locale, ['en', 'fr', 'de'])) {
-            set_locale($locale);
-        }
-
-        redirect('auth/login');
+    Route::get("lang/en", function () {
+        dd('Closure reached!');
     })->name('lang.switch');
 });

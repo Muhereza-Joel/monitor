@@ -1,4 +1,5 @@
 <?php
+
 namespace core;
 
 use Exception;
@@ -27,27 +28,29 @@ class Route
     {
         // Apply group middleware and prefix to each route
         $path = self::$prefix . $path;
-
-        // If $controllerMethod is a callable (function), do not resolve the namespace
+    
+        // Only resolve namespace if $controllerMethod is NOT callable (i.e., it's a controller@method string)
         if (!is_callable($controllerMethod)) {
             // Automatically resolve controller namespace for controller methods
             $controllerMethod = self::resolveNamespace($controllerMethod, self::$controllerNamespace);
         }
-
+    
         // Merge group middleware with route-specific middleware
         $middleware = array_merge(self::$groupMiddleware, self::resolveMiddleware($middleware));
-
+    
         self::$currentRoute = [
             'path' => $path,
-            'controllerMethod' => $controllerMethod,
+            'controllerMethod' => $controllerMethod,  // Closure should remain unmodified here
             'methods' => $methods,
             'middleware' => $middleware
         ];
-
+    
         self::$routes[] = self::$currentRoute;
-
+    
         return new self;
     }
+    
+
 
     public static function name($routeName)
     {
