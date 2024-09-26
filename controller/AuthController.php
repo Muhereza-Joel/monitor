@@ -393,4 +393,9 @@ class AuthController
     {
         $this->user_model->reset_password();
     }
+
+    public function change_locale($locale){
+        set_locale($locale);
+        back();
+    }
 }

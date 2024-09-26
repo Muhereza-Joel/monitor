@@ -17,26 +17,27 @@
   </div>
 
   <nav class="header-nav ms-auto">
-  <ul class="d-flex align-items-center">
+    <ul class="d-flex align-items-center">
 
 
-    <li class="nav-item dropdown pe-3">
+      <li class="nav-item dropdown pe-3">
 
-      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-        <img src="<?php echo e($avator); ?>" alt="Profile" class="rounded-circle" width="40px" height="40px" style="object-fit: cover;">
-        <span class="d-none d-md-block dropdown-toggle px-2">Hello, <?php echo e($username); ?></span>
-      </a><!-- End Profile Iamge Icon -->
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <?php $avatorUrl = isset($avator) ? $avator : asset('img/placeholder.png'); ?>
+          <img src="<?php echo $avatorUrl; ?>" alt="Profile" class="rounded-circle" width="40px" height="40px" style="object-fit: cover;">
+          <span class="d-none d-md-block dropdown-toggle px-2">Hello, <?php echo e($username); ?></span>
+        </a><!-- End Profile Iamge Icon -->
 
-      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-        <li class="dropdown-header">
-          <span class="text-primary">Signed In As</span>
-          <h6><?php echo e($username); ?></h6>
-         
-        <li>
-          <hr class="dropdown-divider">
-        </li>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <li class="dropdown-header">
+            <span class="text-primary">Signed In As</span>
+            <h6><?php echo e($username); ?></h6>
 
-        
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+
           <li>
             <a class="dropdown-item d-flex align-items-center justify-content-start" href="<?php echo e(url('auth/user/profile/', null, true)); ?>">
               <i class="bi bi-person"></i>
@@ -46,33 +47,33 @@
           <li>
             <hr class="dropdown-divider">
           </li>
-        
-        <li>
-          <a class="dropdown-item d-flex align-items-center justify-content-start" href="#">
-            <i class="bi bi-gear"></i>
-            <span>Your Account Settings</span>
-          </a>
-        </li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
 
-        
-        <li>
-          <hr class="dropdown-divider">
-        </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-start" href="#">
+              <i class="bi bi-gear"></i>
+              <span>Your Account Settings</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
-        <li>
-          <a class="dropdown-item d-flex align-items-center justify-content-start" href="/<?php echo e($appName); ?>/auth/sign-out/">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Sign Out</span>
-          </a>
-        </li>
 
-      </ul><!-- End Profile Dropdown Items -->
-    </li><!-- End Profile Nav -->
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
-  </ul>
-</nav><!-- End Icons Navigation -->
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-start" href="/<?php echo e($appName); ?>/auth/sign-out/">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Sign Out</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+
+    </ul>
+  </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->

@@ -35,8 +35,10 @@
           <li class="breadcrumb-item text-primary">Users</li>
           <li class="breadcrumb-item active">My Profile</li><br>
           <div style="width: 10px;"></div>
+          @if(isset($userDetails['updated_at']))
           <div id="last-update-timestamp" class="d-none">{{$userDetails['updated_at']}}</div>
           <span id="last-update" class="badge bg-secondary ml-3"></span>
+          @endif
         </ol>
       </nav>
     </div>
@@ -56,7 +58,7 @@
         <div class="text-center">
           <img src="{{$avator}}" alt="Profile" class="rounded-circle" width="300px" height="300px" style="border: 3px solid #999; object-fit: cover;" onerror="this.onerror=null;this.src='/{{$appName}}/assets/img/avatar.png';">
 
-          <h2>{{$userDetails['name']}}</h2>
+          <br><br>
           <span class="text-secondary"><strong>Your Role : </strong> {{$role}}</span>
           <div>
             <button type="button" class="btn btn-secondary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#basicModal">
@@ -95,62 +97,62 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">About</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['about']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['about'] ?? 'N/A'}}</div>
                 </div>
 
                 <h5 class="card-title fw-bold text-secondary">Biography</h5>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Full Name</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['name']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['name'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Date of Birth</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['dob']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['dob'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Gender</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['gender']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['gender'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Company</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['company']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['company'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Job</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['job']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['job'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">NIN Number</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['nin']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['nin'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Email</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['email']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['email'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Country</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['country']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['country'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">District</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['district']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['district'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Village</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['village']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['village'] ?? 'N/A'}}</div>
                 </div>
 
 
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label fw-bold text-secondary">Phone</div>
-                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['phone']}}</div>
+                  <div class="col-lg-9 col-md-8 text-secondary">{{$userDetails['phone'] ?? 'N/A'}}</div>
                 </div>
 
 
@@ -168,7 +170,7 @@
                         <div class="row mb-3">
                           <label for="fullName" class="col-md-4 col-lg-3 col-form-label text-secondary">Full Name</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['name']}}" oninput="capitalizeEveryWord(this)" name="fullName" type="text" class="form-control" id="fullName" placeholder="Enter your full name here" required>
+                            <input value="{{$userDetails['name'] ?? 'N/A'}}" oninput="capitalizeEveryWord(this)" name="fullName" type="text" class="form-control" id="fullName" placeholder="Enter your full name here" required>
                             <div class="invalid-feedback">Please enter your full name.</div>
                           </div>
                         </div>
@@ -176,21 +178,21 @@
                         <div class="row mb-3">
                           <label for="about" class="col-md-4 col-lg-3 col-form-label text-secondary">About (Optional)</label>
                           <div class="col-md-8 col-lg-9">
-                            <textarea id="about-textarea" name="about" class="form-control" id="about" style="height: 150px" placeholder="Brief info about your self">{{$userDetails['about']}}</textarea>
+                            <textarea id="about-textarea" name="about" class="form-control" id="about" style="height: 150px" placeholder="Brief info about your self">{{$userDetails['about'] ?? 'N/A'}}</textarea>
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <label for="company" class="col-md-4 col-lg-3 col-form-label text-secondary">Company (Optional)</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['company']}}" name="company" type="text" class="form-control" id="company" placeholder="What company do you work for (Optional)">
+                            <input value="{{$userDetails['company'] ?? 'N/A'}}" name="company" type="text" class="form-control" id="company" placeholder="What company do you work for (Optional)">
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <label for="Job" class="col-md-4 col-lg-3 col-form-label text-secondary">Job Title</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['job']}}" name="job" type="text" class="form-control" id="Job" placeholder="Enter your Job title like manager, doctor" required>
+                            <input value="{{$userDetails['job'] ?? 'N/A'}}" name="job" type="text" class="form-control" id="Job" placeholder="Enter your Job title like manager, doctor" required>
                             <div class="invalid-feedback">Please provide your Job Title</div>
                           </div>
                         </div>
@@ -200,7 +202,7 @@
                           <label for="nin" class="col-md-4 col-lg-3 col-form-label text-secondary">NIN Number</label>
                           <div class="col-md-8 col-lg-9">
 
-                            <input value="{{$userDetails['nin']}}" pattern="[A-Z0-9]{14}" min="14" name="nin" type="text" class="form-control" id="nin" placeholder="Enter your nin number" required>
+                            <input value="{{$userDetails['nin'] ?? 'N/A'}}"  min="14" name="nin" type="text" class="form-control" id="nin" placeholder="Enter your nin number">
                             <div class="invalid-feedback">Please enter a valid NIN number with digits, letters, no spaces and 14 characters long.</div>
                             <small id="nin-status" class="text-success fw-bold"></small>
                           </div>
@@ -209,7 +211,7 @@
                         <div class="row mb-3">
                           <label for="email" class="col-md-4 col-lg-3 col-form-label text-secondary">Email</label>
                           <div class="col-md-8 col-lg-9">
-                            <input name="email" type="text" class="form-control" id="email" placeholder="Enter your email address" required value="{{$userDetails['email']}}">
+                            <input name="email" type="text" class="form-control" id="email" placeholder="Enter your email address" required value="{{$userDetails['email'] ?? 'N/A'}}">
                             <div class="invalid-feedback">Please enter your email address.</div>
                             <small id="email-status" class="text-success fw-bold"></small>
                           </div>
@@ -218,10 +220,15 @@
                         <div class="row mb-3">
                           <label for="gender" class="col-md-4 col-lg-3 col-form-label text-secondary">Gender</label>
                           <div class="col-md-8 col-lg-9">
-                            <select name="gender" id="gender" class="form-control" required>
+                            <select name="gender" id="gender" class="form-control">
                               <option value="">Select Gender</option>
-                              <option value="male" {{ $userDetails['gender'] === 'male' ? 'selected' : '' }}>Male</option>
-                              <option value="female" {{ $userDetails['gender'] === 'female' ? 'selected' : '' }}>Female</option>
+                              @if(isset($userDetails['gender']))
+                                <option value="male" {{ $userDetails['gender'] === 'male' ? 'selected' : '' }}>Male</option>
+                                <option value="female" {{ $userDetails['gender'] === 'female' ? 'selected' : '' }}>Female</option>
+                                @else
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                              @endif
                             </select>
 
                             <div class="invalid-feedback">Please select gender.</div>
@@ -231,7 +238,7 @@
                         <div class="row mb-3">
                           <label for="dob" class="col-md-4 col-lg-3 col-form-label text-secondary">Date of Birth</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['dob']}}" name="dob" type="date" class="form-control" id="Country" placeholder="Enter your home Country" required>
+                            <input value="{{$userDetails['dob'] ?? 'N/A'}}" name="dob" type="date" class="form-control" id="Country" placeholder="Enter your home Country">
                             <div class="invalid-feedback">Please choose date of birth.</div>
                           </div>
                         </div>
@@ -239,7 +246,7 @@
                         <div class="row mb-3">
                           <label for="Country" class="col-md-4 col-lg-3 col-form-label text-secondary">Country</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['country']}}" oninput="capitalizeFirstLetter(this)" name="country" type="text" class="form-control" id="Country" placeholder="Enter your home Country" required>
+                            <input value="{{$userDetails['country'] ?? 'N/A'}}" oninput="capitalizeFirstLetter(this)" name="country" type="text" class="form-control" id="Country" placeholder="Enter your home Country">
                             <div class="invalid-feedback">Please enter your home coutry.</div>
                           </div>
                         </div>
@@ -247,7 +254,7 @@
                         <div class="row mb-3">
                           <label for="Home District" class="col-md-4 col-lg-3 col-form-label text-secondary">Home District</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['district']}}" oninput="capitalizeFirstLetter(this)" name="district" type="text" class="form-control" id="Home District" placeholder="Enter your home district" required>
+                            <input value="{{$userDetails['district'] ?? 'N/A'}}" oninput="capitalizeFirstLetter(this)" name="district" type="text" class="form-control" id="Home District" placeholder="Enter your home district">
                             <div class="invalid-feedback">Please enter your home district.</div>
                           </div>
                         </div>
@@ -255,7 +262,7 @@
                         <div class="row mb-3">
                           <label for="village" class="col-md-4 col-lg-3 col-form-label text-secondary">Village</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['village']}}" oninput="capitalizeFirstLetter(this)" name="village" type="text" class="form-control" id="village" placeholder="Enter the village you come from" required>
+                            <input value="{{$userDetails['village'] ?? 'N/A'}}" oninput="capitalizeFirstLetter(this)" name="village" type="text" class="form-control" id="village" placeholder="Enter the village you come from" required>
                             <div class="invalid-feedback">Please enter the village you come from.</div>
                           </div>
                         </div>
@@ -263,7 +270,7 @@
                         <div class="row mb-3">
                           <label for="Phone" class="col-md-4 col-lg-3 col-form-label text-secondary">Phone</label>
                           <div class="col-md-8 col-lg-9">
-                            <input value="{{$userDetails['phone']}}" pattern="[+]?[0-9]+" name="phone" type="text" class="form-control" id="Phone" placeholder="Enter your phone number" required>
+                            <input value="{{$userDetails['phone'] ?? 'N/A'}}"  name="phone" type="text" class="form-control" id="Phone" placeholder="Enter your phone number">
                             <div class="invalid-feedback">Please enter a valid phone number.</div>
 
                           </div>

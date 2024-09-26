@@ -72,13 +72,13 @@
                       </button>
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
                         @if($role == 'User' || $role == 'Administrator')
-                        <a href="/{{$appName}}/dashboard/indicators/archived/responses/all/{{$indicator['id']}}" class="dropdown-item">
+                        <a href="{{ route('indicator.archived.responses', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @endif
 
                         @if($role == 'Viewer')
-                        <a href="/{{$appName}}/dashboard/indicators/archived/responses/all/{{$indicator['id']}}" class="dropdown-item">
+                        <a href="{{ route('indicator.archived.responses', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @endif

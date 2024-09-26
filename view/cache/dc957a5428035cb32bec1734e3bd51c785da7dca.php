@@ -18,7 +18,7 @@
 
   <section class="section dashboard">
     <div class="row p-2">
-      <div class="alert alert-info">Only people who have completed their profiles after creating accounts are the ones shown here.</div>
+  
       <div class="card pt-4">
         <div class="card-body">
           <!-- Table with stripped rows -->
@@ -44,10 +44,10 @@
                   </div>
                 </td>
 
-                <td><?php echo e($user['name']); ?></td>
+                <td><?php echo e($user['name'] ?? 'N/A'); ?></td>
                 <td><?php echo e($user['email']); ?></td>
                 <td><?php echo e($user['role']); ?></td>
-                <td><?php echo e($user['country']); ?>, <?php echo e($user['district']); ?></td>
+                <td><?php echo e($user['country']); ?>, <?php echo e($user['district'] ?? 'N/A'); ?></td>
 
                 <td>
                   <div class="dropdown">
@@ -57,7 +57,7 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       <?php if($role == 'Administrator'): ?>
                       <?php if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator'): ?>
-                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['_id']], true)); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="<?php echo e($user['user_id']); ?>" data-user-role="<?php echo e($user['role']); ?>">
@@ -73,13 +73,13 @@
                       <?php endif; ?>
 
                       <?php if($role == 'User'): ?>
-                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['_id']], true)); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <?php endif; ?>
 
                       <?php if($role == 'Viewer'): ?>
-                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['id']])); ?>">
+                      <a class="dropdown-item" href="<?php echo e(route('user.details', ['id' => $user['_id']], true)); ?>">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <?php endif; ?>

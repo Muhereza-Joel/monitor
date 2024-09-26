@@ -53,11 +53,11 @@ Route::group([
     Route::get("dashboard/indicators/", "PageController@render_view_indicators");
     Route::get("dashboard/indicators/archived/", "PageController@render_archived_indicators");
     Route::get("dashboard/all-archived-responses/", "PageController@render_archived_responses");
-    Route::get("dashboard/indicators/edit/{id}", "PageController@render_edit_indicator")->middleware(["RoleMiddleware:Administrator,User"]);
-    Route::get("dashboard/indicators/responses/edit/{id}", "PageController@render_edit_response")->middleware(["RoleMiddleware:Administrator,User"]);
-    Route::get("dashboard/indicators/responses/add/{id}", "PageController@render_add_response")->middleware(["RoleMiddleware:Administrator,User"]);
-    Route::get("dashboard/indicators/responses/all/{id}", "PageController@render_indicator_responses");
-    Route::get("dashboard/indicators/archived/responses/all/{id}", "PageController@render_archived_indicator_responses");
+    Route::get("dashboard/indicators/edit/{id}", "PageController@render_edit_indicator")->middleware(["RoleMiddleware:Administrator,User"])->name('indicator.edit');
+    Route::get("dashboard/indicators/responses/edit/{id}", "PageController@render_edit_response")->middleware(["RoleMiddleware:Administrator,User"])->name('response.edit');
+    Route::get("dashboard/indicators/responses/add/{id}", "PageController@render_add_response")->middleware(["RoleMiddleware:Administrator,User"])->name('response.add');
+    Route::get("dashboard/indicators/responses/all/{id}", "PageController@render_indicator_responses")->name('indicator.responses');
+    Route::get("dashboard/indicators/archived/responses/all/{id}", "PageController@render_archived_indicator_responses")->name('indicator.archived.responses');
     Route::get("dashboard/manage-indicators/resposes/", "PageController@render_responses");
     Route::get("dashboard/manage-indicators/u/resposes/", "PageController@render_user_responses");
     Route::get("dashboard/organizations/create/", "PageController@render_create_organization")->middleware(["AdministratorPageMiddleware"]);
@@ -67,7 +67,7 @@ Route::group([
     Route::get("dashboard/organizations/choose/", "PageController@render_dashboard_choose_organisation");
     Route::get("dashboard/manage-events/", "PageController@render_manage_events")->middleware(["RoleMiddleware:Administrator"]);
     Route::get("database/connection/error/", "ErrorPageController@render_database_connection_error");
-    Route::get("dashboard/reports/create-report/{id}", "PageController@render_create_report")->middleware(["RoleMiddleware:Administrator,User"]);
+    Route::get("dashboard/reports/create-report/{id}", "PageController@render_create_report")->middleware(["RoleMiddleware:Administrator,User"])->name('reports.create');
 
 
     //Routes for indicator controller
@@ -101,7 +101,5 @@ Route::group([
     Route::post("reports/word/export/single/", "ReportsController@export_single_word_report");
     Route::post("reports/word/export/multiple/", "ReportsController@export_multiple_word_report");
 
-    Route::get("lang/en", function () {
-        dd('Closure reached!');
-    })->name('lang.switch');
+    Route::get("lang/{locale}", "AuthController@change_locale")->name('lang.switch');
 });

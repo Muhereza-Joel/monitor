@@ -158,28 +158,24 @@
                         Select Action
                       </button>
                       <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                        <a href="/{{$appName}}/dashboard/indicators/responses/all/{{$indicator['id']}}" class="dropdown-item">
+                        <a href="{{ route('indicator.responses', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-eye"></i> View Indicator Responses
                         </a>
                         @if($role == 'Administrator')
                         @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
                         @if($indicator['status'] == 'draft' || $indicator['status'] == 'review')
-                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/edit/{{$indicator['id']}}" class="dropdown-item">
+                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Editing an indicator is only available when the indicator is in draft or review state." href="{{ route('indicator.edit', ['id' => $indicator['id']], true)}}" class="dropdown-item">
                           <i class="bi bi-pencil-square"></i> Edit Indicator
                         </a>
                         @endif
                         @endif
                         @endif
-                        @if($role == 'Viewer')
-                        <a href="/{{$appName}}/dashboard/indicators/responses/all/{{$indicator['id']}}" class="dropdown-item">
-                          <i class="bi bi-eye"></i> View Indicator Responses
-                        </a>
-                        @endif
+                      
 
                         @if($role == 'User' || $role == 'Administrator')
                         @if($myOrganisation['id'] == $indicator['organization_id'] || $myOrganisation['name'] == 'Administrator')
                         @if($indicator['status'] == 'draft')
-                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="/{{$appName}}/dashboard/indicators/responses/add/{{$indicator['id']}}" class="dropdown-item">
+                        <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Adding responses to an indicator is only available when the indicator is in draft or review state." href="{{ route('response.add', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-plus-circle"></i> Add Response
                         </a>
                         @endif
@@ -194,7 +190,7 @@
                         </a>
                         @endif
                         @if($indicator['status'] == 'archived')
-                        <a href="/{{$appName}}/dashboard/reports/create-report/{{$indicator['id']}}" class="dropdown-item">
+                        <a href="{{ route('reports.create', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-file-earmark"></i> Create Report
                         </a>
                         @endif
@@ -202,7 +198,7 @@
                         <a id="archive-indicator-btn" href="/{{$appName}}/dashboard/indicators/status/update?id={{$indicator['id']}}&status=archived" class="dropdown-item">
                           <i class="bi bi-archive"></i> Archive Indicator
                         </a>
-                        <a href="/{{$appName}}/dashboard/reports/create-report/{{$indicator['id']}}" class="dropdown-item">
+                        <a href="{{ route('reports.create', ['id' => $indicator['id']], true) }}" class="dropdown-item">
                           <i class="bi bi-file-earmark"></i> Create Report
                         </a>
                         @endif

@@ -62,11 +62,11 @@
 
                         </div>
                     </div>
-                    <div class="btn-group mt-3" role="group" aria-label="Language Switcher">
+                    <!-- <div class="btn-group mt-3" role="group" aria-label="Language Switcher">
                         <a href="{{ route('lang.switch', ['locale' => 'en']) }}" class="btn btn-link">English</a>
                         <a href="{{ route('lang.switch', ['locale' => 'fr']) }}" class="btn btn-link">Français</a>
                         <a href="{{ route('lang.switch', ['locale' => 'de']) }}" class="btn btn-link">Deutsch</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -100,18 +100,15 @@
                     url: "{{ url('/auth/login/sign-in/') }}",
                     data: formData,
                     success: function(response) {
-                        if (response.profileCreated == true) {
-                            $("#login-button").text("Please wait...").attr('disabled', 'true').text("Authentication Successful, redirecting...");
 
-                            if (response.organization_name == 'Administrator') {
-                                window.location.replace("{{ url('dashboard/', null, true) }}");
-                            } else {
-                                window.location.replace("{{ url('dashboard/organizations/choose/', null, true) }}");
-                            }
+                        $("#login-button").text("Please wait...").attr('disabled', 'true').text("Authentication Successful, redirecting...");
 
-                        } else if (response.profileCreated == false) {
-                            window.location.replace("{{ url('auth/create-profile/') }}");
+                        if (response.organization_name == 'Administrator') {
+                            window.location.replace("{{ url('dashboard/', null, true) }}");
+                        } else {
+                            window.location.replace("{{ url('dashboard/organizations/choose/', null, true) }}");
                         }
+
                     },
                     error: function(jqXHR) {
                         if (jqXHR.status === 401) {

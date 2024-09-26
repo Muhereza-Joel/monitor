@@ -9,7 +9,7 @@ class Route
     private static $routes = [];
     private static $currentRoute = [];
     private static $groupMiddleware = [];
-    private static $prefix = '';
+    private static $prefix = 'monitor';
     private static $namedRoutes = [];
     private static $controllerNamespace = "controller\\";
     private static $middlewareNamespace = "middleware\\";
@@ -22,6 +22,11 @@ class Route
     public static function get_routes()
     {
         return self::$routes;
+    }
+
+    public static function getPrefix()
+    {
+        return self::$prefix;
     }
 
     public static function add($path, $controllerMethod, $methods = ['GET'], $middleware = [])

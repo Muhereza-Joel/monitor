@@ -18,7 +18,7 @@
 
   <section class="section dashboard">
     <div class="row p-2">
-      <div class="alert alert-info">Only people who have completed their profiles after creating accounts are the ones shown here.</div>
+  
       <div class="card pt-4">
         <div class="card-body">
           <!-- Table with stripped rows -->
@@ -44,10 +44,10 @@
                   </div>
                 </td>
 
-                <td>{{$user['name']}}</td>
+                <td>{{$user['name'] ?? 'N/A'}}</td>
                 <td>{{$user['email']}}</td>
                 <td>{{$user['role']}}</td>
-                <td>{{$user['country']}}, {{$user['district']}}</td>
+                <td>{{$user['country']}}, {{$user['district'] ?? 'N/A'}}</td>
 
                 <td>
                   <div class="dropdown">
@@ -57,7 +57,7 @@
                     <div class="dropdown-menu" aria-labelledby="actionDropdown">
                       @if($role == 'Administrator')
                       @if($myOrganisation['id'] == $user['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['_id']], true) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateRoleModal" data-user-id="{{ $user['user_id'] }}" data-user-role="{{ $user['role'] }}">
@@ -73,13 +73,13 @@
                       @endif
 
                       @if($role == 'User')
-                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['_id']], true) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       @endif
 
                       @if($role == 'Viewer')
-                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['id']]) }}">
+                      <a class="dropdown-item" href="{{ route('user.details', ['id' => $user['_id']], true) }}">
                         <i class="bi bi-eye"></i> View User Details
                       </a>
                       @endif

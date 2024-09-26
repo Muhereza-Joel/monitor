@@ -131,9 +131,10 @@ if (!function_exists('route')) {
      *
      * @param string $name The name of the route.
      * @param array  $parameters Optional array of parameters to pass to the route.
+     * @param string|null $locale Optional locale to include in the URL.
      * @return string The generated URL for the named route.
      */
-    function route($name, $parameters = [])
+    function route($name, $parameters = [], $locale = false)
     {
         // Get the route path by name
         $routePath = Route::getNamedRoute($name);
@@ -143,13 +144,25 @@ if (!function_exists('route')) {
             $routePath = str_replace('{' . $key . '}', $value, $routePath);
         }
 
+        // Remove any prefix from the route path
+        $prefix = rtrim(Route::getPrefix(), '/');
+        if ($prefix && strpos($routePath, $prefix) === 0) {
+            $routePath = substr($routePath, strlen($prefix));
+        }
+
         // Ensure path does not include base URL
         $baseUrl = rtrim(env('APP_BASE_URL', ''), '/');
         $routePath = ltrim($routePath, '/'); // Remove leading slash if any
-        return $baseUrl ?  '/' . $routePath : $routePath;
+
+        // Get the locale if provided
+        if ($locale) {
+            $locale = rtrim(get_locale(), '/');
+            return $baseUrl ? $baseUrl . '/' . $locale . '/' . $routePath : '/' . $locale . '/' . $routePath;
+        }
+
+        return $baseUrl ? $baseUrl . '/' . $routePath : $routePath;
     }
 }
-
 
 
 if (!function_exists('redirect')) {

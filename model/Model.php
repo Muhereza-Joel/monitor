@@ -54,38 +54,40 @@ class Model
 
         if (Session::get('my_organization_name') == 'Administrator') {
             $query = "SELECT 
-                    up.*, 
-                    au.id AS user_id, 
+                    au.id AS _id, 
                     au.username, 
                     au.approved, 
                     au.email, 
                     au.role, 
+                    up.*,
                     organizations.logo AS organization_logo, 
                     organizations.name AS organization_name
                 FROM 
                     app_users au 
-                JOIN 
-                    user_profile up ON au.id = up.user_id
-                JOIN 
-                    organizations ON au.organization_id = organizations.id;
+                LEFT JOIN 
+                    organizations ON au.organization_id = organizations.id
+                LEFT JOIN 
+                    user_profile up ON au.id = up.user_id;
                 ";
         } else {
-            $query = "SELECT 
-                        up.*, 
-                        au.id AS user_id, 
-                        au.username, 
-                        au.approved, 
-                        au.email, 
-                        au.role, 
-                        organizations.logo AS organization_logo, 
-                        organizations.name AS organization_name
-                    FROM 
-                        app_users au 
-                    JOIN 
-                        user_profile up ON au.id = up.user_id
-                    JOIN 
-                        organizations ON au.organization_id = organizations.id
-                    WHERE up.organization_id = ?";
+            $query = "SELECT  
+                    au.id AS _id, 
+                    au.username, 
+                    au.approved, 
+                    au.email, 
+                    au.role, 
+                    up.*,
+                    organizations.logo AS organization_logo, 
+                    organizations.name AS organization_name
+                FROM 
+                    app_users au 
+                LEFT JOIN 
+                    organizations ON au.organization_id = organizations.id
+                LEFT JOIN 
+                    user_profile up ON au.id = up.user_id
+                WHERE 
+                    au.organization_id = ?";
+
             $organization_id = Session::get('selected_organisation_id');
             $params[] = $organization_id;
             $types .= "s";
@@ -107,12 +109,13 @@ class Model
         return ['httpStatus' => 200, 'response' => $users];
     }
 
+
     public function get_user_details($id)
     {
-        $query = "SELECT up.*, au.id AS user_id, au.username, au.approved, au.email, au.role
-                FROM app_users au JOIN user_profile up
+        $query = "SELECT au.id AS user_id, au.username, au.approved, au.email, au.role, up.*
+                FROM app_users au LEFT JOIN user_profile up
                 ON au.id = up.user_id
-                WHERE up.id = ?";
+                WHERE au.id = ?";
 
         $stmt = $this->database->prepare($query);
         $stmt->bind_param("s", $id);

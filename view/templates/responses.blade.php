@@ -90,8 +90,8 @@
       <div style="border-radius: 50%;" class="d-flex align-self-center justify-content-end w-50">
         @if($indicatorId != null)
         <div class="btn-group" role="group" aria-label="Administrator Actions">
-          <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add More Responses To This Indicator."  class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/responses/add/{{$indicatorId}}"><i class="bi bi-plus-circle"></i> Add More Responses</a>
-          <a class="btn btn-secondary btn-sm" href="/{{$appName}}/dashboard/indicators/edit/{{$indicatorId}}"><i class="bi bi-pencil px-1"></i>Edit Indicator</a>
+          <a data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Add More Responses To This Indicator."  class="btn btn-secondary btn-sm" href="{{ route('response.add', ['id' => $indicatorId], true) }}"><i class="bi bi-plus-circle"></i> Add More Responses</a>
+          <a class="btn btn-secondary btn-sm" href="{{ route('indicator.edit', ['id' => $indicatorId], true) }}"><i class="bi bi-pencil px-1"></i>Edit Indicator</a>
           
         </div>
         @endif
@@ -192,7 +192,7 @@
                       @if($role == 'Administrator' || $role == 'User')
                       @if($response['status'] == 'draft' || $response['status'] == 'review')
                       @if($myOrganisation['id'] == $response['organization_id'] || $myOrganisation['name'] == 'Administrator')
-                      <a href="/{{$appName}}/dashboard/indicators/responses/edit/{{$response['id']}}" class="dropdown-item">
+                      <a href="{{ route('response.edit', ['id' => $response['id']], true) }}" class="dropdown-item">
                         <i class="bi bi-pencil"></i> Edit Response
                       </a>
                       <a href="#add-files" id="add-file" class="dropdown-item" data-response-id="{{$response['id']}}" data-bs-toggle="modal" data-bs-target="#fileUploadModal">

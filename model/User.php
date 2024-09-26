@@ -90,7 +90,6 @@ class User
                     Session::set('role', isset($user['role']) ? $user['role'] : null);
 
                     $this->logger->log_login($user['id']);
-                    
                 } else {
                     Session::set('user_id', isset($user['id']) ? $user['id'] : null);
                     Session::set('my_organization_id', isset($user['organization_id']) ? $user['organization_id'] : null);
@@ -158,9 +157,18 @@ class User
     public function get_all_user_data($id)
     {
 
-        $query = "SELECT app_users.username, app_users.email, app_users.role, user_profile.* 
-        FROM user_profile 
-        JOIN app_users ON app_users.id = user_profile.user_id
+        $query = "SELECT 
+            app_users.username, 
+            app_users.email, 
+            app_users.role, 
+            user_profile.* 
+        FROM 
+            app_users 
+        LEFT JOIN 
+            user_profile 
+        ON 
+            app_users.id = user_profile.user_id
+
         WHERE app_users.id = ?";
 
         $stmt = $this->database->prepare($query);
@@ -484,32 +492,76 @@ class User
     public function update_profile()
     {
         $request = Request::capture();
-
-        $fullname = $request->input('fullName');
-        $nin = $request->input('nin');
-        $country = $request->input('country');
-        $district = $request->input('district');
-        $village = $request->input('village');
-        $phone = $request->input('phone');
-        $dob = $request->input('dob');
-        $gender = $request->input('gender');
-        $about = $request->input('about');
-        $company = $request->input('company');
-        $job = $request->input('job');
-
         $user_id = Session::get('user_id');
 
-        $profile_update_query = "UPDATE user_profile
-                                SET name = ?, nin = ?, dob = ?, gender = ?, about = ?, company = ?, job = ?, country = ?, district = ?, village = ?, phone = ?
-                                WHERE user_id = ?";
+        // Prepare the fields
+        $fields = [
+            'id' => Uuid::uuid4()->toString(),
+            'name' => $request->input('fullName'),
+            'nin' => $request->input('nin'),
+            'dob' => $request->input('dob'),
+            'gender' => $request->input('gender'),
+            'about' => $request->input('about'),
+            'company' => $request->input('company'),
+            'job' => $request->input('job'),
+            'country' => $request->input('country'),
+            'district' => $request->input('district'),
+            'village' => $request->input('village'),
+            'phone' => $request->input('phone')
+        ];
+
+        // Filter out empty fields
+        $fields = array_filter($fields, fn($value) => !is_null($value) && $value !== '');
+
+        if (empty($fields)) {
+            $response = ['message' => 'No data provided to update', 'status' => '400'];
+            Request::send_response(400, $response);
+            return;
+        }
+
+        // Build the update query dynamically
+        $set_clause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($fields)));
+        $profile_update_query = "UPDATE user_profile SET $set_clause WHERE user_id = ?";
 
         $stmt2 = $this->database->prepare($profile_update_query);
-        $stmt2->bind_param("ssssssssssss", $fullname, $nin, $dob, $gender, $about, $company, $job, $country, $district, $village, $phone,  $user_id);
+
+        // Prepare parameters for binding
+        $types = str_repeat('s', count($fields)) . 's'; // all strings, including user_id
+        $params = array_merge(array_values($fields), [$user_id]);
+
+        // Bind parameters using unpacking
+        $stmt2->bind_param($types, ...$params);
         $stmt2->execute();
 
+        // Check if the update affected any rows
+        if ($stmt2->affected_rows === 0) {
+            // If no rows were affected, attempt to insert the profile
+            $columns = implode(', ', array_keys($fields));
+            $placeholders = implode(', ', array_fill(0, count($fields), '?'));
 
-        $response = ['message' => 'Profile data updated successfully', 'status' => '200'];
-        $httpStatus = 200;
+            $profile_insert_query = "INSERT INTO user_profile (user_id, $columns) VALUES (?, $placeholders)";
+            $stmt3 = $this->database->prepare($profile_insert_query);
+
+            // Rebuild parameters for insert
+            $params = array_merge([$user_id], array_values($fields));
+            $stmt3->bind_param('s' . str_repeat('s', count($fields)), ...$params);
+            $stmt3->execute();
+
+            if ($stmt3->affected_rows > 0) {
+                $response = ['message' => 'Profile data inserted successfully', 'status' => '201'];
+                $httpStatus = 201;
+            } else {
+                $response = ['message' => $stmt3->error, 'status' => '500'];
+                $httpStatus = 500;
+            }
+            $stmt3->close();
+        } else {
+            $response = ['message' => 'Profile data updated successfully', 'status' => '200'];
+            $httpStatus = 200;
+        }
+
+        $stmt2->close();
+
         Request::send_response($httpStatus, $response);
     }
 

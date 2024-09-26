@@ -50,59 +50,59 @@
               <div class="tab-pane fade show active profile-overview p-3" id="profile-overview">
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">About</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['about']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['about'] ?? 'N/A'}}</div>
                 </div>
 
                 <h5 class="card-title fw-bold text-dark">Biography</h5>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Full Name</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['name']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['name'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Date of Birth</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['dob']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['dob'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Gender</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['gender']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['gender'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Company</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['company']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['company'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Job</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['job']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['job'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">NIN Number</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['nin']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['nin'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Email</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['email']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['email'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Country</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['country']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['country'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">District</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['district']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['district'] ?? 'N/A'}}</div>
                 </div>
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Village</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['village']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['village'] ?? 'N/A'}}</div>
                 </div>
 
                 <div class="row my-4">
                   <div class="col-lg-3 col-md-4 label fw-bold text-dark">Phone</div>
-                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['phone']}}</div>
+                  <div class="col-lg-9 col-md-8 text-dark">{{$userDetails['phone'] ?? 'N/A'}}</div>
                 </div>
 
               </div>
