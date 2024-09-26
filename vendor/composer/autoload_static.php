@@ -73,6 +73,7 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '290dd4ba42f11019134caca05dbefe3f' => __DIR__ . '/..' . '/teamtnt/tntsearch/helper/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -83,6 +84,10 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
+        ),
+        'T' => 
+        array (
+            'TeamTNT\\TNTSearch\\' => 18,
         ),
         'S' => 
         array (
@@ -104,6 +109,7 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
             'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
             'Prophecy\\' => 9,
+            'Predis\\' => 7,
             'PhpOption\\' => 10,
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -154,6 +160,10 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'TeamTNT\\TNTSearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/teamtnt/tntsearch/src',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -201,6 +211,10 @@ class ComposerStaticInit58077c5fb04d80d30b56d969500eefd8
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'PhpOption\\' => 
         array (

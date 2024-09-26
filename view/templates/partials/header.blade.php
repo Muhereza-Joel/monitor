@@ -78,11 +78,53 @@
       /* Non-prefixed version, currently supported by Chrome, Opera, and Firefox */
     }
 
-    .btn{
+    .btn {
       border-radius: 0px !important;
     }
 
-    
+    .highlight {
+      background-color: yellow;
+      /* or any color you prefer */
+      font-weight: bold;
+      /* optional for emphasis */
+    }
   </style>
+
+<style>
+  .search-form {
+    width: 180% !important;
+    /* Ensure the form takes full width */
+  }
+
+  .search-form .search-input {
+    width: 9000px;
+    /* Set a fixed width for the input field */
+    padding: 9px 20px !important;
+    /* Increase padding for comfort */
+    border-radius: 5px !important;
+    /* Optional: rounded corners */
+    border: 1px solid #ccc;
+    /* Optional: border color */
+  }
+
+  .search-form .form-control {
+    border-radius: 5px;
+    /* Optional: rounded corners for select */
+  }
+
+  .search-form .form-control.me-2 {
+    width: 150px;
+    /* Set a fixed width for the select dropdown */
+  }
+
+  .search-form .btn {
+    padding: 10px 15px;
+    /* Increase button size */
+    border-radius: 5px;
+    /* Optional: rounded corners for button */
+  }
+
+  
+</style>
 
 </head>

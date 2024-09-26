@@ -590,4 +590,28 @@ class PageController
 
         echo ($html);
     }
+
+    public function render_search_results($category, $query)
+    {
+
+        $results = $this->model->search($category, $query);
+        $myOrganisation = $this->userModel->get_user_organisation(Session::get('user_id'));
+        $html = $this->blade_view->render('searchResults', [
+            'pageTitle' => "$this->app_name - search",
+            'appName' => $this->app_name,
+            'baseUrl' => $this->app_base_url,
+            'appNameFull' => $this->app_name_full,
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'myOrganisation' => $myOrganisation['response'],
+            'chosenOrganisationLogo' => Session::get('selected_organisation_logo'),
+            'chosenOrganisationId' => Session::get('selected_organisation_id'),
+            'results' => $results,
+            'category' => $category,
+            'query' => $query,
+        ]);
+
+        echo ($html);
+    }
 }

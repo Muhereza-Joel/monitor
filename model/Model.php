@@ -1353,4 +1353,13 @@ class Model
 
         return $logo;
     }
+
+    public function search($category, $query)
+    {
+        $searchModel = new SearchModel($this->database);
+        $searchModel->createSearchIndex($category);
+        $results = $searchModel->search($category, $query);
+        return $results;
+    }
+
 }

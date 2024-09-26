@@ -46,6 +46,7 @@ Route::group([
     //Routes for PageController
     Route::get("page-not-found/", "PageController@render_404");
     Route::get("dashboard/", "PageController@render_dashboard");
+    Route::get("dashboard/search-results", "PageController@render_search_results")->name('search');
     Route::get("dashboard/users/", "PageController@render_users");
     Route::get("dashboard/users/add-new/", "PageController@render_create_user")->middleware(["RoleMiddleware:Administrator"]);
     Route::get("dashboard/users/view/{id}", "PageController@render_user_details")->name('user.details');
